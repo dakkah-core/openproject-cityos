@@ -43,7 +43,8 @@ COPY NOTICE.md /app/NOTICE.md
 
 # ── CityOS entrypoint wrapper ─────────────────────────────────
 COPY docker/entrypoint-cityos.sh /app/docker/entrypoint-cityos.sh
-RUN chmod +x /app/docker/entrypoint-cityos.sh
+RUN chmod +x /app/docker/entrypoint-cityos.sh && \
+    sed -i 's/\r$//' /app/docker/entrypoint-cityos.sh
 
 # ── Install plugin gems ──────────────────────────────────────
 # Plugin registration may fail if upstream OpenProject's rake task
