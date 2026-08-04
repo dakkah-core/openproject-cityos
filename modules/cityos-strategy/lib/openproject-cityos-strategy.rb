@@ -2,7 +2,7 @@
 
 module OpenProject
   module CityOSStrategy
-    require "openproject-cityos-strategy/engine"
-    require "openproject-cityos-strategy/policy"
+    require "openproject_cityos_strategy/engine"
+    require "openproject_cityos_strategy/policy"
   end
 end
