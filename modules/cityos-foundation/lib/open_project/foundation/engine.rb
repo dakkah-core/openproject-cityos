@@ -5,10 +5,14 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override("foundation" => "CityOSFoundation")
+      class_inflection_override(
+        "foundation" => "CityOSFoundation",
+        "sod_guard" => "SoDGuard"
+      )
 
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-foundation.rb"))
+        Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
       end
 
       register(
