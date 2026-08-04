@@ -1,15 +1,8 @@
-# CityOS HELM Plugin Dependencies
+# CityOS HELM — Plugin Registration
 # 
-# These gems are loaded alongside the bundled OpenProject Gemfile.
-# CityOS plugins under modules/ are loaded via Gemfile.plugins.
-
-gem 'openproject-cityos-foundation', path: 'modules/cityos-foundation'
-gem 'openproject-cityos-identity',  path: 'modules/cityos-identity'
-gem 'openproject-cityos-governance', path: 'modules/cityos-governance'
-gem 'openproject-cityos-portfolio', path: 'modules/cityos-portfolio'
-gem 'openproject-cityos-strategy',  path: 'modules/cityos-strategy'
-
-# SSO / OIDC — omniauth gems are already bundled in upstream OpenProject;
-# declaring them here causes duplicate-gem conflicts.
-# The identity plugin relies on omniauth and omniauth-openid-connect
-# which are resolved from OpenProject's own Gemfile.
+# CityOS plugins are Rails Engines loaded by OpenProject's plugin system,
+# not Bundler path gems. They are copied to /app/modules/ and registered
+# via `bundle exec rake openproject:plugins:register` at build time.
+#
+# The omniauth gems needed by the identity plugin are already bundled
+# in OpenProject's upstream Gemfile — do not re-declare them here.
