@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     # Just-In-Time User Provisioning
     #
     # On first OIDC login (via ZITADEL or Keycloak), creates or updates

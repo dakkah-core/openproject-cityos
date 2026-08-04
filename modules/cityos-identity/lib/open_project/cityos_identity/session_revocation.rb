@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     # Session Revocation
     #
     # When a user is disabled in ZITADEL/Keycloak, their HELM session

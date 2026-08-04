@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     # ZITADEL OIDC OmniAuth Strategy
     #
     # Provides SSO login for human operators through ZITADEL.
@@ -51,7 +51,7 @@ module OpenProject
         raw_info = auth_hash[:extra][:raw_info] rescue {}
         credentials = auth_hash[:credentials]
 
-        OpenProject::CityOSIdentity::JitProvisioner.provision(
+        OpenProject::CityosIdentity::JitProvisioner.provision(
           external_id: auth_hash[:uid],
           email: user_info[:email],
           first_name: user_info[:first_name] || raw_info['given_name'],

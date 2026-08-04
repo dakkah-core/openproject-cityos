@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     # Agent Attribution
     #
     # Ensures every work-package change is attributed to the correct

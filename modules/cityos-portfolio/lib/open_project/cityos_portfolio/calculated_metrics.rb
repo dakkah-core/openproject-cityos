@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Calculated Date Fields — SPI (Schedule Performance Index) and
     # CPI (Cost Performance Index) style metrics for work packages.
     #

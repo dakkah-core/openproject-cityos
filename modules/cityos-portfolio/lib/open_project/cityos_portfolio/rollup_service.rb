@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Rollup views aggregating work packages across the portfolio
     # by system, capability, proof status, maturity, and gate posture.
     class RollupService
@@ -72,8 +72,8 @@ module OpenProject
           by_proof_status: by_proof_status,
           by_maturity: by_maturity,
           blocked_by_owner: blocked_by_owner,
-          stale_work_packages: OpenProject::CityOSPortfolio::StaleDetector.count_stale,
-          release_gate_posture: OpenProject::CityOSPortfolio::ReleaseGateDashboard.current_posture
+          stale_work_packages: OpenProject::CityosPortfolio::StaleDetector.count_stale,
+          release_gate_posture: OpenProject::CityosPortfolio::ReleaseGateDashboard.current_posture
         }
       end
     end

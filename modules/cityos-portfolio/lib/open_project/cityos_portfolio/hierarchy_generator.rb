@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Generates the CityOS portfolio project hierarchy from canonical
     # registries (config/implementation-scope/taxonomy/ and
     # config/system-capability-registry/).

@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # PEDD Engineering Universe Integration
     #
     # Bridges OpenProject work packages with the PEDD Super Engine's

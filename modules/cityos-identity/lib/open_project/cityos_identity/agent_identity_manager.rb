@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     # Agent Identity Manager
     #
     # Creates and manages per-agent OpenProject principals with:
@@ -115,7 +115,7 @@ module OpenProject
         user.pref[:cityos_agent_correlation_id] = correlation_id || SecureRandom.uuid
         user.pref.save!
 
-        OpenProject::CityOSIdentity::AgentAttribution.record(
+        OpenProject::CityosIdentity::AgentAttribution.record(
           user: user,
           agent_type: agent_type,
           run_id: run_id,

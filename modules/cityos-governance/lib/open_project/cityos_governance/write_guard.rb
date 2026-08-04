@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     # Prevents non-sync identities from writing to governance tables.
     module WriteGuard
       def self.included(base)

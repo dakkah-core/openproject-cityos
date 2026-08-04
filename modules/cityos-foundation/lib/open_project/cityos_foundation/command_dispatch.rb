@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSFoundation
+  module CityosFoundation
     # Dispatches CityOS command actions through Work Control Gateway.
     # Uses canonical /v1/commands endpoint with the full command envelope,
     # Gateway authorization, idempotency keys, and correlation IDs.

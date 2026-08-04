@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Cross-system dependency view — shows relationships between
     # work packages across different CityOS systems.
     #

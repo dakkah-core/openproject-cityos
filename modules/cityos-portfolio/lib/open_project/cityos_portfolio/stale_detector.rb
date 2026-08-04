@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Detects work packages that have not been updated within a
     # configurable threshold. Useful for identifying abandoned or
     # stuck work that needs attention.

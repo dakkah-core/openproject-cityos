@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Links work packages to their governing strategy documents
     # (Strategy → ADR → Spec → Capability Brief → Deliverable).
     #

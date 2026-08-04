@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Team Planner — agent capacity view showing workload by agent
     # over a configurable sprint/week period.
     #

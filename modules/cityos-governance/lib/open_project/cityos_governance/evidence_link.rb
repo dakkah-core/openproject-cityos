@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     # EvidenceLink — links a work package to external evidence artifacts
     # (tests, audits, runtime proof, screenshots) with content hashing
     # and freshness tracking.

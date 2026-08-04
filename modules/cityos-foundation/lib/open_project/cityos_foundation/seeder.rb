@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSFoundation
+  module CityosFoundation
     class Seeder
       def self.apply(manifest_path)
         manifest = YAML.safe_load(File.read(manifest_path))

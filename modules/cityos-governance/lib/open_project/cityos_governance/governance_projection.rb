@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     # GovernanceProjection — read-only projection of UCL lifecycle state,
     # maturity (D/R/P), approval status, and gate position.
     #

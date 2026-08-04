@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSFoundation
+  module CityosFoundation
     # Enforces Separation-of-Duties constraints on work-package transitions.
     class SoDGuard
       SOD_RULES = [

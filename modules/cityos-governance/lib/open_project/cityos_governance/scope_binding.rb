@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     # ScopeBindings — immutable linkage between an OpenProject work package
     # and a canonical WDR scope identity.
     #

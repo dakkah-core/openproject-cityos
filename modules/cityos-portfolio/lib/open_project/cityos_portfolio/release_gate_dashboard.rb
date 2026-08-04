@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Release-Gate Posture Dashboard
     #
     # Aggregates the state of all UCL release gates (G0-G4) across

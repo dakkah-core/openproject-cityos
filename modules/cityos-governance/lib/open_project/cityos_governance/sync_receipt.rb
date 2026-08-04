@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     # SyncReceipt — append-only record of every governance sync operation.
     # Records before/after hashes, correlation IDs, and actor identity.
     # Used for audit, reconciliation, and drift detection.

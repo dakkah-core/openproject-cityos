@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     # Calendar Integration — iCal (RFC 5545) export of milestones.
     #
     # GET /cityos/portfolio/calendar.ics
