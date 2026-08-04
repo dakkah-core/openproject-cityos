@@ -12,10 +12,10 @@ module OpenProject
         benefits_review: 10, closed: 11, stopped: 12, superseded: 13
       }.freeze
 
-      enum :stage, FUNNEL_STAGES
-      enum :mandatory_class, { mandatory: 0, regulatory: 1, committed: 2, scored: 3 }
-      enum :funding_status, { unfunded: 0, requested: 1, approved: 2, allocated: 3, spent: 4 }
-      enum :decision_status, { pending: 0, recommended: 1, deferred: 2, rejected: 3, activated: 4 }
+      enum :stage, FUNNEL_STAGES, prefix: :stage
+      enum :mandatory_class, { mandatory: 0, regulatory: 1, committed: 2, scored: 3 }, prefix: true
+      enum :funding_status, { unfunded: 0, requested: 1, approved: 2, allocated: 3, spent: 4 }, prefix: :funding
+      enum :decision_status, { pending: 0, recommended: 1, deferred: 2, rejected: 3, activated: 4 }, prefix: :decision
 
       belongs_to :portfolio, class_name: "StrategicPortfolio", optional: true
       belongs_to :scenario, class_name: "PlanningScenario", optional: true
