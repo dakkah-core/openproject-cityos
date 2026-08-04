@@ -1,0 +1,13 @@
+# CityOS HELM Plugin Dependencies
+# 
+# These gems are loaded alongside the bundled OpenProject Gemfile.
+# CityOS plugins under modules/ are loaded via Gemfile.plugins.
+
+gem 'openproject-cityos-foundation', path: 'modules/cityos-foundation'
+gem 'openproject-cityos-identity',  path: 'modules/cityos-identity'
+gem 'openproject-cityos-governance', path: 'modules/cityos-governance'
+gem 'openproject-cityos-portfolio', path: 'modules/cityos-portfolio'
+
+# SSO / OIDC
+gem 'omniauth-openid-connect', '~> 0.7'
+gem 'omniauth', '~> 2.1'

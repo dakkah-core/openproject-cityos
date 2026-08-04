@@ -1,0 +1,60 @@
+# CityOS HELM — Custom OpenProject Community Distribution
+# Overlay Dockerfile: layers CityOS plugins on top of upstream OpenProject CE.
+#
+# Image: ghcr.io/dakkah-core/openproject-cityos:17.6.0-cityos.1
+# Base:  openproject/openproject:17.6.0
+#
+# Per ADR-HELM-0009: Governed Community Distribution with 4 plugins + ≤3 core patches.
+# GPLv3 — see NOTICE.md for full attribution.
+
+FROM openproject/openproject:17.6.0 AS base
+
+LABEL org.opencontainers.image.title="CityOS HELM"
+LABEL org.opencontainers.image.description="CityOS-governed distribution of OpenProject CE 17.6.0"
+LABEL org.opencontainers.image.source="https://github.com/dakkah-core/openproject-cityos"
+LABEL org.opencontainers.image.licenses="GPL-3.0"
+
+USER root
+
+# ── CityOS plugins ────────────────────────────────────────────
+COPY modules/cityos-foundation/ /app/modules/cityos-foundation/
+COPY modules/cityos-identity/ /app/modules/cityos-identity/
+COPY modules/cityos-governance/ /app/modules/cityos-governance/
+COPY modules/cityos-portfolio/ /app/modules/cityos-portfolio/
+
+# ── CityOS config manifest ────────────────────────────────────
+COPY config/cityos-helm-manifest.yml /app/config/cityos-helm-manifest.yml
+
+# ── CityOS patches (≤3) ───────────────────────────────────────
+# CITYOS-PATCH-001: Branding assets (cityos-logo.png, favicon)
+COPY patches/001-branding/ /app/
+# CITYOS-PATCH-002: Frontend Angular plugin registration
+# Applied at npm install time by OpenProject's frontend build
+
+# ── Gemfile.plugins — loaded alongside Gemfile.modules ───────
+COPY Gemfile.plugins /app/Gemfile.plugins
+
+# ── Arabic RTL locale ─────────────────────────────────────────
+COPY config/locales/ /app/config/locales/
+
+# ── GPLv3 attribution ─────────────────────────────────────────
+COPY NOTICE.md /app/NOTICE.md
+
+# ── CityOS entrypoint wrapper ─────────────────────────────────
+COPY docker/entrypoint-cityos.sh /app/docker/entrypoint-cityos.sh
+RUN chmod +x /app/docker/entrypoint-cityos.sh
+
+# ── Install plugin gems ──────────────────────────────────────
+RUN cd /app && \
+    bundle config set --local without "development:test" && \
+    bundle exec rake openproject:plugins:register 2>/dev/null || true
+
+USER app
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -sf http://localhost:8080/health_checks/default || exit 1
+
+EXPOSE 8080
+
+ENTRYPOINT ["/app/docker/entrypoint-cityos.sh"]
+CMD ["./docker/prod/web"]
