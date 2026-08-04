@@ -5,13 +5,13 @@ module OpenProject
     class MetricDefinition < ActiveRecord::Base
       self.table_name = "cityos_strategy_metric_definitions"
 
-      enum :direction, { higher_better: 0, lower_better: 1, target_range: 2 }
-      enum :aggregation, { sum: 0, avg: 1, min: 2, max: 3, last: 4 }
-      enum :frequency, { daily: 0, weekly: 1, monthly: 2, quarterly: 3, annual: 4 }
+      enum :direction, { higher_better: 0, lower_better: 1, target_range: 2 }, prefix: :direction
+      enum :aggregation, { sum: 0, avg: 1, min: 2, max: 3, last: 4 }, prefix: :aggregation
+      enum :frequency, { daily: 0, weekly: 1, monthly: 2, quarterly: 3, annual: 4 }, prefix: :frequency
       enum :framework_profile, {
         okr: 0, balanced_scorecard: 1, ogsm: 2, hoshin: 3,
         government: 4, cityos_engineering: 5
-      }
+      }, prefix: :framework
 
       belongs_to :owner, class_name: "User", optional: true
       belongs_to :plan, class_name: "StrategicPlan", optional: true
