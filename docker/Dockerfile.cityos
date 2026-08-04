@@ -21,6 +21,7 @@ COPY modules/cityos-foundation/ /app/modules/cityos-foundation/
 COPY modules/cityos-identity/ /app/modules/cityos-identity/
 COPY modules/cityos-governance/ /app/modules/cityos-governance/
 COPY modules/cityos-portfolio/ /app/modules/cityos-portfolio/
+COPY modules/cityos-strategy/ /app/modules/cityos-strategy/
 
 # ── CityOS config manifest ────────────────────────────────────
 COPY config/cityos-helm-manifest.yml /app/config/cityos-helm-manifest.yml

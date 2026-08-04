@@ -7,6 +7,7 @@ gem 'openproject-cityos-foundation', path: 'modules/cityos-foundation'
 gem 'openproject-cityos-identity',  path: 'modules/cityos-identity'
 gem 'openproject-cityos-governance', path: 'modules/cityos-governance'
 gem 'openproject-cityos-portfolio', path: 'modules/cityos-portfolio'
+gem 'openproject-cityos-strategy',  path: 'modules/cityos-strategy'
 
 # SSO / OIDC
 gem 'omniauth-openid-connect', '~> 0.7'
