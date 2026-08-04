@@ -19,6 +19,27 @@ module OpenProject
                      require: :loggedin
         end
 
+        # ── Load all portfolio services ─────────────────────
+        initializer 'cityos_portfolio.load_services' do
+          require_dependency 'openproject-cityos-portfolio/hierarchy_generator'
+          require_dependency 'openproject-cityos-portfolio/rollup_service'
+          require_dependency 'openproject-cityos-portfolio/strategy_linker'
+          require_dependency 'openproject-cityos-portfolio/dependency_view'
+          require_dependency 'openproject-cityos-portfolio/stale_detector'
+          require_dependency 'openproject-cityos-portfolio/release_gate_dashboard'
+        end
+
+        # ── Register portfolio routes ───────────────────────
+        initializer 'cityos_portfolio.routes' do |app|
+          app.routes.append do
+            get '/cityos/portfolio', to: 'cityos/portfolio/portfolio#index'
+            get '/cityos/portfolio/systems', to: 'cityos/portfolio/portfolio#systems'
+            get '/cityos/portfolio/rollups', to: 'cityos/portfolio/portfolio#rollups'
+            get '/cityos/portfolio/system_graph', to: 'cityos/portfolio/portfolio#system_graph'
+            post '/cityos/portfolio/generate', to: 'cityos/portfolio/portfolio#generate'
+          end
+        end
+
         menu :top_menu,
              :cityos_portfolio,
              { controller: '/cityos/portfolio', action: :index },

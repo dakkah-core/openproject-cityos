@@ -1,0 +1,57 @@
+/* CITYOS-PATCH-001: CityOS HELM Branding Theme
+ * Overrides OpenProject's default Enterprise theme with CityOS colors.
+ * Applied: COPY patches/001-branding/ /app/ in Dockerfile.cityos
+ * Removal: when upstream makes branding configurable in CE
+ */
+:root {
+  --cityos-primary: #1A5276;
+  --cityos-primary-light: #2980B9;
+  --cityos-accent: #1ABC9C;
+  --cityos-surface: #F8F9FA;
+  --cityos-surface-dark: #2C3E50;
+  --cityos-text: #212529;
+  --cityos-text-light: #F8F9FA;
+  --cityos-danger: #E74C3C;
+  --cityos-warning: #F39C12;
+  --cityos-success: #2ECC71;
+  --cityos-info: #3498DB;
+  --cityos-border: #DEE2E6;
+}
+
+/* Header */
+#top-menu { background: var(--cityos-primary) !important; }
+#top-menu .menu-item--selected { background: var(--cityos-primary-light) !important; }
+
+/* Logo area */
+#logo {
+  background-image: url('/assets/cityos-logo.png') !important;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+}
+
+/* Login page branding */
+.login-auth-providers .openproject-logo {
+  background-image: url('/assets/cityos-logo.png') !important;
+}
+
+/* Work package detail */
+.work-packages--details {
+  --primary-color: var(--cityos-primary);
+}
+
+/* Buttons */
+.button.-primary { background: var(--cityos-primary) !important; }
+.button.-highlight { background: var(--cityos-accent) !important; }
+.button.-danger { background: var(--cityos-danger) !important; }
+
+/* Gantt chart colors */
+.__tile_row.type-1 { background: var(--cityos-primary) !important; }  /* Task */
+.__tile_row.type-2 { background: #9B59B6 !important; }  /* Milestone */
+
+/* CityOS footer */
+#footer .cityos-branding::after {
+  content: "CityOS HELM — Governed Community Distribution";
+  color: var(--cityos-text);
+  font-size: 0.8em;
+}

@@ -1,0 +1,148 @@
+<!-- CityOS HELM — Governance Panel
+     Read-only tab on work-package detail showing:
+     Scope Bindings, UCL Lifecycle, Proof & Evidence, Owner Decision,
+     Links, Agent Attribution, and Projection Freshness.
+  -->
+<div class="cityos-governance-panel" ng-controller="CityOSGovernancePanelController as gov">
+  <div class="grid-block">
+
+    <!-- Scope Identity -->
+    <div class="panel-box">
+      <h3>{{ 'cityos.governance.scope_identity' | translate }}</h3>
+      <table class="attributes-table">
+        <tr ng-if="gov.binding.external_id">
+          <th>{{ 'cityos.governance.external_id' | translate }}</th>
+          <td><code>{{ gov.binding.external_id }}</code></td>
+        </tr>
+        <tr ng-if="gov.binding.scope_node_id">
+          <th>Scope Node</th>
+          <td>{{ gov.binding.scope_node_id }}</td>
+        </tr>
+        <tr ng-if="gov.binding.system_id">
+          <th>System</th>
+          <td>{{ gov.binding.system_id }}</td>
+        </tr>
+        <tr ng-if="gov.binding.capability_id">
+          <th>{{ 'cityos.governance.capability_id' | translate }}</th>
+          <td><code>{{ gov.binding.capability_id }}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- UCL Lifecycle -->
+    <div class="panel-box">
+      <h3>{{ 'cityos.governance.ucl_lifecycle' | translate }}</h3>
+      <table class="attributes-table">
+        <tr ng-if="gov.projection.ucl_status">
+          <th>UCL Status</th>
+          <td>
+            <span class="badge" ng-class="gov.statusClass(gov.projection.ucl_status)">
+              {{ gov.projection.ucl_status }}
+            </span>
+          </td>
+        </tr>
+        <tr ng-if="gov.projection.design_maturity">
+          <th>Design Maturity</th>
+          <td>D{{ gov.projection.design_maturity }}</td>
+        </tr>
+        <tr ng-if="gov.projection.runtime_maturity">
+          <th>Runtime Maturity</th>
+          <td>R{{ gov.projection.runtime_maturity }}</td>
+        </tr>
+        <tr ng-if="gov.projection.product_maturity">
+          <th>Product Stage</th>
+          <td>P{{ gov.projection.product_maturity }}</td>
+        </tr>
+        <tr ng-if="gov.projection.gate_id">
+          <th>Gate</th>
+          <td><code>{{ gov.projection.gate_id }}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Proof & Evidence -->
+    <div class="panel-box">
+      <h3>{{ 'cityos.governance.proof_evidence' | translate }}</h3>
+      <table class="attributes-table">
+        <tr ng-if="gov.projection.proof_status">
+          <th>Proof Status</th>
+          <td>{{ gov.projection.proof_status }}</td>
+        </tr>
+        <tr ng-if="gov.projection.target_runtime_proof_status">
+          <th>Required Proof</th>
+          <td>{{ gov.projection.target_runtime_proof_status }}</td>
+        </tr>
+      </table>
+      <div ng-if="gov.evidence.length" class="evidence-list">
+        <h4>Evidence Links ({{ gov.evidence.length }})</h4>
+        <div ng-repeat="ev in gov.evidence" class="evidence-item">
+          <span class="badge" ng-class="'proof-' + ev.proof_level">
+            {{ ev.proof_level }}
+          </span>
+          <a ng-href="{{ ev.evidence_uri }}" target="_blank">
+            {{ ev.evidence_id }}
+          </a>
+          <span class="timestamp">{{ ev.produced_at | date:'short' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Owner Decision -->
+    <div class="panel-box">
+      <h3>{{ 'cityos.governance.owner_decision' | translate }}</h3>
+      <table class="attributes-table">
+        <tr ng-if="gov.projection.approval_ref">
+          <th>{{ 'cityos.governance.approval_ref' | translate }}</th>
+          <td><code>{{ gov.projection.approval_ref }}</code></td>
+        </tr>
+        <tr ng-if="gov.projection.approval_state">
+          <th>{{ 'cityos.governance.approval_state' | translate }}</th>
+          <td>
+            <span class="badge" ng-class="gov.approvalClass(gov.projection.approval_state)">
+              {{ gov.projection.approval_state }}
+            </span>
+          </td>
+        </tr>
+        <tr ng-if="gov.projection.owner_lane">
+          <th>Owner Lane</th>
+          <td>{{ gov.projection.owner_lane }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Agent Attribution -->
+    <div class="panel-box" ng-if="gov.binding.agent_task_id">
+      <h3>Agent Attribution</h3>
+      <table class="attributes-table">
+        <tr>
+          <th>Agent Task</th>
+          <td><code>{{ gov.binding.agent_task_id }}</code></td>
+        </tr>
+        <tr ng-if="gov.binding.work_item_id">
+          <th>Work Item</th>
+          <td>{{ gov.binding.work_item_id }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Projection Freshness -->
+    <div class="panel-box freshness">
+      <h3>{{ 'cityos.governance.projection_freshness' | translate }}</h3>
+      <table class="attributes-table">
+        <tr ng-if="gov.projection.projected_at">
+          <th>Projected At</th>
+          <td>{{ gov.projection.projected_at | date:'medium' }}</td>
+        </tr>
+        <tr ng-if="gov.projection.source_revision">
+          <th>Source Revision</th>
+          <td><code>{{ gov.projection.source_revision | limitTo:12 }}</code></td>
+        </tr>
+        <tr ng-if="gov.binding.synced_at">
+          <th>Synced At</th>
+          <td>{{ gov.binding.synced_at | date:'medium' }}</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+</div>
