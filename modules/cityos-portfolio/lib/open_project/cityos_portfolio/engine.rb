@@ -7,7 +7,6 @@ module OpenProject
 
       initializer "cityos_portfolio.inflector", before: :set_autoload_paths do
         Rails.autoloaders.each do |l|
-          l.inflector.inflect("portfolio" => "CityOSPortfolio")
           l.inflector.inflect("cityos" => "CityOS")
         end
       end
@@ -42,16 +41,16 @@ module OpenProject
 
       # ── Load all portfolio services ─────────────────────
       initializer "cityos_portfolio.load_services" do
-        require_dependency "open_project/portfolio/hierarchy_generator"
-        require_dependency "open_project/portfolio/rollup_service"
-        require_dependency "open_project/portfolio/strategy_linker"
-        require_dependency "open_project/portfolio/dependency_view"
-        require_dependency "open_project/portfolio/stale_detector"
-        require_dependency "open_project/portfolio/release_gate_dashboard"
-        require_dependency "open_project/portfolio/calendar_export"
-        require_dependency "open_project/portfolio/team_planner"
-        require_dependency "open_project/portfolio/calculated_metrics"
-        require_dependency "open_project/portfolio/pedd_integration"
+        require_dependency "open_project/cityos_portfolio/hierarchy_generator"
+        require_dependency "open_project/cityos_portfolio/rollup_service"
+        require_dependency "open_project/cityos_portfolio/strategy_linker"
+        require_dependency "open_project/cityos_portfolio/dependency_view"
+        require_dependency "open_project/cityos_portfolio/stale_detector"
+        require_dependency "open_project/cityos_portfolio/release_gate_dashboard"
+        require_dependency "open_project/cityos_portfolio/calendar_export"
+        require_dependency "open_project/cityos_portfolio/team_planner"
+        require_dependency "open_project/cityos_portfolio/calculated_metrics"
+        require_dependency "open_project/cityos_portfolio/pedd_integration"
       end
 
       # ── Register portfolio routes ───────────────────────

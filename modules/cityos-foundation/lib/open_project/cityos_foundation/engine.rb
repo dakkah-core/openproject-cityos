@@ -7,7 +7,6 @@ module OpenProject
 
       initializer "cityos_foundation.inflector", before: :set_autoload_paths do
         Rails.autoloaders.each do |l|
-          l.inflector.inflect("foundation" => "CityOSFoundation")
           l.inflector.inflect("sod_guard" => "SoDGuard")
           l.inflector.inflect("cityos" => "CityOS")
         end
@@ -46,9 +45,9 @@ module OpenProject
       # Load CityOS seeder, SoD guard, and command dispatch
       initializer 'cityos_foundation.load_services' do |app|
         app.config.after_initialize do
-          require_dependency 'open_project/foundation/seeder'
-          require_dependency 'open_project/foundation/sod_guard'
-          require_dependency 'open_project/foundation/command_dispatch'
+          require_dependency 'open_project/cityos_foundation/seeder'
+          require_dependency 'open_project/cityos_foundation/sod_guard'
+          require_dependency 'open_project/cityos_foundation/command_dispatch'
         end
       end
 

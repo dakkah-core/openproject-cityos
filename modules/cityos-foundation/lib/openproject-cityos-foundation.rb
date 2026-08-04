@@ -1,6 +1,6 @@
 module OpenProject
   module CityOSFoundation
-    require "open_project/foundation/version"
-    require "open_project/foundation/engine"
+    require "open_project/cityos_foundation/version"
+    require "open_project/cityos_foundation/engine"
   end
 end

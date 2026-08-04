@@ -7,7 +7,6 @@ module OpenProject
 
       initializer "cityos_identity.inflector", before: :set_autoload_paths do
         Rails.autoloaders.each do |l|
-          l.inflector.inflect("identity" => "CityOSIdentity")
           l.inflector.inflect("cityos" => "CityOS")
         end
       end
@@ -37,11 +36,11 @@ module OpenProject
 
       # ── Load all identity services ──────────────────────
       initializer "cityos_identity.load_services" do
-        require_dependency "open_project/identity/oidc_strategy"
-        require_dependency "open_project/identity/jit_provisioner"
-        require_dependency "open_project/identity/agent_identity_manager"
-        require_dependency "open_project/identity/agent_attribution"
-        require_dependency "open_project/identity/session_revocation"
+        require_dependency "open_project/cityos_identity/oidc_strategy"
+        require_dependency "open_project/cityos_identity/jit_provisioner"
+        require_dependency "open_project/cityos_identity/agent_identity_manager"
+        require_dependency "open_project/cityos_identity/agent_attribution"
+        require_dependency "open_project/cityos_identity/session_revocation"
       end
 
       # ── Register OmniAuth OIDC strategy ─────────────────
