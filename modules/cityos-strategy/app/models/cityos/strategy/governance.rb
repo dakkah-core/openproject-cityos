@@ -12,7 +12,7 @@ module OpenProject
       enum :status, {
         proposed: 0, planned: 1, tracking: 2,
         realized: 3, sustained: 4, not_realized: 5
-      }
+      }, _prefix: :status
 
       belongs_to :initiative, class_name: "StrategicInitiative"
       belongs_to :benefit_owner, class_name: "User", optional: true
@@ -32,7 +32,7 @@ module OpenProject
 
       enum :likelihood, { rare: 0, unlikely: 1, possible: 2, likely: 3, almost_certain: 4 }
       enum :impact, { negligible: 0, minor: 1, moderate: 2, major: 3, severe: 4 }
-      enum :status, { active: 0, mitigated: 1, materialized: 2, closed: 3 }
+      enum :status, { active: 0, mitigated: 1, materialized: 2, closed: 3 }, _prefix: :status
 
       belongs_to :initiative, class_name: "StrategicInitiative", optional: true
       belongs_to :objective, class_name: "StrategicObjective", optional: true
@@ -47,7 +47,7 @@ module OpenProject
     class StrategicAssumption < ApplicationRecord
       self.table_name = "cityos_strategy_assumptions"
 
-      enum :status, { unvalidated: 0, valid: 1, invalidated: 2 }
+      enum :status, { unvalidated: 0, valid: 1, invalidated: 2 }, _prefix: :status
 
       belongs_to :initiative, class_name: "StrategicInitiative", optional: true
       belongs_to :objective, class_name: "StrategicObjective", optional: true
