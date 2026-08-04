@@ -35,6 +35,7 @@ module OpenProject
         require_dependency "open_project/cityos_identity/agent_identity_manager"
         require_dependency "open_project/cityos_identity/agent_attribution"
         require_dependency "open_project/cityos_identity/session_revocation"
+        require_dependency "open_project/cityos_identity/hooks"
       end
 
       # ── Register OmniAuth OIDC strategy ─────────────────
