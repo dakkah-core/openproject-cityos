@@ -33,16 +33,16 @@ module OpenProject
 
       # ── Load all portfolio services ─────────────────────
       initializer "cityos_portfolio.load_services" do
-        require_dependency "openproject-cityos-portfolio/hierarchy_generator"
-        require_dependency "openproject-cityos-portfolio/rollup_service"
-        require_dependency "openproject-cityos-portfolio/strategy_linker"
-        require_dependency "openproject-cityos-portfolio/dependency_view"
-        require_dependency "openproject-cityos-portfolio/stale_detector"
-        require_dependency "openproject-cityos-portfolio/release_gate_dashboard"
-        require_dependency "openproject-cityos-portfolio/calendar_export"
-        require_dependency "openproject-cityos-portfolio/team_planner"
-        require_dependency "openproject-cityos-portfolio/calculated_metrics"
-        require_dependency "openproject-cityos-portfolio/pedd_integration"
+        require_dependency "openproject_cityos_portfolio/hierarchy_generator"
+        require_dependency "openproject_cityos_portfolio/rollup_service"
+        require_dependency "openproject_cityos_portfolio/strategy_linker"
+        require_dependency "openproject_cityos_portfolio/dependency_view"
+        require_dependency "openproject_cityos_portfolio/stale_detector"
+        require_dependency "openproject_cityos_portfolio/release_gate_dashboard"
+        require_dependency "openproject_cityos_portfolio/calendar_export"
+        require_dependency "openproject_cityos_portfolio/team_planner"
+        require_dependency "openproject_cityos_portfolio/calculated_metrics"
+        require_dependency "openproject_cityos_portfolio/pedd_integration"
       end
 
       # ── Register portfolio routes ───────────────────────

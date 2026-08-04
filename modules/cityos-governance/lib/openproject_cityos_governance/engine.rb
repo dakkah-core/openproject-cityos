@@ -39,11 +39,11 @@ module OpenProject
 
       # Load governance models and controller
       initializer "cityos_governance.load_classes" do
-        require_dependency "openproject-cityos-governance/write_guard"
-        require_dependency "openproject-cityos-governance/scope_binding"
-        require_dependency "openproject-cityos-governance/governance_projection"
-        require_dependency "openproject-cityos-governance/evidence_link"
-        require_dependency "openproject-cityos-governance/sync_receipt"
+        require_dependency "openproject_cityos_governance/write_guard"
+        require_dependency "openproject_cityos_governance/scope_binding"
+        require_dependency "openproject_cityos_governance/governance_projection"
+        require_dependency "openproject_cityos_governance/evidence_link"
+        require_dependency "openproject_cityos_governance/sync_receipt"
       end
 
       # Register API routes for governance

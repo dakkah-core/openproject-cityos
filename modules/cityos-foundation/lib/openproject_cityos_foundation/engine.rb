@@ -39,9 +39,9 @@ module OpenProject
       # Load CityOS seeder, SoD guard, and command dispatch
       initializer 'cityos_foundation.load_services' do |app|
         app.config.after_initialize do
-          require_dependency 'openproject-cityos-foundation/seeder'
-          require_dependency 'openproject-cityos-foundation/sod_guard'
-          require_dependency 'openproject-cityos-foundation/command_dispatch'
+          require_dependency 'openproject_cityos_foundation/seeder'
+          require_dependency 'openproject_cityos_foundation/sod_guard'
+          require_dependency 'openproject_cityos_foundation/command_dispatch'
         end
       end
 

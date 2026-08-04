@@ -29,11 +29,11 @@ module OpenProject
 
       # ── Load all identity services ──────────────────────
       initializer "cityos_identity.load_services" do
-        require_dependency "openproject-cityos-identity/oidc_strategy"
-        require_dependency "openproject-cityos-identity/jit_provisioner"
-        require_dependency "openproject-cityos-identity/agent_identity_manager"
-        require_dependency "openproject-cityos-identity/agent_attribution"
-        require_dependency "openproject-cityos-identity/session_revocation"
+        require_dependency "openproject_cityos_identity/oidc_strategy"
+        require_dependency "openproject_cityos_identity/jit_provisioner"
+        require_dependency "openproject_cityos_identity/agent_identity_manager"
+        require_dependency "openproject_cityos_identity/agent_attribution"
+        require_dependency "openproject_cityos_identity/session_revocation"
       end
 
       # ── Register OmniAuth OIDC strategy ─────────────────
