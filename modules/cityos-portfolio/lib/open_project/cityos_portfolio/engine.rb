@@ -29,7 +29,7 @@ module OpenProject
              :cityos_portfolio,
              { controller: '/cityos/portfolio/portfolio', action: :index },
              caption: 'CityOS Portfolio',
-             icon: 'cityos-portfolio',
+             icon: 'icon-projects',
              after: :projects
       end
 
