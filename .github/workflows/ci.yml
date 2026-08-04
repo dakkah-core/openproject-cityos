@@ -20,7 +20,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile.cityos
-          tags: ghcr.io/dakkah-core/openproject-cityos:edge
+          tags: ghcr.io/dakkah-core/cityos-helm:edge
           push: false
           load: true
           cache-from: type=gha
@@ -73,8 +73,8 @@ jobs:
           context: .
           file: docker/Dockerfile.cityos
           tags: |
-            ghcr.io/dakkah-core/openproject-cityos:17.6.0-cityos.1
-            ghcr.io/dakkah-core/openproject-cityos:latest
+            ghcr.io/dakkah-core/cityos-helm:17.6.0.1
+            ghcr.io/dakkah-core/cityos-helm:latest
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -1,7 +1,7 @@
 # CityOS HELM — Custom OpenProject Community Distribution
 # Overlay Dockerfile: layers CityOS plugins on top of upstream OpenProject CE.
 #
-# Image: ghcr.io/dakkah-core/openproject-cityos:17.6.0-cityos.1
+# Image: ghcr.io/dakkah-core/cityos-helm:17.6.0.1
 # Base:  openproject/openproject:17.6.0
 #
 # Per ADR-HELM-0009: Governed Community Distribution with 4 plugins + ≤3 core patches.
@@ -11,7 +11,7 @@ FROM openproject/openproject:17.6.0 AS base
 
 LABEL org.opencontainers.image.title="CityOS HELM"
 LABEL org.opencontainers.image.description="CityOS-governed distribution of OpenProject CE 17.6.0"
-LABEL org.opencontainers.image.source="https://github.com/dakkah-core/openproject-cityos"
+LABEL org.opencontainers.image.source="https://github.com/dakkah-core/cityos-helm"
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 
 USER root
