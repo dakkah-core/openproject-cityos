@@ -68,11 +68,7 @@ module OpenProject
 
       # ── Session validity check ──────────────────────────
       initializer "cityos_identity.session_guard" do |app|
-        app.config.middleware.use lambda { |env|
-          catch(:invalid_session) do
-            OpenProject::CityOSIdentity::SessionRevocation
-          end
-        }
+        app.config.middleware.use OpenProject::CityOSIdentity::SessionRevocation::Middleware
       end
 
       # ── Agent token rotation cron (daily) ──────────────

@@ -112,6 +112,19 @@ module OpenProject
 
         body['active'] == true
       end
+
+      # Rack middleware: checks session validity on every request.
+      class Middleware
+        def initialize(app)
+          @app = app
+        end
+
+        def call(env)
+          catch(:invalid_session) do
+            @app.call(env)
+          end
+        end
+      end
     end
   end
 end
