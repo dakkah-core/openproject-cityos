@@ -7,6 +7,7 @@ module OpenProject
 
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-identity.rb"))
+        Rails.autoloaders.main.ignore(root.join("lib/open_project/cityos_identity/hooks.rb"))
       end
 
       register(
@@ -35,6 +36,10 @@ module OpenProject
         require_dependency "open_project/cityos_identity/agent_identity_manager"
         require_dependency "open_project/cityos_identity/agent_attribution"
         require_dependency "open_project/cityos_identity/session_revocation"
+      end
+
+      # ── Login hook (after base hooks are loaded) ────────
+      initializer "cityos_identity.login_hook", after: :load_config_initializers do
         require_dependency "open_project/cityos_identity/hooks"
       end
 
