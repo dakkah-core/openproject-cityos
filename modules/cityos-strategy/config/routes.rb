@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-CityOS::Strategy::Engine.routes.draw do
+OpenProject::CityOSStrategy::Engine.routes.draw do
   # ── Dashboard ─────────────────────────────────────────────────────
   get "dashboard", to: "dashboard#show", as: :strategy_dashboard
 
