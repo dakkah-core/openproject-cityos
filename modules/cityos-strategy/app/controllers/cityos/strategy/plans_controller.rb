@@ -3,7 +3,7 @@
 module CityOS
   module Strategy
     class PlansController < ApplicationController
-      before_action :find_plan, only: %i[show edit update destroy baseline]
+      before_action :find_plan, only: %i[show edit update destroy baseline replan]
 
       def index
         @plans = StrategicPlan.order(effective_from: :desc)
@@ -11,6 +11,7 @@ module CityOS
 
       def show
         @objectives = @plan.objectives.includes(:key_results, :theme, :outcome)
+        @previous_versions = StrategicPlan.where(parent_plan_id: @plan.id).order(version: :desc)
       end
 
       def new
@@ -39,6 +40,27 @@ module CityOS
       def baseline
         @plan.baseline!
         redirect_to plan_path(@plan), notice: "Plan baselined as version #{@plan.version}"
+      end
+
+      # S5.8: Replan and supersession workflow
+      def replan
+        # Archive current plan
+        @plan.update!(status: :superseded)
+
+        # Create new plan version with lineage
+        new_plan = StrategicPlan.create!(
+          title: "#{@plan.title} (v#{@plan.version + 1})",
+          description: @plan.description,
+          plan_type: @plan.plan_type,
+          status: :draft,
+          effective_from: @plan.effective_to&.next_day || Date.tomorrow,
+          version: 1,
+          owner_id: @plan.owner_id,
+          parent_plan_id: @plan.id,
+          scoring_config: @plan.scoring_config
+        )
+
+        redirect_to plan_path(new_plan), notice: "New plan version created from #{@plan.title}"
       end
 
       def destroy
