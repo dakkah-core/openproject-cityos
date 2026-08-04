@@ -5,13 +5,6 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      initializer "cityos_portfolio.inflector", before: :set_autoload_paths do
-        Rails.autoloaders.each do |l|
-          l.inflector.inflect("cityos_portfolio" => "CityOSPortfolio")
-          l.inflector.inflect("cityos" => "CityOS")
-        end
-      end
-
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-portfolio.rb"))
       end

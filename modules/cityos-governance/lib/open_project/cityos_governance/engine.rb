@@ -5,13 +5,6 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      initializer "cityos_governance.inflector", before: :set_autoload_paths do
-        Rails.autoloaders.each do |l|
-          l.inflector.inflect("cityos_governance" => "CityOSGovernance")
-          l.inflector.inflect("cityos" => "CityOS")
-        end
-      end
-
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-governance.rb"))
       end

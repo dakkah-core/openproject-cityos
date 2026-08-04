@@ -7,10 +7,19 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
+      # Global Zeitwerk inflector for CityOS naming conventions.
+      # Runs before any autoloader processes files.
       initializer "cityos_strategy.inflector", before: :set_autoload_paths do
-        Rails.autoloaders.each do |l|
-          l.inflector.inflect("cityos_strategy" => "CityOSStrategy")
-          l.inflector.inflect("cityos" => "CityOS")
+        Zeitwerk::Loader.default_inflector = lambda do |camel, _abspath|
+          {
+            "cityos_strategy"     => "CityOSStrategy",
+            "cityos_foundation"   => "CityOSFoundation",
+            "cityos_governance"   => "CityOSGovernance",
+            "cityos_identity"     => "CityOSIdentity",
+            "cityos_portfolio"    => "CityOSPortfolio",
+            "cityos"              => "CityOS",
+            "sod_guard"           => "SoDGuard"
+          }.fetch(camel) { Zeitwerk::Inflector::DEFAULT_INFLECTOR.call(camel, _abspath) }
         end
       end
 
