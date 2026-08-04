@@ -19,8 +19,8 @@ module OpenProject
     class StrategicObjective < ActiveRecord::Base
       self.table_name = "cityos_strategy_objectives"
 
-      enum :status, { draft: 0, active: 1, at_risk: 2, behind: 3, achieved: 4, closed: 5 }
-      enum :health, { on_track: 0, at_risk: 1, off_track: 2, unknown: 3 }
+      enum :status, { draft: 0, active: 1, at_risk: 2, behind: 3, achieved: 4, closed: 5 }, prefix: :status
+      enum :health, { on_track: 0, at_risk: 1, off_track: 2, unknown: 3 }, prefix: :health
 
       belongs_to :plan, class_name: "StrategicPlan"
       belongs_to :theme, class_name: "StrategicTheme", optional: true
