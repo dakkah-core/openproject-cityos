@@ -7,6 +7,14 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
+      # Zeitwerk maps filenames to constants; the entry point file
+      # openproject-cityos-strategy.rb contains hyphens which are invalid
+      # Ruby constant names. The file is required explicitly by the gemspec;
+      # tell Zeitwerk to ignore it.
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
+      end
+
       register(
         "openproject-cityos-strategy",
         author_url: "https://github.com/dakkah-core/cityos-helm",
