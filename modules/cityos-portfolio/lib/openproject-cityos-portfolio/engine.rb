@@ -18,6 +18,13 @@ module OpenProject
                      { 'cityos/portfolio': [:generate] },
                      require: :loggedin
         end
+
+        menu :top_menu,
+             :cityos_portfolio,
+             { controller: '/cityos/portfolio', action: :index },
+             caption: 'CityOS Portfolio',
+             icon: 'cityos-portfolio',
+             after: :projects
       end
 
       # ── Load all portfolio services ─────────────────────
@@ -48,13 +55,6 @@ module OpenProject
           get "/cityos/portfolio/pedd_entities", to: "cityos/portfolio/portfolio#pedd_entities"
           get "/cityos/portfolio/enriched_graph", to: "cityos/portfolio/portfolio#enriched_graph"
         end
-
-        menu :top_menu,
-             :cityos_portfolio,
-             { controller: '/cityos/portfolio', action: :index },
-             caption: 'CityOS Portfolio',
-             icon: 'cityos-portfolio',
-             after: :projects
       end
     end
   end
