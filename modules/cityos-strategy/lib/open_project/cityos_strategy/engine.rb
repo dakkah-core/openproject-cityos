@@ -9,12 +9,11 @@ module OpenProject
 
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
-        Rails.autoloaders.main.ignore(root.join("app/models/open_project/cityos_strategy/governance.rb"))
-        Rails.autoloaders.main.ignore(root.join("app/models/open_project/cityos_strategy/initiatives.rb"))
-        Rails.autoloaders.main.ignore(root.join("app/models/open_project/cityos_strategy/metrics.rb"))
-        Rails.autoloaders.main.ignore(root.join("app/models/open_project/cityos_strategy/objectives.rb"))
-        Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
-        Rails.autoloaders.main.inflector.inflect("api" => "Api")
+        # Multi-model files (Zeitwerk expects 1:1 file:constant)
+        %w[governance initiatives metrics objectives adapters ai_services].each do |f|
+          Rails.autoloaders.main.ignore(root.join("app/models/open_project/cityos_strategy/#{f}.rb"))
+          Rails.autoloaders.main.ignore(root.join("app/services/open_project/cityos_strategy/#{f}.rb"))
+        end
       end
 
       register(
@@ -208,6 +207,12 @@ module OpenProject
         require_dependency "open_project/cityos_strategy/initiatives"
         require_dependency "open_project/cityos_strategy/governance"
         require_dependency "open_project/cityos_strategy/metrics"
+        require_dependency "open_project/cityos_strategy/adapters"
+        require_dependency "open_project/cityos_strategy/ai_services"
+        require_dependency "open_project/cityos_strategy/health_service"
+        require_dependency "open_project/cityos_strategy/scenario_service"
+        require_dependency "open_project/cityos_strategy/scoring_service"
+        require_dependency "open_project/cityos_strategy/snapshot_service"
 
         app.config.i18n.load_path += Dir[
           File.join(File.dirname(__FILE__), "..", "..", "config", "locales", "*.yml")
