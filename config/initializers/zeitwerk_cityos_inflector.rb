@@ -1,26 +1,19 @@
 # frozen_string_literal: true
 
-# Shared Zeitwerk inflector: maps hyphenated/openproject-style directory names
-# to CityOS module hierarchy with camelCase rules.
+# Shared Zeitwerk inflector: translates CityOS naming conventions.
 #
-# Without this:
-#   cityos_strategy/engine.rb   → CityosStrategy::Engine   (wrong case)
-#   cityos/strategy/plans_controller.rb → Cityos::Strategy::PlansController
+# Module names CityosFoundation, CityosStrategy, etc. match directory names
+# cityos_foundation/, cityos_strategy/ so NO inflection needed for those.
 #
-# With this:
-#   cityos_strategy/engine.rb   → CityOSStrategy::Engine   (correct)
-#   cityos/strategy/plans_controller.rb → CityOS::Strategy::PlansController
+# Only these overrides remain:
+#   sod_guard → SoDGuard (Zeitwerk default would be SodGuard)
+#   cityos     → CityOS    (app/controllers/cityos/* uses module CityOS)
 
 Rails.application.config.before_configuration do
   Rails.autoloaders.each do |loader|
     loader.inflector.inflect(
-      "cityos_strategy"   => "CityOSStrategy",
-      "cityos_foundation" => "CityOSFoundation",
-      "cityos_governance" => "CityOSGovernance",
-      "cityos_identity"   => "CityOSIdentity",
-      "cityos_portfolio"  => "CityOSPortfolio",
-      "cityos"            => "CityOS",
-      "sod_guard"         => "SoDGuard"
+      "sod_guard" => "SoDGuard",
+      "cityos"    => "CityOS"
     )
   end
 end
