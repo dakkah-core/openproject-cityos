@@ -23,24 +23,26 @@ module OpenProject
              icon: 'cityos-logo',
              after: :settings
 
-        # Register CityOS locales
-        initializer 'cityos_foundation.register_locales' do |app|
-          app.config.i18n.load_path += Dir[File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'config', 'locales', '*.yml')]
-        end
+      end
 
-        # Load CityOS seeder, SoD guard, and command dispatch
-        initializer 'cityos_foundation.load_services' do
+      # Register CityOS locales
+      initializer 'cityos_foundation.register_locales' do |app|
+        app.config.i18n.load_path += Dir[File.join(File.dirname(__FILE__), '..', '..', 'config', 'locales', '*.yml')]
+      end
+
+      # Load CityOS seeder, SoD guard, and command dispatch
+      initializer 'cityos_foundation.load_services' do |app|
+        app.config.after_initialize do
           require_dependency 'openproject-cityos-foundation/seeder'
           require_dependency 'openproject-cityos-foundation/sod_guard'
           require_dependency 'openproject-cityos-foundation/command_dispatch'
         end
+      end
 
-        # Enforce SoD on work-package save
-        initializer 'cityos_foundation.sod_hooks' do
-          ActiveSupport.on_load(:work_package) do
-            # SoD enforcement is called from CityOSGovernance::GovernanceController
-            # and from CommandDispatch before any status transition
-          end
+      # Enforce SoD on work-package save
+      initializer 'cityos_foundation.sod_hooks' do |app|
+        ActiveSupport.on_load(:work_package) do
+          # SoD enforced via GovernanceController and CommandDispatch
         end
       end
     end
