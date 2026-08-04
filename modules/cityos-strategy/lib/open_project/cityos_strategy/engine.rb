@@ -11,7 +11,6 @@ module OpenProject
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
         Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
       end
-      end
 
       register(
         "openproject-cityos-strategy",
