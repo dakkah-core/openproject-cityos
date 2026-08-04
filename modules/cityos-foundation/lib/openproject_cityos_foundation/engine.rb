@@ -19,6 +19,7 @@ module OpenProject
         project_module :cityos_foundation do
           permission :view_cityos_foundation,
                      { 'cityos/foundation': [:index] },
+                     permissible_on: [:project],
                      public: true
         end
 

@@ -17,9 +17,11 @@ module OpenProject
         project_module :cityos_portfolio do
           permission :view_cityos_portfolio,
                      { 'cityos/portfolio': [:index, :systems, :rollups, :system_graph] },
+                     permissible_on: [:project],
                      public: false
           permission :manage_cityos_portfolio,
                      { 'cityos/portfolio': [:generate] },
+                     permissible_on: [:project],
                      require: :loggedin
         end
 

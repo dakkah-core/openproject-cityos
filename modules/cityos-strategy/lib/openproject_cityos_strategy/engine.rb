@@ -25,99 +25,123 @@ module OpenProject
           # Dashboard
           permission :view_strategy_dashboard,
                      { "cityos/strategy/dashboard": [:show] },
+                     permissible_on: [:project],
                      public: true
 
           # Strategic Plans
           permission :view_strategic_plans,
                      { "cityos/strategy/plans": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_strategic_plans,
                      { "cityos/strategy/plans": %i[new create edit update destroy baseline] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Objectives & Key Results
           permission :view_objectives,
                      { "cityos/strategy/objectives": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_objectives,
                      { "cityos/strategy/objectives": %i[new create edit update destroy score] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Initiatives
           permission :view_initiatives,
                      { "cityos/strategy/initiatives": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_initiatives,
                      { "cityos/strategy/initiatives": %i[new create edit update destroy score advance_stage] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Scenarios
           permission :view_scenarios,
                      { "cityos/strategy/scenarios": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_scenarios,
                      { "cityos/strategy/scenarios": %i[new create edit update destroy freeze unfreeze] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # KPI Metrics
           permission :view_metrics,
                      { "cityos/strategy/metrics": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_metrics,
                      { "cityos/strategy/metrics": %i[new create edit update destroy record_observation] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Reviews
           permission :view_reviews,
                      { "cityos/strategy/reviews": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_reviews,
                      { "cityos/strategy/reviews": %i[new create edit update destroy snapshot] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Benefits
           permission :view_benefits,
                      { "cityos/strategy/benefits": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_benefits,
                      { "cityos/strategy/benefits": %i[new create edit update destroy] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Risks
           permission :view_risks,
                      { "cityos/strategy/risks": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_risks,
                      { "cityos/strategy/risks": %i[new create edit update destroy] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Dependencies
           permission :view_dependencies,
                      { "cityos/strategy/dependencies": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_dependencies,
                      { "cityos/strategy/dependencies": %i[new create edit update destroy] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Allocations
           permission :view_allocations,
                      { "cityos/strategy/allocations": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_allocations,
                      { "cityos/strategy/allocations": %i[new create edit update destroy] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # Decisions
           permission :view_decisions,
                      { "cityos/strategy/decisions": %i[index show] },
+                     permissible_on: [:project],
                      public: true
           permission :manage_decisions,
                      { "cityos/strategy/decisions": %i[new create edit update destroy] },
+                     permissible_on: [:project],
                      require: :loggedin
 
           # API — for MCP and sync service access
           permission :access_strategy_api,
                      { "cityos/strategy/api": %i[objectives initiatives scenarios metrics reviews benefits dependencies allocations] },
+                     permissible_on: [:project],
                      public: false
         end
 

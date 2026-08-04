@@ -17,6 +17,7 @@ module OpenProject
         project_module :cityos_identity do
           permission :manage_cityos_identity,
                      { "cityos/identity": %i[index settings] },
+                     permissible_on: [:project],
                      require: :loggedin
         end
 

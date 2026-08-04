@@ -17,9 +17,11 @@ module OpenProject
         project_module :cityos_governance do
           permission :view_cityos_governance,
                      { 'cityos/governance': [:show] },
+                     permissible_on: [:project],
                      public: false
           permission :manage_cityos_governance,
                      { 'cityos/governance': [:sync_bindings, :sync_projections] },
+                     permissible_on: [:project],
                      require: :admin
         end
 
