@@ -15,6 +15,12 @@ module OpenProject
                      { "cityos/identity": %i[index settings] },
                      require: :loggedin
         end
+
+        menu :account_menu,
+             :cityos_identity,
+             { controller: "/cityos/identity", action: :index },
+             caption: "CityOS Identity",
+             after: :settings
       end
 
       # ── Load all identity services ──────────────────────
@@ -68,13 +74,6 @@ module OpenProject
       # ── Agent token rotation cron (daily) ──────────────
       initializer "cityos_identity.token_rotation" do
         Rails.logger.info("[CityOS Identity] Agent token rotation initialized")
-      end
-
-        menu :account_menu,
-             :cityos_identity,
-             { controller: '/cityos/identity', action: :index },
-             caption: 'CityOS Identity',
-             after: :settings
       end
     end
   end
