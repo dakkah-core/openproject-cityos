@@ -5,13 +5,7 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override(
-        "openproject_cityos_governance" => "OpenProject::CityOSGovernance"
-      )
-
-      config.before_configuration do
-        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-governance.rb"))
-      end
+      class_inflection_override("governance" => "CityOSGovernance")
 
       register(
         'openproject-cityos-governance',
@@ -45,11 +39,11 @@ module OpenProject
 
       # Load governance models and controller
       initializer "cityos_governance.load_classes" do
-        require_dependency "openproject_cityos_governance/write_guard"
-        require_dependency "openproject_cityos_governance/scope_binding"
-        require_dependency "openproject_cityos_governance/governance_projection"
-        require_dependency "openproject_cityos_governance/evidence_link"
-        require_dependency "openproject_cityos_governance/sync_receipt"
+        require_dependency "open_project/governance/write_guard"
+        require_dependency "open_project/governance/scope_binding"
+        require_dependency "open_project/governance/governance_projection"
+        require_dependency "open_project/governance/evidence_link"
+        require_dependency "open_project/governance/sync_receipt"
       end
 
       # Register API routes for governance

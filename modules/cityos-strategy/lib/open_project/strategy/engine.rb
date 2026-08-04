@@ -7,13 +7,7 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override(
-        "openproject_cityos_strategy" => "OpenProject::CityOSStrategy"
-      )
-
-      config.before_configuration do
-        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
-      end
+      class_inflection_override("strategy" => "CityOSStrategy")
 
       register(
         "openproject-cityos-strategy",

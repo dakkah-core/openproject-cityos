@@ -5,13 +5,7 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override(
-        "openproject_cityos_identity" => "OpenProject::CityOSIdentity"
-      )
-
-      config.before_configuration do
-        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-identity.rb"))
-      end
+      class_inflection_override("identity" => "CityOSIdentity")
 
       register(
         'openproject-cityos-identity',
@@ -34,11 +28,11 @@ module OpenProject
 
       # ── Load all identity services ──────────────────────
       initializer "cityos_identity.load_services" do
-        require_dependency "openproject_cityos_identity/oidc_strategy"
-        require_dependency "openproject_cityos_identity/jit_provisioner"
-        require_dependency "openproject_cityos_identity/agent_identity_manager"
-        require_dependency "openproject_cityos_identity/agent_attribution"
-        require_dependency "openproject_cityos_identity/session_revocation"
+        require_dependency "open_project/identity/oidc_strategy"
+        require_dependency "open_project/identity/jit_provisioner"
+        require_dependency "open_project/identity/agent_identity_manager"
+        require_dependency "open_project/identity/agent_attribution"
+        require_dependency "open_project/identity/session_revocation"
       end
 
       # ── Register OmniAuth OIDC strategy ─────────────────

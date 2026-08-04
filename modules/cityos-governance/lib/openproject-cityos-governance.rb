@@ -1,5 +1,5 @@
 module OpenProject
   module CityOSGovernance
-    require 'openproject_cityos_governance/engine'
+    require 'open_project/governance/engine'
   end
 end

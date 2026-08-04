@@ -5,13 +5,7 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override(
-        "openproject_cityos_portfolio" => "OpenProject::CityOSPortfolio"
-      )
-
-      config.before_configuration do
-        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-portfolio.rb"))
-      end
+      class_inflection_override("portfolio" => "CityOSPortfolio")
 
       register(
         'openproject-cityos-portfolio',
@@ -39,16 +33,16 @@ module OpenProject
 
       # ── Load all portfolio services ─────────────────────
       initializer "cityos_portfolio.load_services" do
-        require_dependency "openproject_cityos_portfolio/hierarchy_generator"
-        require_dependency "openproject_cityos_portfolio/rollup_service"
-        require_dependency "openproject_cityos_portfolio/strategy_linker"
-        require_dependency "openproject_cityos_portfolio/dependency_view"
-        require_dependency "openproject_cityos_portfolio/stale_detector"
-        require_dependency "openproject_cityos_portfolio/release_gate_dashboard"
-        require_dependency "openproject_cityos_portfolio/calendar_export"
-        require_dependency "openproject_cityos_portfolio/team_planner"
-        require_dependency "openproject_cityos_portfolio/calculated_metrics"
-        require_dependency "openproject_cityos_portfolio/pedd_integration"
+        require_dependency "open_project/portfolio/hierarchy_generator"
+        require_dependency "open_project/portfolio/rollup_service"
+        require_dependency "open_project/portfolio/strategy_linker"
+        require_dependency "open_project/portfolio/dependency_view"
+        require_dependency "open_project/portfolio/stale_detector"
+        require_dependency "open_project/portfolio/release_gate_dashboard"
+        require_dependency "open_project/portfolio/calendar_export"
+        require_dependency "open_project/portfolio/team_planner"
+        require_dependency "open_project/portfolio/calculated_metrics"
+        require_dependency "open_project/portfolio/pedd_integration"
       end
 
       # ── Register portfolio routes ───────────────────────

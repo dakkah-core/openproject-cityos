@@ -1,5 +1,5 @@
 module OpenProject
   module CityOSIdentity
-    require 'openproject_cityos_identity/engine'
+    require 'open_project/identity/engine'
   end
 end

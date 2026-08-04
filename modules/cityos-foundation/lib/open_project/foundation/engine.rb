@@ -5,13 +5,7 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override(
-        "openproject_cityos_foundation" => "OpenProject::CityOSFoundation"
-      )
-
-      config.before_configuration do
-        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-foundation.rb"))
-      end
+      class_inflection_override("foundation" => "CityOSFoundation")
 
       register(
         'openproject-cityos-foundation',
@@ -42,9 +36,9 @@ module OpenProject
       # Load CityOS seeder, SoD guard, and command dispatch
       initializer 'cityos_foundation.load_services' do |app|
         app.config.after_initialize do
-          require_dependency 'openproject_cityos_foundation/seeder'
-          require_dependency 'openproject_cityos_foundation/sod_guard'
-          require_dependency 'openproject_cityos_foundation/command_dispatch'
+          require_dependency 'open_project/foundation/seeder'
+          require_dependency 'open_project/foundation/sod_guard'
+          require_dependency 'open_project/foundation/command_dispatch'
         end
       end
 
