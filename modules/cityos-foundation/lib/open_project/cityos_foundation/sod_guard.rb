@@ -1,7 +1,7 @@
 module OpenProject
   module CityosFoundation
     # Enforces Separation-of-Duties constraints on work-package transitions.
-    class SoDGuard
+    class SodGuard
       SOD_RULES = [
         {
           name: 'builder-cannot-self-review',
