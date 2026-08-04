@@ -22,4 +22,4 @@ fi
 
 echo "[CityOS HELM] Entrypoint complete."
 
-exec /app/docker/entrypoint.sh "$@"
+exec /app/docker/prod/entrypoint.sh "$@"
