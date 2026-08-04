@@ -7,7 +7,7 @@ module OpenProject
 
       initializer "cityos_governance.inflector", before: :set_autoload_paths do
         Rails.autoloaders.each do |l|
-          l.inflector.inflect("cityos_governance" => "CityOSGovernance")
+          l.inflector.inflect("governance" => "CityOSGovernance")
           l.inflector.inflect("cityos" => "CityOS")
         end
       end
@@ -48,11 +48,11 @@ module OpenProject
 
       # Load governance models and controller
       initializer "cityos_governance.load_classes" do
-        require_dependency "open_project/cityos_governance/write_guard"
-        require_dependency "open_project/cityos_governance/scope_binding"
-        require_dependency "open_project/cityos_governance/governance_projection"
-        require_dependency "open_project/cityos_governance/evidence_link"
-        require_dependency "open_project/cityos_governance/sync_receipt"
+        require_dependency "open_project/governance/write_guard"
+        require_dependency "open_project/governance/scope_binding"
+        require_dependency "open_project/governance/governance_projection"
+        require_dependency "open_project/governance/evidence_link"
+        require_dependency "open_project/governance/sync_receipt"
       end
 
       # Register API routes for governance

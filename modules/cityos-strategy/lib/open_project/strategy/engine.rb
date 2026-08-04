@@ -9,7 +9,7 @@ module OpenProject
 
       initializer "cityos_strategy.inflector", before: :set_autoload_paths do
         Rails.autoloaders.each do |l|
-          l.inflector.inflect("cityos_strategy" => "CityOSStrategy")
+          l.inflector.inflect("strategy" => "CityOSStrategy")
           l.inflector.inflect("cityos" => "CityOS")
         end
       end
