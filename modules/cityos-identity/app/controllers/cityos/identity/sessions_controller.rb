@@ -8,7 +8,6 @@ module Cityos
     #   DELETE /auth/cityos_oidc/logout — Session logout with revocation
     class SessionsController < ::AccountController
       skip_before_action :verify_authenticity_token, only: [:create]
-      skip_before_action :require_login, only: [:create, :failure]
 
       # OIDC callback — user authenticated by ZITADEL/Keycloak
       def create
