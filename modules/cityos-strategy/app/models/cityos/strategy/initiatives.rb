@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class StrategicInitiative < ApplicationRecord
       self.table_name = "cityos_strategy_initiatives"
 

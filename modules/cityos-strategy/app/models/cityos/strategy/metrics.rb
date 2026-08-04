@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class MetricDefinition < ApplicationRecord
       self.table_name = "cityos_strategy_metric_definitions"
 

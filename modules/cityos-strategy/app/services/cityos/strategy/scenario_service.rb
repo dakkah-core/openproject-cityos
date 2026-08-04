@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class ScenarioService
       # Freeze a scenario — immutable after freeze
       def freeze(scenario)

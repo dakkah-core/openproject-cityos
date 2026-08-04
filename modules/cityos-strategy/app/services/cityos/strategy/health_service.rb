@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class HealthService
       # Compute objective health from key result statuses
       def objective_health(objective)

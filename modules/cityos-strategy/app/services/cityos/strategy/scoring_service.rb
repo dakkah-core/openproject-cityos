@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class ScoringService
       # Weighted 9-criterion scoring for strategic initiatives.
       # Mandatory/regulatory initiatives bypass scoring entirely.

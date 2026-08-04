@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class SnapshotService
       # Creates immutable snapshots of strategy state during review cycles.
       # Each snapshot stores a frozen JSONB copy + SHA256 hash.
