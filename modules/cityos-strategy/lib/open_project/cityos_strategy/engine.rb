@@ -9,6 +9,10 @@ module OpenProject
 
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
+        Rails.autoloaders.main.ignore(root.join("app/models/cityos/strategy/governance.rb"))
+        Rails.autoloaders.main.ignore(root.join("app/models/cityos/strategy/initiatives.rb"))
+        Rails.autoloaders.main.ignore(root.join("app/models/cityos/strategy/metrics.rb"))
+        Rails.autoloaders.main.ignore(root.join("app/models/cityos/strategy/objectives.rb"))
         Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
         Rails.autoloaders.main.inflector.inflect("api" => "Api")
       end
@@ -197,6 +201,14 @@ module OpenProject
 
       # ── Locales ────────────────────────────────────────────────────
       initializer "cityos_strategy.register_locales" do |app|
+        # Load multi-model files (ignored by Zeitwerk because each
+        # defines 3+ constants — Zeitwerk expects 1:1 file:constant).
+        require_dependency "cityos/strategy/strategic_plan"
+        require_dependency "cityos/strategy/objectives"
+        require_dependency "cityos/strategy/initiatives"
+        require_dependency "cityos/strategy/governance"
+        require_dependency "cityos/strategy/metrics"
+
         app.config.i18n.load_path += Dir[
           File.join(File.dirname(__FILE__), "..", "..", "config", "locales", "*.yml")
         ]
