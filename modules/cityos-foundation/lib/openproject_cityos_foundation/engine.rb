@@ -5,11 +5,11 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      # Zeitwerk: map hyphenated gem names to OpenProject module hierarchy.
+      class_inflection_override(
+        "openproject_cityos_foundation" => "OpenProject::CityOSFoundation"
+      )
+
       config.before_configuration do
-        Rails.autoloaders.main.inflector.inflect(
-          "openproject_cityos_foundation" => "OpenProject::CityOSFoundation"
-        )
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-foundation.rb"))
       end
 

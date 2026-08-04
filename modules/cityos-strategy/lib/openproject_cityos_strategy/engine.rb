@@ -7,12 +7,11 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      # Zeitwerk: map hyphenated gem names to OpenProject module hierarchy.
-      # openproject_cityos_strategy → OpenProject::CityOSStrategy
+      class_inflection_override(
+        "openproject_cityos_strategy" => "OpenProject::CityOSStrategy"
+      )
+
       config.before_configuration do
-        Rails.autoloaders.main.inflector.inflect(
-          "openproject_cityos_strategy" => "OpenProject::CityOSStrategy"
-        )
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
       end
 
