@@ -38,8 +38,8 @@ module OpenProject
         require_dependency "open_project/cityos_identity/session_revocation"
       end
 
-      # ── Login hook (after base hooks are loaded) ────────
-      initializer "cityos_identity.login_hook", after: :load_config_initializers do
+      # ── Login hook (after full app boot) ────────────────
+      config.to_prepare do
         require_dependency "open_project/cityos_identity/hooks"
       end
 
