@@ -28,27 +28,29 @@ jobs:
 
       - name: Validate manifest
         run: |
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             cat /app/config/cityos-helm-manifest.yml | \
             python3 -c "import sys,yaml; yaml.safe_load(sys.stdin); print('Manifest valid')"
 
       - name: Check GPLv3 compliance
         run: |
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             test -f /app/NOTICE.md && echo "NOTICE.md present" || (echo "MISSING NOTICE.md" && exit 1)
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             test -f /app/LICENSE.txt && echo "LICENSE.txt present" || echo "WARNING: LICENSE.txt not found"
 
       - name: Check plugin registration
         run: |
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             ls /app/modules/cityos-foundation/lib/ && echo "Foundation plugin present"
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             ls /app/modules/cityos-identity/lib/ && echo "Identity plugin present"
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             ls /app/modules/cityos-governance/lib/ && echo "Governance plugin present"
-          docker run --rm ghcr.io/dakkah-core/openproject-cityos:edge \
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
             ls /app/modules/cityos-portfolio/lib/ && echo "Portfolio plugin present"
+          docker run --rm ghcr.io/dakkah-core/cityos-helm:edge \
+            ls /app/modules/cityos-strategy/lib/ && echo "Strategy plugin present"
 
   push:
     name: Push Image

@@ -48,7 +48,7 @@ RUN chmod +x /app/docker/entrypoint-cityos.sh
 # ── Install plugin gems ──────────────────────────────────────
 RUN cd /app && \
     bundle config set --local without "development:test" && \
-    bundle exec rake openproject:plugins:register 2>/dev/null || true
+    bundle exec rake openproject:plugins:register 2>/dev/null
 
 USER app
 
