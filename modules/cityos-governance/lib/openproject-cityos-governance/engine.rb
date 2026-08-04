@@ -56,7 +56,6 @@ module OpenProject
                as: :cityos_governance_sync_projections
           end
         end
-      end
     end
   end
 end
