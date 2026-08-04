@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class ObjectivesController < ApplicationController
       before_action :find_objective, only: %i[show edit update destroy score]

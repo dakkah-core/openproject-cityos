@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class MetricsController < ApplicationController
       before_action :find_metric, only: %i[show edit update destroy record_observation]

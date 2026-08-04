@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class ScenariosController < ApplicationController
       before_action :find_scenario, only: %i[show edit update destroy freeze unfreeze compare]

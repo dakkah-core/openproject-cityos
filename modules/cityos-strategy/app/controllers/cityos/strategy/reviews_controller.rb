@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class ReviewsController < ApplicationController
       before_action :find_review, only: %i[show edit update destroy snapshot]

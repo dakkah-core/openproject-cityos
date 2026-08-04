@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     module Api
       module V1

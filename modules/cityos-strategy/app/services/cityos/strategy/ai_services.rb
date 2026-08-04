@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# CityOS Strategy AI Services — S6.2-S6.4
+# Cityos Strategy AI Services — S6.2-S6.4
 # These services are called by the AI orchestration layer (PEDD/Pedd/Maestro)
 # to provide evidence-grounded recommendations, detect objective overlap,
 # and analyze dependency bottlenecks.
@@ -9,7 +9,7 @@
 # Actual AI integration requires the AI orchestration layer to be live.
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     module AiServices
       # S6.2: Evidence-grounded initiative scoring recommendations
       # Called by AI orchestration to generate scoring rationale with confidence.

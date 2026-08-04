@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class PlansController < ApplicationController
       before_action :find_plan, only: %i[show edit update destroy baseline replan]

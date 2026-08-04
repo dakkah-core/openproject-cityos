@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     # Adapter stubs for importing KPI observations and budget actuals
     # from external systems (Data Analytics, Tryton ERP).
     #

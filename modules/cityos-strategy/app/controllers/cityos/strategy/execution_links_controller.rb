@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class ExecutionLinksController < ApplicationController
       before_action :find_initiative, only: %i[index create destroy]

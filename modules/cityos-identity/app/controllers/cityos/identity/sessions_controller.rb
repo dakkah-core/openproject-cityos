@@ -1,4 +1,4 @@
-module CityOS
+module Cityos
   module Identity
     # OIDC Sessions Controller
     #
@@ -15,18 +15,18 @@ module CityOS
         auth_hash = request.env['omniauth.auth']
 
         unless auth_hash
-          Rails.logger.error('[CityOS Identity] OIDC callback missing auth_hash')
+          Rails.logger.error('[Cityos Identity] OIDC callback missing auth_hash')
           redirect_to signin_path, alert: 'Authentication failed — no response from identity provider'
           return
         end
 
-        user = OpenProject::CityOSIdentity::OidcStrategy.handle_callback(auth_hash)
+        user = OpenProject::CityosIdentity::OidcStrategy.handle_callback(auth_hash)
 
         if user&.active?
           # Check session validity (revocation)
-          valid, reason = OpenProject::CityOSIdentity::SessionRevocation.check(user: user)
+          valid, reason = OpenProject::CityosIdentity::SessionRevocation.check(user: user)
           unless valid
-            Rails.logger.warn("[CityOS Identity] Session rejected for #{user.login}: #{reason}")
+            Rails.logger.warn("[Cityos Identity] Session rejected for #{user.login}: #{reason}")
             redirect_to signin_path, alert: "Account is #{reason}"
             return
           end
@@ -37,7 +37,7 @@ module CityOS
 
           redirect_to home_url
         else
-          Rails.logger.error('[CityOS Identity] OIDC callback failed — user not created or locked')
+          Rails.logger.error('[Cityos Identity] OIDC callback failed — user not created or locked')
           redirect_to signin_path, alert: 'Authentication failed — user account issue'
         end
       end
@@ -45,14 +45,14 @@ module CityOS
       # OIDC failure
       def failure
         error = params[:message] || 'unknown error'
-        Rails.logger.error("[CityOS Identity] OIDC failure: #{error}")
+        Rails.logger.error("[Cityos Identity] OIDC failure: #{error}")
         redirect_to signin_path, alert: "Authentication failed: #{error}"
       end
 
       # Logout — revoke session
       def destroy
         if current_user
-          OpenProject::CityOSIdentity::SessionRevocation.revoke(user: current_user)
+          OpenProject::CityosIdentity::SessionRevocation.revoke(user: current_user)
           logout_user
           flash[:notice] = 'Signed out. Session revoked.'
         end

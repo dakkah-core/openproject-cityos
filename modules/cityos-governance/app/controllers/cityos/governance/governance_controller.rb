@@ -1,4 +1,4 @@
-module CityOS
+module Cityos
   module Governance
     # API controller — read-only governance data for work packages.
     # Write endpoints restricted to the sync identity by WriteGuard.
@@ -20,7 +20,7 @@ module CityOS
 
       # POST /api/v3/work_packages/:id/cityos_governance/sync_bindings
       def sync_bindings
-        binding = OpenProject::CityOSGovernance::ScopeBinding
+        binding = OpenProject::CityosGovernance::ScopeBinding
           .find_or_initialize_by(work_package_id: @work_package.id)
 
         receipt = perform_sync('scope_binding', binding, sync_binding_params) do
@@ -32,7 +32,7 @@ module CityOS
 
       # POST /api/v3/work_packages/:id/cityos_governance/sync_projections
       def sync_projections
-        projection = OpenProject::CityOSGovernance::GovernanceProjection
+        projection = OpenProject::CityosGovernance::GovernanceProjection
           .find_or_initialize_by(work_package_id: @work_package.id)
 
         receipt = perform_sync('governance_projection', projection, sync_projection_params) do
@@ -58,48 +58,48 @@ module CityOS
       end
 
       def perform_sync(type, record, params)
-        OpenProject::CityOSGovernance::SyncReceipt.create!(
+        OpenProject::CityosGovernance::SyncReceipt.create!(
           operation: record.persisted? ? 'update' : 'create',
           target_type: type,
           target_id: record.id,
           before_hash: record.persisted? ? Digest::SHA256.hexdigest(record.attributes.to_json) : nil,
-          correlation_id: request.headers['X-CityOS-Correlation-Id'],
+          correlation_id: request.headers['X-Cityos-Correlation-Id'],
           actor_id: User.current.login,
           result: 'success',
           source_revision: params[:source_revision]
         ).tap { yield if block_given? }
       rescue StandardError => e
-        OpenProject::CityOSGovernance::SyncReceipt.create!(
+        OpenProject::CityosGovernance::SyncReceipt.create!(
           operation: 'update',
           target_type: type,
           target_id: record.id,
           result: 'error',
           error_detail: e.message,
-          correlation_id: request.headers['X-CityOS-Correlation-Id'],
+          correlation_id: request.headers['X-Cityos-Correlation-Id'],
           actor_id: User.current.login
         )
         raise
       end
 
       def serialized_binding
-        b = OpenProject::CityOSGovernance::ScopeBinding.find_by(work_package_id: @work_package.id)
+        b = OpenProject::CityosGovernance::ScopeBinding.find_by(work_package_id: @work_package.id)
         b&.as_json
       end
 
       def serialized_projection
-        p = OpenProject::CityOSGovernance::GovernanceProjection.find_by(work_package_id: @work_package.id)
+        p = OpenProject::CityosGovernance::GovernanceProjection.find_by(work_package_id: @work_package.id)
         p&.as_json
       end
 
       def serialized_evidence
-        OpenProject::CityOSGovernance::EvidenceLink
+        OpenProject::CityosGovernance::EvidenceLink
           .where(work_package_id: @work_package.id)
           .order(produced_at: :desc)
           .map(&:as_json)
       end
 
       def serialized_receipts
-        OpenProject::CityOSGovernance::SyncReceipt
+        OpenProject::CityosGovernance::SyncReceipt
           .where(target_id: @work_package.id)
           .order(created_at: :desc)
           .limit(20)
@@ -107,7 +107,7 @@ module CityOS
       end
 
       def available_commands
-        OpenProject::CityOSFoundation::CommandDispatch.available_for(
+        OpenProject::CityosFoundation::CommandDispatch.available_for(
           user: User.current,
           work_package: @work_package
         )

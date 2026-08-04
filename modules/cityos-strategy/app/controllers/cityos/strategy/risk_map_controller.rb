@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class RiskMapController < ApplicationController
       # Strategic risk and assumption map — uncertainty visualization data

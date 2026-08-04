@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class ScorecardController < ApplicationController
       # KPI scorecard — all metrics with targets, actuals, trends, freshness

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class PrioritizationController < ApplicationController
       # Prioritization matrix — scatter plot data for initiative comparison

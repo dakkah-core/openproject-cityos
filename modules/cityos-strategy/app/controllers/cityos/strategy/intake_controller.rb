@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CityOS
+module Cityos
   module Strategy
     class IntakeController < ApplicationController
       # Initiative intake funnel — displays all stages with initiative counts
