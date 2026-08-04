@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSFoundation
+  module CityosFoundation
     class Engine < ::Rails::Engine
       engine_name 'openproject_cityos_foundation'
 

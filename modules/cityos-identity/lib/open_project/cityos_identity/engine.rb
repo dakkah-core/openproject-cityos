@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSIdentity
+  module CityosIdentity
     class Engine < ::Rails::Engine
       engine_name 'openproject_cityos_identity'
 
@@ -39,8 +39,8 @@ module OpenProject
 
       # ── Register OmniAuth OIDC strategy ─────────────────
       initializer "cityos_identity.register_omniauth" do |app|
-        next unless OpenProject::CityOSIdentity::OidcStrategy.configured?
-        OpenProject::CityOSIdentity::OidcStrategy.register!(app)
+        next unless OpenProject::CityosIdentity::OidcStrategy.configured?
+        OpenProject::CityosIdentity::OidcStrategy.register!(app)
       end
 
       # ── OIDC callback routes ────────────────────────────
@@ -62,14 +62,14 @@ module OpenProject
       initializer "cityos_identity.journal_stamping" do
         ActiveSupport.on_load(:journal) do
           after_create do |journal|
-            OpenProject::CityOSIdentity::AgentAttribution.stamp_journal(journal)
+            OpenProject::CityosIdentity::AgentAttribution.stamp_journal(journal)
           end
         end
       end
 
       # ── Session validity check ──────────────────────────
       initializer "cityos_identity.session_guard" do |app|
-        app.config.middleware.use OpenProject::CityOSIdentity::SessionRevocation::Middleware
+        app.config.middleware.use OpenProject::CityosIdentity::SessionRevocation::Middleware
       end
 
       # ── Agent token rotation cron (daily) ──────────────

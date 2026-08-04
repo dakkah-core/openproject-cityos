@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     require 'open_project/cityos_portfolio/engine'
   end
 end

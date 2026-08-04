@@ -11,7 +11,7 @@
 #   Auditor  — Read-only access to all strategy artifacts + governance projections
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     module Policy
       ROLE_PERMISSIONS = {
         planner: %i[

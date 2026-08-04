@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSFoundation
+  module CityosFoundation
     VERSION = "0.1.0"
   end
 end

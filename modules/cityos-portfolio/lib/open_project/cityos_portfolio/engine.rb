@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSPortfolio
+  module CityosPortfolio
     class Engine < ::Rails::Engine
       engine_name 'openproject_cityos_portfolio'
 

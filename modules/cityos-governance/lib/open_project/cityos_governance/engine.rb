@@ -1,5 +1,5 @@
 module OpenProject
-  module CityOSGovernance
+  module CityosGovernance
     class Engine < ::Rails::Engine
       engine_name 'openproject_cityos_governance'
 

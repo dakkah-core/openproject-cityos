@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenProject
-  module CityOSStrategy
+  module CityosStrategy
     class Engine < ::Rails::Engine
       engine_name "openproject_cityos_strategy"
 
