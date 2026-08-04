@@ -84,6 +84,7 @@ module OpenProject
       enum :status, { scheduled: 0, in_progress: 1, completed: 2, cancelled: 3 }
 
       belongs_to :facilitator, class_name: "User", optional: true
+      belongs_to :plan, class_name: "StrategicPlan", optional: true
       has_many :snapshots, class_name: "StrategySnapshot"
 
       validates :period_start, :period_end, presence: true

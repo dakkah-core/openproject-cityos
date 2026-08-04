@@ -14,6 +14,7 @@ module OpenProject
       }
 
       belongs_to :owner, class_name: "User", optional: true
+      belongs_to :plan, class_name: "StrategicPlan", optional: true
       has_many :targets, class_name: "MetricTarget"
       has_many :observations, class_name: "MetricObservation"
 

@@ -67,6 +67,7 @@ module OpenProject
       enum :status, { active: 0, archived: 1 }
       belongs_to :portfolio, class_name: "StrategicPortfolio"
       belongs_to :owner, class_name: "User", optional: true
+      has_many :initiatives, through: :portfolio
       validates :name, presence: true
     end
 

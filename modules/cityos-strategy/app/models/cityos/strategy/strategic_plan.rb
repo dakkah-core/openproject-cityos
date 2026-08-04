@@ -15,6 +15,25 @@ module OpenProject
       has_many :outcomes, class_name: "StrategicOutcome"
       has_many :objectives, class_name: "StrategicObjective"
 
+      # Chain: Plan → Objectives → Initiatives → Execution
+      has_many :initiative_objectives, through: :objectives
+      has_many :initiatives, through: :objectives
+
+      # Plan → Benefits via initiative chain
+      has_many :benefits, through: :initiatives
+
+      # Plan → Execution links via initiative chain
+      has_many :execution_links, through: :initiatives
+
+      # Plan → Reviews (QBR/MBR/Annual)
+      has_many :reviews, class_name: "StrategyReview"
+
+      # Plan → Metrics (scoped to this plan)
+      has_many :metric_definitions, class_name: "MetricDefinition"
+
+      # Plan → Allocations via initiatives → scenarios
+      has_many :allocations, through: :initiatives
+
       validates :title, presence: true
       validates :version, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
