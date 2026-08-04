@@ -5,10 +5,11 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      class_inflection_override("identity" => "CityOSIdentity")
-
-      initializer "cityos_identity.cityos_inflector", before: :set_autoload_paths do
-        Rails.autoloaders.each { |l| l.inflector.inflect("cityos" => "CityOS") }
+      initializer "cityos_identity.inflector", before: :set_autoload_paths do
+        Rails.autoloaders.each do |l|
+          l.inflector.inflect("identity" => "CityOSIdentity")
+          l.inflector.inflect("cityos" => "CityOS")
+        end
       end
 
       config.before_configuration do
