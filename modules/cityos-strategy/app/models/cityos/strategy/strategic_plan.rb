@@ -2,7 +2,7 @@
 
 module OpenProject
   module CityosStrategy
-    class StrategicPlan < ApplicationRecord
+    class StrategicPlan < ::ApplicationRecord
       self.table_name = "cityos_strategy_plans"
 
       enum :plan_type, { vision: 0, strategic: 1, annual: 2, operating: 3 }

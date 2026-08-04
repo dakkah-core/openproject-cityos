@@ -2,7 +2,7 @@
 
 module OpenProject
   module CityosStrategy
-    class MetricDefinition < ApplicationRecord
+    class MetricDefinition < ::ApplicationRecord
       self.table_name = "cityos_strategy_metric_definitions"
 
       enum :direction, { higher_better: 0, lower_better: 1, target_range: 2 }
@@ -32,7 +32,7 @@ module OpenProject
       end
     end
 
-    class MetricTarget < ApplicationRecord
+    class MetricTarget < ::ApplicationRecord
       self.table_name = "cityos_strategy_metric_targets"
       belongs_to :metric_definition, class_name: "MetricDefinition"
       belongs_to :owner, class_name: "User", optional: true
@@ -41,7 +41,7 @@ module OpenProject
       validates :period_start, :period_end, presence: true
     end
 
-    class MetricObservation < ApplicationRecord
+    class MetricObservation < ::ApplicationRecord
       self.table_name = "cityos_strategy_metric_observations"
 
       enum :freshness, { current: 0, stale: 1, expired: 2 }
@@ -57,7 +57,7 @@ module OpenProject
       scope :recent, -> { where(freshness: :current).order(observed_at: :desc) }
     end
 
-    class PlanningScenario < ApplicationRecord
+    class PlanningScenario < ::ApplicationRecord
       self.table_name = "cityos_strategy_scenarios"
 
       enum :status, { draft: 0, frozen: 1, accepted: 2, rejected: 3 }
@@ -81,7 +81,7 @@ module OpenProject
       end
     end
 
-    class StrategicAllocation < ApplicationRecord
+    class StrategicAllocation < ::ApplicationRecord
       self.table_name = "cityos_strategy_allocations"
 
       DIMENSIONS = {
