@@ -3,7 +3,7 @@ require "open_project/cityos_identity/version"
 
 Gem::Specification.new do |spec|
   spec.name        = "openproject-cityos-identity"
-  spec.version     = OpenProject::CityOSIdentity::VERSION
+  spec.version     = OpenProject::CityosIdentity::VERSION
   spec.authors     = ["Dakkah CityOS"]
   spec.summary     = "CityOS Identity — ZITADEL OIDC SSO, JIT provisioning, agent attribution"
   spec.license     = "GPL-3.0-or-later"
