@@ -5,6 +5,11 @@ set -e
 
 echo "[CityOS HELM] Entrypoint starting..."
 
+# Run pending migrations (upstream may add new migrations on version bump)
+echo "[CityOS HELM] Running pending migrations..."
+bundle exec rails db:migrate RAILS_ENV=production 2>&1 || \
+    echo "[CityOS HELM] Migration skipped (DB not ready)"
+
 # Ensure CityOS plugins are registered
 if [ -d /app/modules/cityos ]; then
   for plugin in /app/modules/cityos/*/; do
