@@ -7,6 +7,10 @@ module OpenProject
 
       class_inflection_override("foundation" => "CityOSFoundation")
 
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-foundation.rb"))
+      end
+
       register(
         'openproject-cityos-foundation',
         author_url: 'https://github.com/dakkah-core/openproject-cityos',

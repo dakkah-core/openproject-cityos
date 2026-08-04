@@ -9,6 +9,10 @@ module OpenProject
 
       class_inflection_override("strategy" => "CityOSStrategy")
 
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
+      end
+
       register(
         "openproject-cityos-strategy",
         author_url: "https://github.com/dakkah-core/cityos-helm",

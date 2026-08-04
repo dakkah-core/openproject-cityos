@@ -7,6 +7,10 @@ module OpenProject
 
       class_inflection_override("governance" => "CityOSGovernance")
 
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-governance.rb"))
+      end
+
       register(
         'openproject-cityos-governance',
         author_url: 'https://github.com/dakkah-core/openproject-cityos',

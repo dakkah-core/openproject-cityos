@@ -7,6 +7,10 @@ module OpenProject
 
       class_inflection_override("identity" => "CityOSIdentity")
 
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-identity.rb"))
+      end
+
       register(
         'openproject-cityos-identity',
         author_url: 'https://github.com/dakkah-core/openproject-cityos',
