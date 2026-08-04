@@ -12,66 +12,63 @@ module OpenProject
       ) do
         project_module :cityos_identity do
           permission :manage_cityos_identity,
-                     { 'cityos/identity': [:index, :settings] },
+                     { "cityos/identity": %i[index settings] },
                      require: :loggedin
         end
+      end
 
-        # ── Load all identity services ──────────────────────
-        initializer 'cityos_identity.load_services' do
-          require_dependency 'openproject-cityos-identity/oidc_strategy'
-          require_dependency 'openproject-cityos-identity/jit_provisioner'
-          require_dependency 'openproject-cityos-identity/agent_identity_manager'
-          require_dependency 'openproject-cityos-identity/agent_attribution'
-          require_dependency 'openproject-cityos-identity/session_revocation'
+      # ── Load all identity services ──────────────────────
+      initializer "cityos_identity.load_services" do
+        require_dependency "openproject-cityos-identity/oidc_strategy"
+        require_dependency "openproject-cityos-identity/jit_provisioner"
+        require_dependency "openproject-cityos-identity/agent_identity_manager"
+        require_dependency "openproject-cityos-identity/agent_attribution"
+        require_dependency "openproject-cityos-identity/session_revocation"
+      end
+
+      # ── Register OmniAuth OIDC strategy ─────────────────
+      initializer "cityos_identity.register_omniauth" do |app|
+        next unless OpenProject::CityOSIdentity::OidcStrategy.configured?
+        OpenProject::CityOSIdentity::OidcStrategy.register!(app)
+      end
+
+      # ── OIDC callback routes ────────────────────────────
+      initializer "cityos_identity.routes" do |app|
+        app.routes.append do
+          get "/auth/cityos_oidc/callback",
+              to: "cityos/identity/sessions#create",
+              as: :cityos_oidc_callback
+          get "/auth/cityos_oidc/failure",
+              to: "cityos/identity/sessions#failure",
+              as: :cityos_oidc_failure
+          delete "/auth/cityos_oidc/logout",
+                 to: "cityos/identity/sessions#destroy",
+                 as: :cityos_oidc_logout
         end
+      end
 
-        # ── Register OmniAuth OIDC strategy ─────────────────
-        initializer 'cityos_identity.register_omniauth' do |app|
-          next unless OpenProject::CityOSIdentity::OidcStrategy.configured?
-
-          OpenProject::CityOSIdentity::OidcStrategy.register!(app)
-        end
-
-        # ── OIDC callback routes ────────────────────────────
-        initializer 'cityos_identity.routes' do |app|
-          app.routes.append do
-            get '/auth/cityos_oidc/callback',
-                to: 'cityos/identity/sessions#create',
-                as: :cityos_oidc_callback
-            get '/auth/cityos_oidc/failure',
-                to: 'cityos/identity/sessions#failure',
-                as: :cityos_oidc_failure
-            delete '/auth/cityos_oidc/logout',
-                   to: 'cityos/identity/sessions#destroy',
-                   as: :cityos_oidc_logout
+      # ── Journal stamp hook ──────────────────────────────
+      initializer "cityos_identity.journal_stamping" do
+        ActiveSupport.on_load(:journal) do
+          after_create do |journal|
+            OpenProject::CityOSIdentity::AgentAttribution.stamp_journal(journal)
           end
         end
+      end
 
-        # ── Journal stamp hook: attribute every change ──────
-        initializer 'cityos_identity.journal_stamping' do
-          ActiveSupport.on_load(:journal) do
-            after_create do |journal|
-              OpenProject::CityOSIdentity::AgentAttribution.stamp_journal(journal)
-            end
+      # ── Session validity check ──────────────────────────
+      initializer "cityos_identity.session_guard" do |app|
+        app.config.middleware.use lambda { |env|
+          catch(:invalid_session) do
+            OpenProject::CityOSIdentity::SessionRevocation
           end
-        end
+        }
+      end
 
-        # ── Session validity check on each request ──────────
-        initializer 'cityos_identity.session_guard' do |app|
-          app.config.middleware.use lambda { |env|
-            catch(:invalid_session) do
-              OpenProject::CityOSIdentity::SessionRevocation
-            end
-            # Rack middleware placeholders for session guard
-          }
-        end
-
-        # ── Agent token rotation cron (daily) ───────────────
-        initializer 'cityos_identity.token_rotation' do
-          # Register a cron-like check for expiring tokens
-          # In production, this would be a sidekiq/scheduled job
-          Rails.logger.info('[CityOS Identity] Agent token rotation initialized')
-        end
+      # ── Agent token rotation cron (daily) ──────────────
+      initializer "cityos_identity.token_rotation" do
+        Rails.logger.info("[CityOS Identity] Agent token rotation initialized")
+      end
 
         menu :account_menu,
              :cityos_identity,
