@@ -9,6 +9,7 @@ gem 'openproject-cityos-governance', path: 'modules/cityos-governance'
 gem 'openproject-cityos-portfolio', path: 'modules/cityos-portfolio'
 gem 'openproject-cityos-strategy',  path: 'modules/cityos-strategy'
 
-# SSO / OIDC
-gem 'omniauth-openid-connect', '~> 0.7'
-gem 'omniauth', '~> 2.1'
+# SSO / OIDC — omniauth gems are already bundled in upstream OpenProject;
+# declaring them here causes duplicate-gem conflicts.
+# The identity plugin relies on omniauth and omniauth-openid-connect
+# which are resolved from OpenProject's own Gemfile.
