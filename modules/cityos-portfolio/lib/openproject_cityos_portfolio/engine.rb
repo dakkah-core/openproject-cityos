@@ -5,6 +5,10 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-portfolio.rb"))
+      end
+
       register(
         'openproject-cityos-portfolio',
         author_url: 'https://github.com/dakkah-core/openproject-cityos',

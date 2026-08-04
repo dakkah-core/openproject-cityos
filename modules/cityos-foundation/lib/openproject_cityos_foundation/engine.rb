@@ -5,6 +5,12 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
+      # Zeitwerk: the entry point file openproject-cityos-foundation.rb has
+      # hyphens (invalid constant names); required explicitly by gemspec.
+      config.before_configuration do
+        Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-foundation.rb"))
+      end
+
       register(
         'openproject-cityos-foundation',
         author_url: 'https://github.com/dakkah-core/openproject-cityos',

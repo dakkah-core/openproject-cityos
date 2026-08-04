@@ -1,5 +1,5 @@
 $LOAD_PATH.push File.expand_path("lib", __dir__)
-require "openproject-cityos-governance/version"
+require "openproject_cityos_governance/version"
 
 Gem::Specification.new do |spec|
   spec.name        = "openproject-cityos-governance"
