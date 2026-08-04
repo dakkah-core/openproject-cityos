@@ -47,11 +47,11 @@ RUN chmod +x /app/docker/entrypoint-cityos.sh && \
     sed -i 's/\r$//' /app/docker/entrypoint-cityos.sh
 
 # ── Install plugin gems ──────────────────────────────────────
-# Plugin registration may fail if upstream OpenProject's rake task
-# exits non-zero for missing gem dependencies. The CityOS entrypoint
-# re-registers plugins at boot. Build failure here is non-fatal.
+# Upstream image has BUNDLE_FROZEN=true; unfreeze to add CityOS plugins.
 RUN cd /app && \
+    bundle config set --local frozen false && \
     bundle config set --local without "development:test" && \
+    bundle install && \
     bundle exec rake openproject:plugins:register 2>/dev/null || \
     echo "WARNING: Plugin registration returned non-zero — entrypoint will retry"
 
