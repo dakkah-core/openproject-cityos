@@ -7,9 +7,12 @@ module OpenProject
 
       class_inflection_override("governance" => "CityOSGovernance")
 
+      initializer "cityos_governance.cityos_inflector", before: :set_autoload_paths do
+        Rails.autoloaders.each { |l| l.inflector.inflect("cityos" => "CityOS") }
+      end
+
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-governance.rb"))
-        Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
       end
 
       register(

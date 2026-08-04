@@ -7,9 +7,12 @@ module OpenProject
 
       class_inflection_override("identity" => "CityOSIdentity")
 
+      initializer "cityos_identity.cityos_inflector", before: :set_autoload_paths do
+        Rails.autoloaders.each { |l| l.inflector.inflect("cityos" => "CityOS") }
+      end
+
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-identity.rb"))
-        Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
       end
 
       register(

@@ -9,9 +9,15 @@ module OpenProject
 
       class_inflection_override("strategy" => "CityOSStrategy")
 
+      # Must run before Zeitwerk autoloads app/ directory.
+      # Without this, cityos/strategy/*.rb maps to Cityos::Strategy
+      # instead of the required CityOS::Strategy.
+      initializer "cityos_strategy.cityos_inflector", before: :set_autoload_paths do
+        Rails.autoloaders.each { |l| l.inflector.inflect("cityos" => "CityOS") }
+      end
+
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
-        Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
       end
 
       register(
