@@ -27,7 +27,7 @@ module OpenProject
 
         menu :top_menu,
              :cityos_portfolio,
-             { controller: '/cityos/portfolio', action: :index },
+             { controller: '/cityos/portfolio/portfolio', action: :index },
              caption: 'CityOS Portfolio',
              icon: 'cityos-portfolio',
              after: :projects
