@@ -2,7 +2,7 @@
 
 module OpenProject
   module CityosStrategy
-    class StrategicInitiative < ::ApplicationRecord
+    class StrategicInitiative < ActiveRecord::Base
       self.table_name = "cityos_strategy_initiatives"
 
       FUNNEL_STAGES = {
@@ -46,14 +46,14 @@ module OpenProject
       end
     end
 
-    class InitiativeObjective < ::ApplicationRecord
+    class InitiativeObjective < ActiveRecord::Base
       self.table_name = "cityos_strategy_initiative_objectives"
       belongs_to :initiative, class_name: "StrategicInitiative"
       belongs_to :objective, class_name: "StrategicObjective"
       validates :initiative_id, uniqueness: { scope: :objective_id }
     end
 
-    class StrategicPortfolio < ::ApplicationRecord
+    class StrategicPortfolio < ActiveRecord::Base
       self.table_name = "cityos_strategy_portfolios"
       enum :status, { active: 0, archived: 1 }
       belongs_to :owner, class_name: "User", optional: true
@@ -62,7 +62,7 @@ module OpenProject
       validates :name, presence: true
     end
 
-    class StrategicProgram < ::ApplicationRecord
+    class StrategicProgram < ActiveRecord::Base
       self.table_name = "cityos_strategy_programs"
       enum :status, { active: 0, archived: 1 }
       belongs_to :portfolio, class_name: "StrategicPortfolio"
@@ -71,7 +71,7 @@ module OpenProject
       validates :name, presence: true
     end
 
-    class ExecutionLink < ::ApplicationRecord
+    class ExecutionLink < ActiveRecord::Base
       self.table_name = "cityos_strategy_execution_links"
       enum :link_type, { delivers: 0, supports: 1, tracks: 2 }
       belongs_to :strategic_initiative, class_name: "StrategicInitiative"

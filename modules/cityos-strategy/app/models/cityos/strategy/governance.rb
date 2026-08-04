@@ -2,7 +2,7 @@
 
 module OpenProject
   module CityosStrategy
-    class StrategicBenefit < ::ApplicationRecord
+    class StrategicBenefit < ActiveRecord::Base
       self.table_name = "cityos_strategy_benefits"
 
       enum :benefit_type, {
@@ -27,7 +27,7 @@ module OpenProject
       end
     end
 
-    class StrategicRisk < ::ApplicationRecord
+    class StrategicRisk < ActiveRecord::Base
       self.table_name = "cityos_strategy_risks"
 
       enum :likelihood, { rare: 0, unlikely: 1, possible: 2, likely: 3, almost_certain: 4 }
@@ -44,7 +44,7 @@ module OpenProject
       end
     end
 
-    class StrategicAssumption < ::ApplicationRecord
+    class StrategicAssumption < ActiveRecord::Base
       self.table_name = "cityos_strategy_assumptions"
 
       enum :status, { unvalidated: 0, valid: 1, invalidated: 2 }, prefix: :status
@@ -55,7 +55,7 @@ module OpenProject
       validates :description, presence: true
     end
 
-    class StrategicDependency < ::ApplicationRecord
+    class StrategicDependency < ActiveRecord::Base
       self.table_name = "cityos_strategy_dependencies"
 
       enum :dependency_type, { requires: 0, enables: 1, conflicts_with: 2, supersedes: 3 }
@@ -67,7 +67,7 @@ module OpenProject
       validates :from_initiative_id, uniqueness: { scope: %i[to_initiative_id dependency_type] }
     end
 
-    class StrategicDecision < ::ApplicationRecord
+    class StrategicDecision < ActiveRecord::Base
       self.table_name = "cityos_strategy_decisions"
 
       enum :status, { proposed: 0, decided: 1, implemented: 2, superseded: 3 }
@@ -77,7 +77,7 @@ module OpenProject
       validates :title, presence: true
     end
 
-    class StrategyReview < ::ApplicationRecord
+    class StrategyReview < ActiveRecord::Base
       self.table_name = "cityos_strategy_reviews"
 
       enum :review_type, { qbr: 0, mbr: 1, annual: 2, event_driven: 3 }
@@ -90,7 +90,7 @@ module OpenProject
       validates :period_start, :period_end, presence: true
     end
 
-    class StrategySnapshot < ::ApplicationRecord
+    class StrategySnapshot < ActiveRecord::Base
       self.table_name = "cityos_strategy_snapshots"
 
       enum :snapshot_type, {

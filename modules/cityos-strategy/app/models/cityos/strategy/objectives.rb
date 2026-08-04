@@ -2,21 +2,21 @@
 
 module OpenProject
   module CityosStrategy
-    class StrategicTheme < ::ApplicationRecord
+    class StrategicTheme < ActiveRecord::Base
       self.table_name = "cityos_strategy_themes"
       belongs_to :plan, class_name: "StrategicPlan"
       has_many :objectives, class_name: "StrategicObjective", foreign_key: :theme_id
       validates :name, presence: true
     end
 
-    class StrategicOutcome < ::ApplicationRecord
+    class StrategicOutcome < ActiveRecord::Base
       self.table_name = "cityos_strategy_outcomes"
       belongs_to :plan, class_name: "StrategicPlan"
       has_many :objectives, class_name: "StrategicObjective", foreign_key: :outcome_id
       validates :name, presence: true
     end
 
-    class StrategicObjective < ::ApplicationRecord
+    class StrategicObjective < ActiveRecord::Base
       self.table_name = "cityos_strategy_objectives"
 
       enum :status, { draft: 0, active: 1, at_risk: 2, behind: 3, achieved: 4, closed: 5 }
@@ -49,7 +49,7 @@ module OpenProject
       end
     end
 
-    class KeyResult < ::ApplicationRecord
+    class KeyResult < ActiveRecord::Base
       self.table_name = "cityos_strategy_key_results"
 
       enum :status, { not_started: 0, on_track: 1, at_risk: 2, behind: 3, completed: 4 }
