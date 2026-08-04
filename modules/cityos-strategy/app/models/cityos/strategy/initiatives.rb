@@ -55,7 +55,7 @@ module OpenProject
 
     class StrategicPortfolio < ActiveRecord::Base
       self.table_name = "cityos_strategy_portfolios"
-      enum :status, { active: 0, archived: 1 }
+      enum :status, { active: 0, archived: 1 }, prefix: true
       belongs_to :owner, class_name: "User", optional: true
       has_many :programs, class_name: "StrategicProgram"
       has_many :initiatives, class_name: "StrategicInitiative"
@@ -64,7 +64,7 @@ module OpenProject
 
     class StrategicProgram < ActiveRecord::Base
       self.table_name = "cityos_strategy_programs"
-      enum :status, { active: 0, archived: 1 }
+      enum :status, { active: 0, archived: 1 }, prefix: true
       belongs_to :portfolio, class_name: "StrategicPortfolio"
       belongs_to :owner, class_name: "User", optional: true
       has_many :initiatives, through: :portfolio
@@ -73,7 +73,7 @@ module OpenProject
 
     class ExecutionLink < ActiveRecord::Base
       self.table_name = "cityos_strategy_execution_links"
-      enum :link_type, { delivers: 0, supports: 1, tracks: 2 }
+      enum :link_type, { delivers: 0, supports: 1, tracks: 2 }, prefix: true
       belongs_to :strategic_initiative, class_name: "StrategicInitiative"
       belongs_to :work_package
       validates :strategic_initiative_id, uniqueness: { scope: :work_package_id }

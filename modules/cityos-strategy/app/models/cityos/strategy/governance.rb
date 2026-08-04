@@ -30,8 +30,8 @@ module OpenProject
     class StrategicRisk < ActiveRecord::Base
       self.table_name = "cityos_strategy_risks"
 
-      enum :likelihood, { rare: 0, unlikely: 1, possible: 2, likely: 3, almost_certain: 4 }
-      enum :impact, { negligible: 0, minor: 1, moderate: 2, major: 3, severe: 4 }
+      enum :likelihood, { rare: 0, unlikely: 1, possible: 2, likely: 3, almost_certain: 4 }, prefix: true
+      enum :impact, { negligible: 0, minor: 1, moderate: 2, major: 3, severe: 4 }, prefix: true
       enum :status, { active: 0, mitigated: 1, materialized: 2, closed: 3 }, prefix: :status
 
       belongs_to :initiative, class_name: "StrategicInitiative", optional: true
@@ -58,8 +58,8 @@ module OpenProject
     class StrategicDependency < ActiveRecord::Base
       self.table_name = "cityos_strategy_dependencies"
 
-      enum :dependency_type, { requires: 0, enables: 1, conflicts_with: 2, supersedes: 3 }
-      enum :status, { identified: 0, active: 1, resolved: 2, broken: 3 }
+      enum :dependency_type, { requires: 0, enables: 1, conflicts_with: 2, supersedes: 3 }, prefix: true
+      enum :status, { identified: 0, active: 1, resolved: 2, broken: 3 }, prefix: true
 
       belongs_to :from_initiative, class_name: "StrategicInitiative"
       belongs_to :to_initiative, class_name: "StrategicInitiative"
@@ -70,7 +70,7 @@ module OpenProject
     class StrategicDecision < ActiveRecord::Base
       self.table_name = "cityos_strategy_decisions"
 
-      enum :status, { proposed: 0, decided: 1, implemented: 2, superseded: 3 }
+      enum :status, { proposed: 0, decided: 1, implemented: 2, superseded: 3 }, prefix: true
 
       belongs_to :decision_owner, class_name: "User", optional: true
 
@@ -80,8 +80,8 @@ module OpenProject
     class StrategyReview < ActiveRecord::Base
       self.table_name = "cityos_strategy_reviews"
 
-      enum :review_type, { qbr: 0, mbr: 1, annual: 2, event_driven: 3 }
-      enum :status, { scheduled: 0, in_progress: 1, completed: 2, cancelled: 3 }
+      enum :review_type, { qbr: 0, mbr: 1, annual: 2, event_driven: 3 }, prefix: true
+      enum :status, { scheduled: 0, in_progress: 1, completed: 2, cancelled: 3 }, prefix: true
 
       belongs_to :facilitator, class_name: "User", optional: true
       belongs_to :plan, class_name: "StrategicPlan", optional: true

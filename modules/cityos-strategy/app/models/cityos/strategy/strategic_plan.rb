@@ -5,8 +5,8 @@ module OpenProject
     class StrategicPlan < ActiveRecord::Base
       self.table_name = "cityos_strategy_plans"
 
-      enum :plan_type, { vision: 0, strategic: 1, annual: 2, operating: 3 }
-      enum :status, { draft: 0, active: 1, superseded: 2, archived: 3 }
+      enum :plan_type, { vision: 0, strategic: 1, annual: 2, operating: 3 }, prefix: true
+      enum :status, { draft: 0, active: 1, superseded: 2, archived: 3 }, prefix: true
 
       belongs_to :owner, class_name: "User", optional: true
       belongs_to :parent_plan, class_name: "StrategicPlan", optional: true

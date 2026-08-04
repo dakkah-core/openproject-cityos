@@ -52,8 +52,8 @@ module OpenProject
     class KeyResult < ActiveRecord::Base
       self.table_name = "cityos_strategy_key_results"
 
-      enum :status, { not_started: 0, on_track: 1, at_risk: 2, behind: 3, completed: 4 }
-      enum :confidence, { low: 0, medium: 1, high: 2 }
+      enum :status, { not_started: 0, on_track: 1, at_risk: 2, behind: 3, completed: 4 }, prefix: true
+      enum :confidence, { low: 0, medium: 1, high: 2 }, prefix: true
 
       belongs_to :objective, class_name: "StrategicObjective"
       validates :title, presence: true

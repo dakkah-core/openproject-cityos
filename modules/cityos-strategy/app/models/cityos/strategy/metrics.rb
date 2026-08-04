@@ -44,9 +44,9 @@ module OpenProject
     class MetricObservation < ActiveRecord::Base
       self.table_name = "cityos_strategy_metric_observations"
 
-      enum :freshness, { current: 0, stale: 1, expired: 2 }
-      enum :confidence, { low: 0, medium: 1, high: 2 }
-      enum :quality_state, { verified: 0, estimated: 1, projected: 2, disputed: 3 }
+      enum :freshness, { current: 0, stale: 1, expired: 2 }, prefix: true
+      enum :confidence, { low: 0, medium: 1, high: 2 }, prefix: true
+      enum :quality_state, { verified: 0, estimated: 1, projected: 2, disputed: 3 }, prefix: true
 
       belongs_to :metric_definition, class_name: "MetricDefinition"
       belongs_to :target, class_name: "MetricTarget", optional: true
@@ -60,7 +60,7 @@ module OpenProject
     class PlanningScenario < ActiveRecord::Base
       self.table_name = "cityos_strategy_scenarios"
 
-      enum :status, { draft: 0, frozen: 1, accepted: 2, rejected: 3 }
+      enum :status, { draft: 0, frozen: 1, accepted: 2, rejected: 3 }, prefix: true
       enum :recommendation_status, {
         recommended: 0, not_recommended: 1, needs_revision: 2, rejected: 3
       }
