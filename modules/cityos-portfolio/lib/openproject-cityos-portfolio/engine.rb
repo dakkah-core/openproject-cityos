@@ -27,6 +27,10 @@ module OpenProject
           require_dependency 'openproject-cityos-portfolio/dependency_view'
           require_dependency 'openproject-cityos-portfolio/stale_detector'
           require_dependency 'openproject-cityos-portfolio/release_gate_dashboard'
+          require_dependency 'openproject-cityos-portfolio/calendar_export'
+          require_dependency 'openproject-cityos-portfolio/team_planner'
+          require_dependency 'openproject-cityos-portfolio/calculated_metrics'
+          require_dependency 'openproject-cityos-portfolio/pedd_integration'
         end
 
         # ── Register portfolio routes ───────────────────────
@@ -37,6 +41,11 @@ module OpenProject
             get '/cityos/portfolio/rollups', to: 'cityos/portfolio/portfolio#rollups'
             get '/cityos/portfolio/system_graph', to: 'cityos/portfolio/portfolio#system_graph'
             post '/cityos/portfolio/generate', to: 'cityos/portfolio/portfolio#generate'
+            get '/cityos/portfolio/calendar.ics', to: 'cityos/portfolio/portfolio#calendar'
+            get '/cityos/portfolio/team_planner', to: 'cityos/portfolio/portfolio#team_planner'
+            get '/cityos/portfolio/metrics', to: 'cityos/portfolio/portfolio#metrics'
+            get '/cityos/portfolio/pedd_entities', to: 'cityos/portfolio/portfolio#pedd_entities'
+            get '/cityos/portfolio/enriched_graph', to: 'cityos/portfolio/portfolio#enriched_graph'
           end
         end
 
