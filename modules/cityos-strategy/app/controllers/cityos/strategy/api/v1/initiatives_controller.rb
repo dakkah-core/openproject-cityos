@@ -2,7 +2,7 @@
 
 module Cityos
   module Strategy
-    module Api
+    module API
       module V1
         class InitiativesController < ApplicationController
           skip_before_action :verify_authenticity_token

@@ -10,6 +10,7 @@ module OpenProject
       config.before_configuration do
         Rails.autoloaders.main.ignore(root.join("lib/openproject-cityos-strategy.rb"))
         Rails.autoloaders.main.inflector.inflect("cityos" => "CityOS")
+        Rails.autoloaders.main.inflector.inflect("api" => "Api")
       end
 
       register(
