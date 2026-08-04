@@ -1,0 +1,103 @@
+# CityOS HELM — MCP Agent Policy Configuration
+#
+# Per P0.3.6: Per-agent tokens, project allowlist, no write wildcard.
+# This configures the openproject-ce-mcp sidecar with Agent Identity
+# awareness — every agent gets its own token and project scope.
+#
+# Applied by: scripts/helm/apply-mcp-policy.mjs (CMS repo)
+# Consumed by: openproject-ce-mcp (MCP gateway at :3050/servers/helm/mcp)
+
+schema_version: "cityos-helm-mcp-policy.v1"
+
+# ── Global defaults ────────────────────────────────────────
+defaults:
+  read_only: true           # Agents read by default, write is opt-in
+  max_page_size: 50         # Limit bulk reads
+  rate_limit_rpm: 120       # 2 requests/sec per agent
+
+# ── Write policy ───────────────────────────────────────────
+write_policy:
+  mode: allowlist           # Only allowlisted projects get writes
+  confirm_required: true    # MCP write ops require explicit confirm
+  max_writes_per_minute: 20
+  auto_confirm_writes: false
+  projects_write: []        # Populated per-agent below — NEVER "*" wildcard
+
+# ── Agent token registry ───────────────────────────────────
+# Each agent principal gets its own API token and project scope.
+# Tokens are created via AgentIdentityManager and rotated every 90 days.
+agents:
+  # Dev Lead (orchestrator — read-only project view + limited writes)
+  - login: "agent-dev-lead-1"
+    type: "program-planner"
+    projects_read: ["global-program"]
+    projects_write: []      # No direct writes — routes through Work Control
+
+  # Builder agents — can read assigned work, write status transitions
+  - login: "agent-builder-1"
+    type: "builder-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+    max_writes_per_minute: 5
+
+  - login: "agent-builder-2"
+    type: "builder-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+    max_writes_per_minute: 5
+
+  # Reviewer agents — read all, write status transitions only
+  - login: "agent-reviewer-1"
+    type: "reviewer-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+
+  # Tester agents
+  - login: "agent-tester-1"
+    type: "tester-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+
+  # Security agent — read-only, can mark Blocked
+  - login: "agent-security-1"
+    type: "security-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+
+  # DevOps agent — read + link pipeline evidence
+  - login: "agent-devops-1"
+    type: "devops-agent"
+    projects_read: ["global-program"]
+    projects_write: ["global-program"]
+
+  # Docs writer / Auditor — read-only all projects
+  - login: "agent-docs-1"
+    type: "auditor"
+    projects_read: ["global-program"]
+    projects_write: []      # Auditors never write
+
+  # CityOS Helm sync identity — the ONLY identity allowed to write
+  # to governance tables (cityos_scope_bindings, governance_projections).
+  # Token: managed outside agent rotation (longer-lived, restricted scope).
+  # Read + write: all projects, governance sync endpoints only.
+  - login: "${CITYOS_HELM_SYNC_IDENTITY}"
+    type: "sync-identity"
+    projects_read: ["global-program"]
+    projects_write: []      # Sync writes done via dedicated API, not MCP
+    note: "Governance sync identity — writes through API controller, not MCP"
+
+# ── Write-confirmation guard ────────────────────────────────
+# Applied at MCP level: agent writes must be explicitly confirmed.
+# Governance table writes are further guarded by WriteGuard model hooks.
+writes:
+  enable_work_package_write: false       # Disabled until Work Control proven
+  enable_version_write: false            # Never allow version writes via MCP
+  auto_confirm_write: false              # Every write must be explicitly confirmed
+  allowed_projects_write: []             # Populated per-agent, never wildcard
+
+# ── Audit ───────────────────────────────────────────────────
+audit:
+  log_all_queries: true
+  log_all_writes: true
+  correlation_id_header: "X-CityOS-Correlation-Id"
+  agent_attribution_header: "X-CityOS-Agent-Type"
