@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class ObjectivesController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       before_action :find_objective, only: %i[show edit update destroy score]
 

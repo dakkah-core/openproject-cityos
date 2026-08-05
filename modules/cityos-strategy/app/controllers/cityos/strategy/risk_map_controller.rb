@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class RiskMapController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       # Strategic risk and assumption map — uncertainty visualization data
       def show

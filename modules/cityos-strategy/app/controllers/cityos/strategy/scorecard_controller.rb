@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class ScorecardController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       # KPI scorecard — all metrics with targets, actuals, trends, freshness
       def show

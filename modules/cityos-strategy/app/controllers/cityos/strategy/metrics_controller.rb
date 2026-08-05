@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class MetricsController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       before_action :find_metric, only: %i[show edit update destroy record_observation]
 

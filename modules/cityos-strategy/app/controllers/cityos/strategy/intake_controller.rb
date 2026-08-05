@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class IntakeController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       # Initiative intake funnel — displays all stages with initiative counts
       def show

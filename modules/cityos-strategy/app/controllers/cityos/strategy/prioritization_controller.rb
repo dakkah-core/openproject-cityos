@@ -4,6 +4,7 @@ module Cityos
   module Strategy
     class PrioritizationController < ApplicationController
   before_action :find_optional_project
+  no_authorization_required! :index, :show
 
       # Prioritization matrix — scatter plot data for initiative comparison
       def show
