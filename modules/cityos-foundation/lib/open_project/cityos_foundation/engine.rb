@@ -27,6 +27,21 @@ module OpenProject
              caption: 'CityOS HELM',
              after: :settings
 
+        # Replace enterprise dependency placeholders with CityOS alternatives.
+        menu :admin_menu,
+             :custom_style,
+             { controller: '/cityos/foundation', action: :index },
+             caption: 'CityOS Style',
+             after: :cityos_foundation
+      end
+
+      # ── Routes ────────────────────────────────────────────────────
+      initializer "cityos_foundation.routes" do |app|
+        app.routes.append do
+          get "/cityos/foundation", to: "cityos/foundation#index",
+              as: :cityos_foundation_dashboard
+          get "/admin/cityos/foundation", to: "cityos/foundation#index"
+        end
       end
 
       # Register CityOS locales

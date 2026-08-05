@@ -1,0 +1,10 @@
+en:
+  cityos:
+    foundation:
+      label_foundation: "CityOS Foundation"
+      label_administration: "Foundation Administration"
+      label_dashboard: "Foundation Dashboard"
+      label_manifest: "Config Manifest"
+      label_seeder: "Seeder Status"
+      label_plugins: "Plugins"
+      label_patches: "Patches"

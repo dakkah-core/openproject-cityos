@@ -191,9 +191,13 @@ module OpenProject
              after: :cityos_foundation
       end
 
-      # ── Routes ────────────────────────────────────────────────────
+        # ── Routes ────────────────────────────────────────────────────
       initializer "cityos_strategy.routes" do |app|
         app.routes.append do
+          get "/cityos/strategy/admin",
+              to: "cityos/strategy/admin#index",
+              as: :cityos_strategy_admin
+
           # Dashboard
           get "/projects/:project_id/cityos/strategy/dashboard(/:action)",
               to: "cityos/strategy/dashboard#show",
@@ -291,6 +295,14 @@ module OpenProject
               end
             end
           end
+
+          # Admin (global)
+          get "/cityos/strategy/admin", to: "cityos/strategy/admin#index",
+              as: :cityos_strategy_admin
+
+          # Foundation admin
+          get "/admin/cityos/foundation", to: "cityos/foundation/dashboard#index",
+              as: :cityos_foundation_dashboard
         end
       end
 

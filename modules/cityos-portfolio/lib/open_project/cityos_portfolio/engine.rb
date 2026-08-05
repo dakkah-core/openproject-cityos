@@ -16,7 +16,7 @@ module OpenProject
       ) do
         project_module :cityos_portfolio do
           permission :view_cityos_portfolio,
-                     { 'cityos/portfolio': [:index, :systems, :rollups, :system_graph] },
+                     { 'cityos/portfolio': [:index, :systems, :rollups, :system_graph, :team_planner] },
                      permissible_on: [:project],
                      public: false
           permission :manage_cityos_portfolio,
@@ -30,6 +30,23 @@ module OpenProject
              { controller: '/cityos/portfolio/portfolio', action: :index },
              caption: 'CityOS Portfolio',
              after: :projects
+
+        menu :global_menu,
+             :portfolios,
+             { controller: '/cityos/portfolio/portfolio', action: :index },
+             caption: 'CityOS Portfolio',
+             after: :projects
+
+        menu :top_menu,
+             :team_planners,
+             { controller: '/cityos/portfolio/portfolio', action: :team_planner },
+             caption: 'CityOS Team Planner',
+             after: :projects
+
+        menu :project_menu,
+             :team_planner_view,
+             { controller: '/cityos/portfolio/portfolio', action: :team_planner },
+             caption: 'CityOS Team Planner'
       end
 
       # ── Load all portfolio services ─────────────────────

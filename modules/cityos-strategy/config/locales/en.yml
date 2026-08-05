@@ -1,0 +1,16 @@
+en:
+  cityos:
+    strategy:
+      label_strategy: "Strategy"
+      label_objectives: "Objectives"
+      label_initiatives: "Initiatives"
+      label_scenarios: "Scenarios"
+      label_kpis: "KPIs"
+      label_reviews: "Reviews"
+      label_benefits: "Benefits"
+      label_risks: "Risks"
+      label_dependencies: "Dependencies"
+      label_allocations: "Allocations"
+      label_decisions: "Decisions"
+      label_administration: "Strategy Administration"
+      label_dashboard: "Strategy Dashboard"

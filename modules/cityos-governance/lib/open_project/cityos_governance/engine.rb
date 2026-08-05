@@ -62,8 +62,8 @@ module OpenProject
           post "/api/v3/work_packages/:work_package_id/cityos_governance/sync_projections",
                to: "cityos/governance/governance#sync_projections",
                as: :cityos_governance_sync_projections
-          end
         end
+      end
     end
   end
 end
