@@ -28,7 +28,7 @@ module OpenProject
         # Governance panel — read-only tab on work packages
         menu :project_menu,
              :cityos_governance,
-             { controller: '/cityos/governance', action: :show },
+             { controller: '/cityos/governance/governance', action: :show },
              caption: 'Governance',
              after: :work_packages
       end
