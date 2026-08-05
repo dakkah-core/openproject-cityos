@@ -282,6 +282,28 @@ module OpenProject
                       only: %i[index show new create edit update destroy]
           end
 
+          # Global strategy tools (not project-scoped)
+          get "/cityos/strategy/scorecard",
+              to: "cityos/strategy/scorecard#show",
+              as: :cityos_strategy_scorecard
+          get "/cityos/strategy/risk_map",
+              to: "cityos/strategy/risk_map#show",
+              as: :cityos_strategy_risk_map
+          get "/cityos/strategy/prioritization",
+              to: "cityos/strategy/prioritization#show",
+              as: :cityos_strategy_prioritization
+          post "/cityos/strategy/prioritization/rescore",
+               to: "cityos/strategy/prioritization#rescore"
+          get "/cityos/strategy/variance",
+              to: "cityos/strategy/variance#show",
+              as: :cityos_strategy_variance
+          get "/cityos/strategy/intake",
+              to: "cityos/strategy/intake#show",
+              as: :cityos_strategy_intake
+          get "/initiatives/:initiative_id/cityos/strategy/execution_links",
+              to: "cityos/strategy/execution_links#index",
+              as: :cityos_strategy_execution_links
+
           # API (global, not project-scoped)
           namespace :cityos do
             namespace :strategy do
