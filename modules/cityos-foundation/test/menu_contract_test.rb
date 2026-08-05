@@ -17,17 +17,21 @@ class HelmMenuContractTest < Minitest::Test
 
     assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
     assert_match(/menu :admin_menu,\s*:cityos_style,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :style\s*\}/, source)
-    assert_match(/menu :account_menu,\s*:revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
+    assert_match(/menu\.push :revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
+    assert_match(/cityos_foundation\.admin_menu_cleanup/, source)
+    assert_match(/menu\.delete :custom_style/, source)
   end
 
   def test_portfolio_replaces_portfolio_and_team_planner_targets
     source = File.read(PORTFOLIO_ENGINE)
 
-    assert_match(/menu :top_menu,\s*:cityos_portfolio,\s*\{\s*controller: '\/cityos\/portfolio\/portfolio',\s*action: :index\s*\}/, source)
-    assert_match(/menu :top_menu,\s*:portfolios,\s*\{\s*controller: '\/cityos\/portfolio\/portfolio',\s*action: :index\s*\}/, source)
-    assert_match(/menu :global_menu,\s*:portfolios,\s*\{\s*controller: '\/cityos\/portfolio\/portfolio',\s*action: :index\s*\}/, source)
-    assert_match(/menu :top_menu,\s*:team_planners,\s*\{\s*controller: '\/cityos\/portfolio\/portfolio',\s*action: :team_planner\s*\}/, source)
-    assert_match(/menu :project_menu,\s*:team_planner_view,\s*\{\s*controller: '\/cityos\/portfolio\/portfolio',\s*action: :team_planner\s*\}/, source)
+    assert_match(/cityos_portfolio\.menu_overrides/, source)
+    assert_match(/map :top_menu/, source)
+    assert_match(/map :global_menu/, source)
+    assert_match(/map :project_menu/, source)
+    assert_match(/menu\.delete :team_planners/, source)
+    assert_match(/controller: '\/cityos\/portfolio',\s*action: :index/, source)
+    assert_match(/controller: '\/cityos\/portfolio\/portfolio',\s*action: :team_planner/, source)
   end
 
   def test_strategy_admin_is_defined_and_localized

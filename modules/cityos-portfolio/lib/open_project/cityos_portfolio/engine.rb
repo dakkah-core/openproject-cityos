@@ -16,43 +16,57 @@ module OpenProject
       ) do
         project_module :cityos_portfolio do
           permission :view_cityos_portfolio,
-                     { 'cityos/portfolio': [:index, :systems, :rollups, :system_graph, :team_planner] },
+                     { 'cityos/portfolio/portfolio': [:index, :systems, :rollups, :system_graph, :team_planner] },
                      permissible_on: [:project],
                      public: false
           permission :manage_cityos_portfolio,
-                     { 'cityos/portfolio': [:generate] },
+                     { 'cityos/portfolio/portfolio': [:generate] },
                      permissible_on: [:project],
                      require: :loggedin
         end
+      end
 
-        menu :top_menu,
-             :cityos_portfolio,
-             { controller: '/cityos/portfolio/portfolio', action: :index },
-             caption: :"cityos.portfolio.label_portfolio",
-             after: :projects
+      initializer "cityos_portfolio.menu_overrides" do
+        ::Redmine::MenuManager.map :top_menu do |menu|
+          menu.delete :cityos_portfolio
+          menu.push :cityos_portfolio,
+                    { controller: '/cityos/portfolio/portfolio', action: :index },
+                    caption: :"cityos.portfolio.label_portfolio",
+                    after: :projects
 
-        menu :top_menu,
-             :portfolios,
-             { controller: '/cityos/portfolio/portfolio', action: :index },
-             caption: :"cityos.portfolio.label_portfolio",
-             after: :projects
+          menu.delete :portfolios
+          menu.push :portfolios,
+                    { controller: '/cityos/portfolio/portfolio', action: :index },
+                    caption: :"cityos.portfolio.label_portfolio",
+                    after: :projects
 
-        menu :global_menu,
-             :portfolios,
-             { controller: '/cityos/portfolio/portfolio', action: :index },
-             caption: :"cityos.portfolio.label_portfolio",
-             after: :projects
+          menu.delete :team_planners
+          menu.push :team_planners,
+                    { controller: '/cityos/portfolio/portfolio', action: :team_planner },
+                    caption: :"cityos.portfolio.label_team_planner",
+                    after: :projects
+        end
 
-        menu :top_menu,
-             :team_planners,
-             { controller: '/cityos/portfolio/portfolio', action: :team_planner },
-             caption: :"cityos.portfolio.label_team_planner",
-             after: :projects
+        ::Redmine::MenuManager.map :global_menu do |menu|
+          menu.delete :team_planners
+          menu.push :team_planners,
+                    { controller: '/cityos/portfolio/portfolio', action: :team_planner },
+                    caption: :"cityos.portfolio.label_team_planner",
+                    after: :projects
 
-        menu :project_menu,
-             :team_planner_view,
-             { controller: '/cityos/portfolio/portfolio', action: :team_planner },
-             caption: :"cityos.portfolio.label_team_planner"
+          menu.delete :portfolios
+          menu.push :portfolios,
+                    { controller: '/cityos/portfolio/portfolio', action: :index },
+                    caption: :"cityos.portfolio.label_portfolio",
+                    after: :projects
+        end
+
+        ::Redmine::MenuManager.map :project_menu do |menu|
+          menu.delete :team_planner_view
+          menu.push :team_planner_view,
+                    { controller: '/cityos/portfolio/portfolio', action: :team_planner },
+                    caption: :"cityos.portfolio.label_team_planner"
+        end
       end
 
       # ── Load all portfolio services ─────────────────────

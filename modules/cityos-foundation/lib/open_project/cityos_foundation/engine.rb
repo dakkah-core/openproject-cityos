@@ -36,6 +36,23 @@ module OpenProject
 
       end
 
+      initializer "cityos_foundation.account_menu" do
+        ::Redmine::MenuManager.map :account_menu do |menu|
+          menu.delete :revit_add_in
+          menu.push :revit_add_in,
+                    { controller: '/cityos/foundation/dashboard', action: :revit_add_in },
+                    caption: :"cityos.foundation.label_revit_add_in",
+                    after: :my_profile
+        end
+      end
+
+      initializer "cityos_foundation.admin_menu_cleanup" do
+        ::Redmine::MenuManager.map :admin_menu do |menu|
+          # Hide enterprise style stub in favor of CityOS replacement.
+          menu.delete :custom_style
+        end
+      end
+
       # ── Routes ────────────────────────────────────────────────────
       initializer "cityos_foundation.routes" do |app|
         app.routes.append do
