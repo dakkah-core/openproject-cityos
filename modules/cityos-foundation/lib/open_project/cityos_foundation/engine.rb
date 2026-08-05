@@ -34,14 +34,6 @@ module OpenProject
              caption: :"cityos.foundation.label_style",
              after: :cityos_foundation
 
-        # Note: revit_add_in is an existing OpenProject account menu item with an empty URL.
-        # We override it here with a safe CityOS landing page.
-        delete_menu_item(:account_menu, :revit_add_in) rescue nil
-        menu :account_menu,
-             :revit_add_in,
-             { controller: '/cityos/foundation/dashboard', action: :revit_add_in },
-             caption: :"cityos.foundation.label_revit_add_in",
-             after: :my_profile
       end
 
       # ── Routes ────────────────────────────────────────────────────
