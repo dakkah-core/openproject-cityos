@@ -9,7 +9,6 @@ module Cityos
     class SessionsController < ::AccountController
       # OIDC callback and failure are unauthenticated endpoints
       skip_before_action :authorization_check_required
-      skip_before_action :check_if_login_required
       skip_before_action :verify_authenticity_token, only: [:create]
       no_authorization_required! :create, :failure, :destroy
 
