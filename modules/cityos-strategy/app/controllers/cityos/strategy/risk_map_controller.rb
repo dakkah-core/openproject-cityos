@@ -7,7 +7,7 @@ module Cityos
 
       # Strategic risk and assumption map — uncertainty visualization data
       def show
-        @risks = StrategicRisk.includes(:initiative, :objective)
+        @risks = OpenProject::CityosStrategy::StrategicRisk.includes(:initiative, :objective)
                               .where(status: :active)
                               .order(likelihood: :desc, impact: :desc)
 

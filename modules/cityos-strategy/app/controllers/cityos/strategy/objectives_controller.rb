@@ -8,11 +8,11 @@ module Cityos
       before_action :find_objective, only: %i[show edit update destroy score]
 
       def index
-        @plan = StrategicPlan.find(params[:plan_id]) if params[:plan_id]
+        @plan = OpenProject::CityosStrategy::StrategicPlan.find(params[:plan_id]) if params[:plan_id]
         @objectives = if @plan
                         @plan.objectives.includes(:key_results, :theme, :outcome, :owner)
                       else
-                        StrategicObjective.includes(:plan, :key_results).order(updated_at: :desc)
+                        OpenProject::CityosStrategy::StrategicObjective.includes(:plan, :key_results).order(updated_at: :desc)
                       end
       end
 
@@ -23,12 +23,12 @@ module Cityos
       end
 
       def new
-        @plan = StrategicPlan.find(params[:plan_id]) if params[:plan_id]
-        @objective = StrategicObjective.new(plan: @plan, status: :draft)
+        @plan = OpenProject::CityosStrategy::StrategicPlan.find(params[:plan_id]) if params[:plan_id]
+        @objective = OpenProject::CityosStrategy::StrategicObjective.new(plan: @plan, status: :draft)
       end
 
       def create
-        @objective = StrategicObjective.new(objective_params)
+        @objective = OpenProject::CityosStrategy::StrategicObjective.new(objective_params)
         if @objective.save
           redirect_to objective_path(@objective), notice: t(:notice_successful_create)
         else
@@ -59,7 +59,7 @@ module Cityos
       private
 
       def find_objective
-        @objective = StrategicObjective.find(params[:id])
+        @objective = OpenProject::CityosStrategy::StrategicObjective.find(params[:id])
       end
 
       def objective_params

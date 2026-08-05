@@ -8,7 +8,7 @@ module Cityos
       before_action :find_scenario, only: %i[show edit update destroy freeze unfreeze compare]
 
       def index
-        @scenarios = PlanningScenario.order(planning_cycle: :desc, created_at: :desc)
+        @scenarios = OpenProject::CityosStrategy::PlanningScenario.order(planning_cycle: :desc, created_at: :desc)
       end
 
       def show
@@ -18,11 +18,11 @@ module Cityos
       end
 
       def new
-        @scenario = PlanningScenario.new(status: :draft, version: 1)
+        @scenario = OpenProject::CityosStrategy::PlanningScenario.new(status: :draft, version: 1)
       end
 
       def create
-        @scenario = PlanningScenario.new(scenario_params)
+        @scenario = OpenProject::CityosStrategy::PlanningScenario.new(scenario_params)
         if @scenario.save
           redirect_to scenario_path(@scenario), notice: t(:notice_successful_create)
         else
@@ -51,7 +51,7 @@ module Cityos
       end
 
       def compare
-        @other = PlanningScenario.find(params[:other_id])
+        @other = OpenProject::CityosStrategy::PlanningScenario.find(params[:other_id])
         @comparison = ScenarioService.new.compare(@scenario, @other)
       end
 
@@ -63,7 +63,7 @@ module Cityos
       private
 
       def find_scenario
-        @scenario = PlanningScenario.find(params[:id])
+        @scenario = OpenProject::CityosStrategy::PlanningScenario.find(params[:id])
       end
 
       def scenario_params

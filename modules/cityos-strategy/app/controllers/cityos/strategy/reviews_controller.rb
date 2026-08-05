@@ -8,7 +8,7 @@ module Cityos
       before_action :find_review, only: %i[show edit update destroy snapshot]
 
       def index
-        @reviews = StrategyReview.includes(:facilitator).order(period_start: :desc)
+        @reviews = OpenProject::CityosStrategy::StrategyReview.includes(:facilitator).order(period_start: :desc)
       end
 
       def show
@@ -17,11 +17,11 @@ module Cityos
       end
 
       def new
-        @review = StrategyReview.new(status: :scheduled)
+        @review = OpenProject::CityosStrategy::StrategyReview.new(status: :scheduled)
       end
 
       def create
-        @review = StrategyReview.new(review_params)
+        @review = OpenProject::CityosStrategy::StrategyReview.new(review_params)
         if @review.save
           redirect_to review_path(@review), notice: t(:notice_successful_create)
         else
@@ -56,7 +56,7 @@ module Cityos
       private
 
       def find_review
-        @review = StrategyReview.find(params[:id])
+        @review = OpenProject::CityosStrategy::StrategyReview.find(params[:id])
       end
 
       def review_params

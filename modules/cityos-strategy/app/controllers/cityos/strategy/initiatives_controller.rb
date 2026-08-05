@@ -8,7 +8,7 @@ module Cityos
       before_action :find_initiative, only: %i[show edit update destroy score advance_stage]
 
       def index
-        @initiatives = StrategicInitiative.includes(:portfolio, :owner)
+        @initiatives = OpenProject::CityosStrategy::StrategicInitiative.includes(:portfolio, :owner)
                                           .order(weighted_score: :desc)
         @mandatory = @initiatives.select(&:bypass_scoring?)
         @scored = @initiatives.reject(&:bypass_scoring?)
@@ -22,11 +22,11 @@ module Cityos
       end
 
       def new
-        @initiative = StrategicInitiative.new(stage: :idea)
+        @initiative = OpenProject::CityosStrategy::StrategicInitiative.new(stage: :idea)
       end
 
       def create
-        @initiative = StrategicInitiative.new(initiative_params)
+        @initiative = OpenProject::CityosStrategy::StrategicInitiative.new(initiative_params)
         if @initiative.save
           redirect_to initiative_path(@initiative), notice: t(:notice_successful_create)
         else
@@ -65,7 +65,7 @@ module Cityos
       private
 
       def find_initiative
-        @initiative = StrategicInitiative.find(params[:id])
+        @initiative = OpenProject::CityosStrategy::StrategicInitiative.find(params[:id])
       end
 
       def initiative_params

@@ -8,20 +8,20 @@ module Cityos
       before_action :find_plan, only: %i[show edit update destroy baseline replan]
 
       def index
-        @plans = StrategicPlan.order(effective_from: :desc)
+        @plans = OpenProject::CityosStrategy::StrategicPlan.order(effective_from: :desc)
       end
 
       def show
         @objectives = @plan.objectives.includes(:key_results, :theme, :outcome)
-        @previous_versions = StrategicPlan.where(parent_plan_id: @plan.id).order(version: :desc)
+        @previous_versions = OpenProject::CityosStrategy::StrategicPlan.where(parent_plan_id: @plan.id).order(version: :desc)
       end
 
       def new
-        @plan = StrategicPlan.new(status: :draft, version: 1)
+        @plan = OpenProject::CityosStrategy::StrategicPlan.new(status: :draft, version: 1)
       end
 
       def create
-        @plan = StrategicPlan.new(plan_params)
+        @plan = OpenProject::CityosStrategy::StrategicPlan.new(plan_params)
         if @plan.save
           redirect_to plans_path, notice: t(:notice_successful_create)
         else
@@ -50,7 +50,7 @@ module Cityos
         @plan.update!(status: :superseded)
 
         # Create new plan version with lineage
-        new_plan = StrategicPlan.create!(
+        new_plan = OpenProject::CityosStrategy::StrategicPlan.create!(
           title: "#{@plan.title} (v#{@plan.version + 1})",
           description: @plan.description,
           plan_type: @plan.plan_type,
@@ -73,7 +73,7 @@ module Cityos
       private
 
       def find_plan
-        @plan = StrategicPlan.find(params[:id])
+        @plan = OpenProject::CityosStrategy::StrategicPlan.find(params[:id])
       end
 
       def plan_params

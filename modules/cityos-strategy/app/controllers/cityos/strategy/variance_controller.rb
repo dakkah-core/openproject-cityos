@@ -7,7 +7,7 @@ module Cityos
 
       # Planned vs actual vs forecast views
       def show
-        @plan = StrategicPlan.find_by(status: :active)
+        @plan = OpenProject::CityosStrategy::StrategicPlan.find_by(status: :active)
         @health_service = HealthService.new
 
         # Objective variance: planned health vs current
@@ -17,7 +17,7 @@ module Cityos
         end if @plan
 
         # Initiative cost variance
-        @cost_variance = StrategicInitiative.where(stage: :activated).map do |i|
+        @cost_variance = OpenProject::CityosStrategy::StrategicInitiative.where(stage: :activated).map do |i|
           actual = i.execution_links.includes(:work_package)
                     .sum { |l| l.work_package&.estimated_hours.to_f }
           {
@@ -29,7 +29,7 @@ module Cityos
         end
 
         # Metric forecast (simple linear projection)
-        @forecasts = MetricDefinition.includes(:observations).map do |m|
+        @forecasts = OpenProject::CityosStrategy::MetricDefinition.includes(:observations).map do |m|
           recent = m.observations.recent.limit(5).pluck(:value)
           target = m.targets.order(period_end: :desc).first
           {

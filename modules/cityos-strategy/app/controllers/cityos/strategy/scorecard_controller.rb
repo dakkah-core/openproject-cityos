@@ -7,7 +7,7 @@ module Cityos
 
       # KPI scorecard — all metrics with targets, actuals, trends, freshness
       def show
-        @metrics = MetricDefinition.includes(:targets).order(:name)
+        @metrics = OpenProject::CityosStrategy::MetricDefinition.includes(:targets).order(:name)
         @health_service = HealthService.new
 
         @scorecard = @metrics.map do |m|

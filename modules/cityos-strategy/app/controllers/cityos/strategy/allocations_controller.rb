@@ -12,7 +12,7 @@ module Cityos
         @allocations = @scenario.allocations.includes(:initiative).group_by(&:dimension)
 
         # Compute totals by dimension
-        @totals = StrategicAllocation::DIMENSIONS.keys.index_with do |dim|
+        @totals = OpenProject::CityosStrategy::StrategicAllocation::DIMENSIONS.keys.index_with do |dim|
           (@allocations[dim.to_s] || []).sum { |a| a.amount || 0 }
         end
 
@@ -40,7 +40,7 @@ module Cityos
       private
 
       def find_scenario
-        @scenario = PlanningScenario.find(params[:scenario_id])
+        @scenario = OpenProject::CityosStrategy::PlanningScenario.find(params[:scenario_id])
       end
     end
   end

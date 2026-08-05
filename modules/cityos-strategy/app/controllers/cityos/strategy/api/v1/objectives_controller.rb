@@ -9,7 +9,7 @@ module Cityos
           before_action :require_strategy_api_access
 
           def index
-            render json: StrategicObjective.includes(:key_results).map { |o|
+            render json: OpenProject::CityosStrategy::StrategicObjective.includes(:key_results).map { |o|
               {
                 objective_id: o.objective_id, title: o.title,
                 status: o.status, health: o.health,
@@ -21,7 +21,7 @@ module Cityos
           end
 
           def show
-            o = StrategicObjective.find_by!(objective_id: params[:id])
+            o = OpenProject::CityosStrategy::StrategicObjective.find_by!(objective_id: params[:id])
             render json: {
               objective_id: o.objective_id, title: o.title, description: o.description,
               status: o.status, health: o.health, plan: o.plan&.title,

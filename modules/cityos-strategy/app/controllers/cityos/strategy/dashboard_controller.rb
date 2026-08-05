@@ -9,12 +9,12 @@ module Cityos
       no_authorization_required! :show
 
       def show
-        @active_plan = StrategicPlan.find_by(status: :active)
-        @objectives_count = StrategicObjective.where(status: %i[active at_risk behind]).count
-        @initiatives_active = StrategicInitiative.where(stage: :activated).count
-        @initiatives_total = StrategicInitiative.count
-        @metrics_stale = MetricDefinition.all.count { |m| m.freshness_status != "current" }
-        @upcoming_reviews = StrategyReview.where(status: :scheduled).order(:period_start).limit(5)
+        @active_plan = OpenProject::CityosStrategy::StrategicPlan.find_by(status: :active)
+        @objectives_count = OpenProject::CityosStrategy::StrategicObjective.where(status: %i[active at_risk behind]).count
+        @initiatives_active = OpenProject::CityosStrategy::StrategicInitiative.where(stage: :activated).count
+        @initiatives_total = OpenProject::CityosStrategy::StrategicInitiative.count
+        @metrics_stale = OpenProject::CityosStrategy::MetricDefinition.all.count { |m| m.freshness_status != "current" }
+        @upcoming_reviews = OpenProject::CityosStrategy::StrategyReview.where(status: :scheduled).order(:period_start).limit(5)
       end
     end
   end

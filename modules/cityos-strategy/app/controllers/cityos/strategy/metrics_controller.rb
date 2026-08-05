@@ -8,7 +8,7 @@ module Cityos
       before_action :find_metric, only: %i[show edit update destroy record_observation]
 
       def index
-        @metrics = MetricDefinition.includes(:targets).order(:name)
+        @metrics = OpenProject::CityosStrategy::MetricDefinition.includes(:targets).order(:name)
       end
 
       def show
@@ -17,11 +17,11 @@ module Cityos
       end
 
       def new
-        @metric = MetricDefinition.new
+        @metric = OpenProject::CityosStrategy::MetricDefinition.new
       end
 
       def create
-        @metric = MetricDefinition.new(metric_params)
+        @metric = OpenProject::CityosStrategy::MetricDefinition.new(metric_params)
         if @metric.save
           redirect_to metric_path(@metric), notice: t(:notice_successful_create)
         else
@@ -59,7 +59,7 @@ module Cityos
       private
 
       def find_metric
-        @metric = MetricDefinition.find(params[:id])
+        @metric = OpenProject::CityosStrategy::MetricDefinition.find(params[:id])
       end
 
       def metric_params

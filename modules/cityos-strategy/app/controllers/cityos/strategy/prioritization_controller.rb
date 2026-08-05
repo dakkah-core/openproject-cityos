@@ -7,12 +7,12 @@ module Cityos
 
       # Prioritization matrix — scatter plot data for initiative comparison
       def show
-        @initiatives = StrategicInitiative.scorable
+        @initiatives = OpenProject::CityosStrategy::StrategicInitiative.scorable
                                           .where.not(stage: %i[closed stopped superseded])
                                           .includes(:portfolio, :owner)
                                           .order(weighted_score: :desc)
 
-        @mandatory = StrategicInitiative.bypass_scoring
+        @mandatory = OpenProject::CityosStrategy::StrategicInitiative.bypass_scoring
                                         .where.not(stage: %i[closed stopped superseded])
 
         # Matrix axes data (for scatter chart)
@@ -53,7 +53,7 @@ module Cityos
       # Re-rank with current scoring weights
       def rescore
         scorer = ScoringService.new
-        StrategicInitiative.scorable.find_each do |i|
+        OpenProject::CityosStrategy::StrategicInitiative.scorable.find_each do |i|
           i.update!(weighted_score: scorer.score(i))
         end
         redirect_to prioritization_path, notice: "All initiatives rescored"

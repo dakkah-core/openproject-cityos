@@ -9,7 +9,7 @@ module Cityos
           before_action :require_strategy_api_access
 
           def index
-            render json: MetricDefinition.includes(:targets).map { |m|
+            render json: OpenProject::CityosStrategy::MetricDefinition.includes(:targets).map { |m|
               latest = m.latest_observation
               {
                 metric_id: m.metric_id, name: m.name, direction: m.direction,
@@ -20,7 +20,7 @@ module Cityos
           end
 
           def show
-            m = MetricDefinition.find_by!(metric_id: params[:id])
+            m = OpenProject::CityosStrategy::MetricDefinition.find_by!(metric_id: params[:id])
             render json: {
               metric_id: m.metric_id, name: m.name, description: m.description,
               formula: m.formula, unit: m.unit, direction: m.direction,
@@ -36,7 +36,7 @@ module Cityos
           end
 
           def record_observation
-            m = MetricDefinition.find_by!(metric_id: params[:id])
+            m = OpenProject::CityosStrategy::MetricDefinition.find_by!(metric_id: params[:id])
             obs = m.observations.create!(
               value: params[:value], observed_at: params[:observed_at] || Time.current,
               target_id: params[:target_id], source_system: params[:source_system],

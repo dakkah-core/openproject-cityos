@@ -38,7 +38,7 @@ module Cityos
       private
 
       def find_initiative
-        @initiative = StrategicInitiative.find(params[:initiative_id])
+        @initiative = OpenProject::CityosStrategy::StrategicInitiative.find(params[:initiative_id])
       end
     end
   end

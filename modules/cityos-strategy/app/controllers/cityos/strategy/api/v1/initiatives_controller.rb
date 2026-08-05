@@ -9,7 +9,7 @@ module Cityos
           before_action :require_strategy_api_access
 
           def index
-            render json: StrategicInitiative.includes(:portfolio).map { |i|
+            render json: OpenProject::CityosStrategy::StrategicInitiative.includes(:portfolio).map { |i|
               {
                 initiative_id: i.initiative_id, title: i.title, stage: i.stage,
                 mandatory_class: i.mandatory_class, weighted_score: i.weighted_score,
@@ -19,7 +19,7 @@ module Cityos
           end
 
           def show
-            i = StrategicInitiative.find_by!(initiative_id: params[:id])
+            i = OpenProject::CityosStrategy::StrategicInitiative.find_by!(initiative_id: params[:id])
             render json: {
               initiative_id: i.initiative_id, title: i.title, description: i.description,
               stage: i.stage, mandatory_class: i.mandatory_class,
@@ -36,7 +36,7 @@ module Cityos
           end
 
           def score
-            i = StrategicInitiative.find_by!(initiative_id: params[:id])
+            i = OpenProject::CityosStrategy::StrategicInitiative.find_by!(initiative_id: params[:id])
             weighted = ScoringService.new.score(i)
             i.update!(weighted_score: weighted)
             render json: { initiative_id: i.initiative_id, weighted_score: weighted }

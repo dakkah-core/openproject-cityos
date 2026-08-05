@@ -8,7 +8,7 @@ module Cityos
       before_action :find_benefit, only: %i[show edit update]
 
       def index
-        @benefits = StrategicBenefit.includes(:initiative, :benefit_owner)
+        @benefits = OpenProject::CityosStrategy::StrategicBenefit.includes(:initiative, :benefit_owner)
                                     .order(:status, realization_date: :desc)
         @by_type = @benefits.group_by(&:benefit_type)
         @by_status = @benefits.group_by(&:status)
@@ -35,7 +35,7 @@ module Cityos
       private
 
       def find_benefit
-        @benefit = StrategicBenefit.find(params[:id])
+        @benefit = OpenProject::CityosStrategy::StrategicBenefit.find(params[:id])
       end
 
       def benefit_params
