@@ -49,9 +49,9 @@ module OpenProject
         OpenProject::CityosIdentity::OidcStrategy.register!(app)
       end
 
-      # ── OIDC callback routes ────────────────────────────
+      # ── OIDC callback routes (PREPEND to beat generic omni_auth_callback) ──
       initializer "cityos_identity.routes" do |app|
-        app.routes.append do
+        app.routes.prepend do
           get "/auth/cityos_oidc/callback",
               to: "cityos/identity/sessions#create",
               as: :cityos_oidc_callback
