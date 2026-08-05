@@ -5,6 +5,7 @@ en:
       label_enterprise: "CityOS Enterprise"
       label_revit_add_in: "Revit Add-in"
       label_style: "CityOS Style"
+      label_enterprise_replacements: "Enterprise Replacements"
       label_administration: "Foundation Administration"
       label_dashboard: "Foundation Dashboard"
       label_manifest: "Config Manifest"

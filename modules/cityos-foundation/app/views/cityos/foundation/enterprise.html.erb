@@ -1,0 +1,43 @@
+<div class="op-container">
+  <div class="toolbar">
+    <h2>CityOS Enterprise Replacements</h2>
+  </div>
+
+  <div class="wiki-content">
+    <div class="generic-table--container">
+      <div class="attributes-group">
+        <p><strong>Purpose:</strong> Track enterprise-gated menu replacements owned by CityOS.</p>
+      </div>
+
+      <div class="generic-table--results-container">
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>Surface</th>
+              <th>Status</th>
+              <th>Route</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @replacement_surfaces.each do |surface| %>
+              <tr>
+                <td><%= surface[:name] %></td>
+                <td><%= surface[:status].to_s.humanize %></td>
+                <td><%= surface[:route] %></td>
+                <td><%= surface[:notes] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="attributes-group">
+        <p><strong>Remaining upstream-managed gaps</strong></p>
+        <% @enterprise_gaps.each do |gap| %>
+          <p><%= gap %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

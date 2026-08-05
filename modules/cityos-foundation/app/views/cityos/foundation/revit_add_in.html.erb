@@ -4,9 +4,26 @@
   </div>
   <div class="wiki-content">
     <div class="generic-table--container">
-      <div class="nodata">
-        <p>Enterprise Revit add-in integration is currently not implemented in HELM.</p>
-        <p>Current status: <strong><%= @revit_status.to_s.humanize %></strong></p>
+      <div class="attributes-group">
+        <p><strong>Status:</strong> <%= @revit_status.to_s.humanize %></p>
+        <p><strong>Scope:</strong> CityOS-owned BIM and Revit rollout workspace</p>
+      </div>
+
+      <div class="generic-table--results-container">
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>Replacement Capability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @revit_capabilities.each do |capability| %>
+              <tr>
+                <td><%= capability %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

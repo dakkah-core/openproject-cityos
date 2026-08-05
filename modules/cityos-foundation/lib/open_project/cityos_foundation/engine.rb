@@ -34,6 +34,12 @@ module OpenProject
              caption: :"cityos.foundation.label_style",
              after: :cityos_foundation
 
+        menu :admin_menu,
+             :cityos_enterprise,
+             { controller: '/cityos/foundation/dashboard', action: :enterprise },
+             caption: :"cityos.foundation.label_enterprise",
+             after: :cityos_style
+
       end
 
       initializer "cityos_foundation.account_menu" do
@@ -66,6 +72,9 @@ module OpenProject
           get "/cityos/foundation/style",
               to: "cityos/foundation/dashboard#style",
               as: :cityos_foundation_style
+          get "/cityos/foundation/enterprise",
+              to: "cityos/foundation/dashboard#enterprise",
+              as: :cityos_foundation_enterprise
         end
       end
 

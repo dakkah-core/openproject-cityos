@@ -17,11 +17,12 @@ class HelmMenuContractTest < Minitest::Test
 
       assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
       assert_match(/menu :admin_menu,\s*:cityos_style,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :style\s*\}/, source)
-      assert_match(/menu :admin_menu,\s*:cityos_enterprise,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
+      assert_match(/menu :admin_menu,\s*:cityos_enterprise,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :enterprise\s*\}/, source)
       assert_match(/menu\.push :revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
       assert_match(/cityos_foundation\.admin_menu_cleanup/, source)
       assert_match(/menu\.delete :custom_style/, source)
       assert_match(/menu\.delete :enterprise/, source)
+      assert_match(%r{get "/cityos/foundation/enterprise",\s*to: "cityos/foundation/dashboard#enterprise"}, source)
     end
 
   def test_portfolio_replaces_portfolio_and_team_planner_targets
@@ -48,6 +49,7 @@ class HelmMenuContractTest < Minitest::Test
       locales = YAML.load_file(FOUNDATION_LOCALES)
 
       assert_equal "CityOS Enterprise", locales.dig('en', 'cityos', 'foundation', 'label_enterprise')
+      assert_equal "Enterprise Replacements", locales.dig('en', 'cityos', 'foundation', 'label_enterprise_replacements')
       assert_equal "Revit Add-in", locales.dig('en', 'cityos', 'foundation', 'label_revit_add_in')
       assert_equal "CityOS Style", locales.dig('en', 'cityos', 'foundation', 'label_style')
     end

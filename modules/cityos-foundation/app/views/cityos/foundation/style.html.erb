@@ -4,10 +4,26 @@
   </div>
   <div class="wiki-content">
     <div class="generic-table--container">
-      <div class="nodata">
-        <p>Enterprise style settings replacement surface is mapped to a CityOS workspace.</p>
-        <p>Current status: <strong><%= @status.to_s.humanize %></strong></p>
-        <p>This surface is intentionally minimal while the custom theme workflow is implemented.</p>
+      <div class="attributes-group">
+        <p><strong>Status:</strong> <%= @status.to_s.humanize %></p>
+        <p><strong>Scope:</strong> Admin-owned CityOS style governance workspace</p>
+      </div>
+
+      <div class="generic-table--results-container">
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>Replacement Control</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @style_controls.each do |control| %>
+              <tr>
+                <td><%= control %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

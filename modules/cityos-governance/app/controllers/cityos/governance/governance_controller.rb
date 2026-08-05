@@ -3,9 +3,12 @@ module Cityos
     # API controller — read-only governance data for work packages.
     # Write endpoints restricted to the sync identity by WriteGuard.
     class GovernanceController < ::ApplicationController
-      before_action :require_login
-      before_action :find_work_package, except: [:show]
-      before_action :reject_non_sync_writes, only: [:sync_bindings, :sync_projections]
+      no_authorization_required! :show, :sync_bindings, :sync_projections
+  before_action :require_login
+      no_authorization_required! :show, :sync_bindings, :sync_projections
+  before_action :find_work_package, except: [:show]
+      no_authorization_required! :show, :sync_bindings, :sync_projections
+  before_action :reject_non_sync_writes, only: [:sync_bindings, :sync_projections]
 
       # GET /projects/:project_id/cityos/governance (HTML) or
       # GET /api/v3/work_packages/:id/cityos_governance (JSON)
