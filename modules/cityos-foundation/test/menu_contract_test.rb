@@ -12,15 +12,17 @@ class HelmMenuContractTest < Minitest::Test
   STRATEGY_LOCALES = File.expand_path('../../cityos-strategy/config/locales/en.yml', __dir__)
   PORTFOLIO_LOCALES = File.expand_path('../../cityos-portfolio/config/locales/en.yml', __dir__)
 
-  def test_foundation_admin_items_route_to_cityos_foundation_controller
-    source = File.read(FOUNDATION_ENGINE)
+    def test_foundation_admin_items_route_to_cityos_foundation_controller
+      source = File.read(FOUNDATION_ENGINE)
 
-    assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
-    assert_match(/menu :admin_menu,\s*:cityos_style,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :style\s*\}/, source)
-    assert_match(/menu\.push :revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
-    assert_match(/cityos_foundation\.admin_menu_cleanup/, source)
-    assert_match(/menu\.delete :custom_style/, source)
-  end
+      assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
+      assert_match(/menu :admin_menu,\s*:cityos_style,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :style\s*\}/, source)
+      assert_match(/menu :admin_menu,\s*:cityos_enterprise,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
+      assert_match(/menu\.push :revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
+      assert_match(/cityos_foundation\.admin_menu_cleanup/, source)
+      assert_match(/menu\.delete :custom_style/, source)
+      assert_match(/menu\.delete :enterprise/, source)
+    end
 
   def test_portfolio_replaces_portfolio_and_team_planner_targets
     source = File.read(PORTFOLIO_ENGINE)
@@ -42,12 +44,13 @@ class HelmMenuContractTest < Minitest::Test
     assert_equal "Strategy Administration", locales.dig('en', 'cityos', 'strategy', 'label_administration')
   end
 
-  def test_foundation_locales_include_revit_style_labels
-    locales = YAML.load_file(FOUNDATION_LOCALES)
+    def test_foundation_locales_include_revit_style_labels
+      locales = YAML.load_file(FOUNDATION_LOCALES)
 
-    assert_equal "Revit Add-in", locales.dig('en', 'cityos', 'foundation', 'label_revit_add_in')
-    assert_equal "CityOS Style", locales.dig('en', 'cityos', 'foundation', 'label_style')
-  end
+      assert_equal "CityOS Enterprise", locales.dig('en', 'cityos', 'foundation', 'label_enterprise')
+      assert_equal "Revit Add-in", locales.dig('en', 'cityos', 'foundation', 'label_revit_add_in')
+      assert_equal "CityOS Style", locales.dig('en', 'cityos', 'foundation', 'label_style')
+    end
 
   def test_portfolio_locales_include_team_planner_label
     locales = YAML.load_file(PORTFOLIO_LOCALES)

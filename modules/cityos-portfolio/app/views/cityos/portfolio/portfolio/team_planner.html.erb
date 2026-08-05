@@ -1,13 +1,15 @@
 <div class="op-container">
-  <div class="toolbar">
-    <h2>PORTFOLIO > Portfolio</h2>
-  </div>
+  <div class="toolbar"><h2>Team Planner</h2></div>
   <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>PORTFOLIO > Portfolio — Team_planner</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
-      </div>
-    </div>
+    <h3>Agent Load</h3>
+    <% if @agent_load && @agent_load.any? %>
+      <table class="generic-table"><thead><tr><th>Agent</th><th>Squad</th><th>Assigned</th><th>Capacity</th><th>Load %%</th></tr></thead>
+      <tbody><% @agent_load.each do |e| %><tr><td><%= e[:agent] %></td><td><%= e[:squad] %></td><td><%= e[:assigned] %></td><td><%= e[:capacity] %></td><td><%= e[:load_pct] %></td></tr><% end %></tbody></table>
+    <% else %><div class="nodata"><p>No agent load data available.</p></div><% end %>
+    <h3>Sprint Summary</h3>
+    <% if @sprint && @sprint.any? %>
+      <table class="generic-table"><thead><tr><th>Sprint</th><th>Planned</th><th>Completed</th><th>Velocity</th></tr></thead>
+      <tbody><% @sprint.each do |s| %><tr><td><%= s[:name] %></td><td><%= s[:planned] %></td><td><%= s[:completed] %></td><td><%= s[:velocity] %></td></tr><% end %></tbody></table>
+    <% else %><div class="nodata"><p>No sprint data available.</p></div><% end %>
   </div>
 </div>

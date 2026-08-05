@@ -2,6 +2,7 @@ en:
   cityos:
     foundation:
       label_foundation: "CityOS Foundation"
+      label_enterprise: "CityOS Enterprise"
       label_revit_add_in: "Revit Add-in"
       label_style: "CityOS Style"
       label_administration: "Foundation Administration"

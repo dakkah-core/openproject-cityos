@@ -3,6 +3,7 @@ module Cityos
     # Portfolio controller — program hierarchy, system views, rollups.
     class PortfolioController < ::ApplicationController
       before_action :require_login
+  no_authorization_required! :index, :systems, :rollups, :system_graph, :team_planner, :metrics
 
       layout 'admin' rescue nil
 

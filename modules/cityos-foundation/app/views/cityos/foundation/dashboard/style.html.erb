@@ -1,0 +1,26 @@
+<div class="op-container">
+  <div class="toolbar">
+    <h2><%= t("cityos.foundation.label_style") %></h2>
+  </div>
+  <div class="wiki-content">
+    <h3>CityOS Theme Configuration</h3>
+    <p>Customize the appearance of your CityOS HELM instance. Theme changes apply globally across all projects.</p>
+
+    <div class="notification-box -info">
+      <p><strong>Current Status:</strong> Theme editor is available through CityOS design tokens. Changes are applied via the <code>cityos-helm-manifest.yml</code> configuration.</p>
+    </div>
+
+    <h4>Available Theme Options</h4>
+    <table class="generic-table">
+      <thead><tr><th>Setting</th><th>Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Primary Color</td><td><code>#0a1628</code></td><td>CityOS Navy — primary brand color</td></tr>
+        <tr><td>Accent Color</td><td><code>#3182ce</code></td><td>CityOS Blue — interactive elements</td></tr>
+        <tr><td>Logo</td><td>cityos-logo.png</td><td>Brand logo in header and login page</td></tr>
+        <tr><td>Favicon</td><td>cityos-favicon.ico</td><td>Browser tab icon</td></tr>
+      </tbody>
+    </table>
+
+    <p><em>To modify theme settings, edit <code>/app/config/cityos-helm-manifest.yml</code> and restart the application.</em></p>
+  </div>
+</div>

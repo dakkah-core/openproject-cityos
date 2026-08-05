@@ -50,6 +50,7 @@ module OpenProject
         ::Redmine::MenuManager.map :admin_menu do |menu|
           # Hide enterprise style stub in favor of CityOS replacement.
           menu.delete :custom_style
+          menu.delete :enterprise
         end
       end
 
