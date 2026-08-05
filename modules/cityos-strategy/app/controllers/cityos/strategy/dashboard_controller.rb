@@ -3,6 +3,9 @@
 module Cityos
   module Strategy
     class DashboardController < ApplicationController
+      before_action :require_login
+      no_authorization_required! :show
+
       def show
         @active_plan = StrategicPlan.find_by(status: :active)
         @objectives_count = StrategicObjective.where(status: %i[active at_risk behind]).count

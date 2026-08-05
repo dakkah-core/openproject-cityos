@@ -1,0 +1,51 @@
+<%% content_for :header_tags do %>
+  <%%= stylesheet_link_tag "cityos_strategy", media: :all %>
+<%% end %>
+
+<%% html_title "#{@project.name} — Strategy — CityOS" %>
+
+<div class="cityos-strategy-dashboard">
+  <div class="toolbar-container">
+    <h2><%%= t("cityos.strategy.label_strategy") %></h2>
+  </div>
+
+  <div class="grid-block">
+    <div class="panel-box">
+      <h3>Active Plan</h3>
+      <%% if @active_plan %>
+        <p><strong><%%= @active_plan.name %></strong> — <%%= @active_plan.description %></p>
+        <p>Period: <%%= @active_plan.period_start&.strftime("%Y-%m-%d") %> → <%%= @active_plan.period_end&.strftime("%Y-%m-%d") %></p>
+      <%% else %>
+        <p><em>No active strategic plan. Create one to get started.</em></p>
+      <%% end %>
+    </div>
+
+    <div class="panel-box">
+      <h3>Objectives</h3>
+      <p><strong><%%= @objectives_count %></strong> active/at-risk objectives</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Initiatives</h3>
+      <p><strong><%%= @initiatives_active %> / <%%= @initiatives_total %></strong> activated</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Metrics</h3>
+      <p><strong><%%= @metrics_stale %></strong> stale metrics</p>
+    </div>
+
+    <div class="panel-box">
+      <h3>Upcoming Reviews</h3>
+      <%% if @upcoming_reviews.any? %>
+        <ul>
+          <%% @upcoming_reviews.each do |review| %>
+            <li><%%= review.name %> — <%%= review.period_start&.strftime("%b %d") %></li>
+          <%% end %>
+        </ul>
+      <%% else %>
+        <p><em>No upcoming reviews scheduled.</em></p>
+      <%% end %>
+    </div>
+  </div>
+</div>
