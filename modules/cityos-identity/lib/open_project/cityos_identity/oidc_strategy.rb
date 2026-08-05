@@ -1,3 +1,5 @@
+require 'uri'
+
 module OpenProject
   module CityosIdentity
     # ZITADEL OIDC OmniAuth Strategy
@@ -13,6 +15,23 @@ module OpenProject
     class OidcStrategy
       OIDC_SCOPES = %i[openid profile email cityos_roles cityos_groups cityos_tenant].freeze
 
+      def self.client_options
+        issuer_uri = URI.parse(ENV.fetch('CITYOS_OIDC_ISSUER'))
+
+        {
+          identifier: ENV.fetch('CITYOS_OIDC_CLIENT_ID'),
+          secret: ENV.fetch('CITYOS_OIDC_CLIENT_SECRET'),
+          redirect_uri: ENV.fetch('CITYOS_OIDC_REDIRECT_URI', 'http://localhost:3199/auth/cityos_oidc/callback'),
+          scheme: issuer_uri.scheme,
+          host: issuer_uri.host,
+          port: issuer_uri.port || (issuer_uri.scheme == 'https' ? 443 : 80),
+          authorization_endpoint: issuer_uri.to_s + '/oauth/v2/authorize',
+          token_endpoint: issuer_uri.to_s + '/oauth/v2/token',
+          userinfo_endpoint: issuer_uri.to_s + '/oidc/v1/userinfo',
+          jwks_uri: issuer_uri.to_s + '/oauth/v2/keys'
+        }
+      end
+
       # Register the OIDC provider with OmniAuth
       def self.register!(app)
         return unless configured?
@@ -22,18 +41,7 @@ module OpenProject
             name: :cityos_oidc,
             issuer: ENV.fetch('CITYOS_OIDC_ISSUER'),
             scope: OIDC_SCOPES,
-            client_options: {
-              identifier: ENV.fetch('CITYOS_OIDC_CLIENT_ID'),
-              secret: ENV.fetch('CITYOS_OIDC_CLIENT_SECRET'),
-              redirect_uri: ENV.fetch('CITYOS_OIDC_REDIRECT_URI', 'http://localhost:3199/auth/cityos_oidc/callback'),
-              scheme: 'http',
-              host: 'localhost',
-              port: 8180,
-              authorization_endpoint: 'http://localhost:8180/oauth/v2/authorize',
-              token_endpoint: 'http://localhost:8180/oauth/v2/token',
-              userinfo_endpoint: 'http://localhost:8180/oidc/v1/userinfo',
-              jwks_uri: 'http://localhost:8180/oauth/v2/keys'
-            },
+            client_options: client_options,
             response_type: :code,
             discovery: false,
             send_scope_to_token_endpoint: true,
