@@ -15,6 +15,14 @@ module Cityos
         @ruby_version = RUBY_VERSION
         @rails_version = Rails.version
       end
+
+      def revit_add_in
+        @revit_status = "not_available"
+      end
+
+      def style
+        @status = "not_available"
+      end
     end
   end
 end

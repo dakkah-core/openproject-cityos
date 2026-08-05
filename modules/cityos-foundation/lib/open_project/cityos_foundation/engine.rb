@@ -23,21 +23,23 @@ module OpenProject
 
         menu :admin_menu,
              :cityos_foundation,
-             { controller: '/cityos/foundation', action: :index },
+             { controller: '/cityos/foundation/dashboard', action: :index },
              caption: :"cityos.foundation.label_foundation",
              after: :settings
 
         # Replace enterprise dependency placeholders with CityOS alternatives.
         menu :admin_menu,
-             :custom_style,
-             { controller: '/cityos/foundation', action: :style },
+             :cityos_style,
+             { controller: '/cityos/foundation/dashboard', action: :style },
              caption: :"cityos.foundation.label_style",
              after: :cityos_foundation
 
-        # Neutralize enterprise-only stub entry in account menu with a safe CityOS landing page.
+        # Note: revit_add_in is an existing OpenProject account menu item with an empty URL.
+        # We override it here with a safe CityOS landing page.
+        delete_menu_item(:account_menu, :revit_add_in) rescue nil
         menu :account_menu,
              :revit_add_in,
-             { controller: '/cityos/foundation', action: :revit_add_in },
+             { controller: '/cityos/foundation/dashboard', action: :revit_add_in },
              caption: :"cityos.foundation.label_revit_add_in",
              after: :my_profile
       end
@@ -45,14 +47,14 @@ module OpenProject
       # ── Routes ────────────────────────────────────────────────────
       initializer "cityos_foundation.routes" do |app|
         app.routes.append do
-          get "/cityos/foundation", to: "cityos/foundation#index",
+          get "/cityos/foundation", to: "cityos/foundation/dashboard#index",
               as: :cityos_foundation_dashboard
-          get "/admin/cityos/foundation", to: "cityos/foundation#index"
+          get "/admin/cityos/foundation", to: "cityos/foundation/dashboard#index"
           get "/cityos/foundation/revit_add_in",
-              to: "cityos/foundation#revit_add_in",
+              to: "cityos/foundation/dashboard#revit_add_in",
               as: :cityos_foundation_revit_add_in
           get "/cityos/foundation/style",
-              to: "cityos/foundation#style",
+              to: "cityos/foundation/dashboard#style",
               as: :cityos_foundation_style
         end
       end

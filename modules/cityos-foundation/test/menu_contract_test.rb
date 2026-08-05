@@ -15,9 +15,9 @@ class HelmMenuContractTest < Minitest::Test
   def test_foundation_admin_items_route_to_cityos_foundation_controller
     source = File.read(FOUNDATION_ENGINE)
 
-    assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation',\s*action: :index\s*\}/, source)
-    assert_match(/menu :admin_menu,\s*:custom_style,\s*\{\s*controller: '\/cityos\/foundation',\s*action: :style\s*\}/, source)
-    assert_match(/menu :account_menu,\s*:revit_add_in,\s*\{\s*controller: '\/cityos\/foundation',\s*action: :revit_add_in\s*\}/, source)
+    assert_match(/menu :admin_menu,\s*:cityos_foundation,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :index\s*\}/, source)
+    assert_match(/menu :admin_menu,\s*:cityos_style,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :style\s*\}/, source)
+    assert_match(/menu :account_menu,\s*:revit_add_in,\s*\{\s*controller: '\/cityos\/foundation\/dashboard',\s*action: :revit_add_in\s*\}/, source)
   end
 
   def test_portfolio_replaces_portfolio_and_team_planner_targets
