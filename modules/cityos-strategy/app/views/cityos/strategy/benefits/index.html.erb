@@ -1,13 +1,63 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Benefits</h2>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Strategic Benefits</h2>
+      </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          
+        </ul>
+      <%% end %>
+    </div>
   </div>
+
   <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Benefits — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+
+    <div class="op-widget-box">
+      <div class="op-widget-box--header"><h3>Financial Benefits Overview</h3></div>
+      <div class="summary-stats" style="display:flex; gap:1rem; padding:1rem;">
+        <div class="stat-card" style="flex:1; padding:1rem; background:#e6f4ea; border-radius:4px;">
+          <div class="stat-label">Total Target</div>
+          <div class="stat-value" style="font-size:1.5rem; font-weight:bold;"><%%= @total_target || 0 %> SAR</div>
+        </div>
+        <div class="stat-card" style="flex:1; padding:1rem; background:#e8f0fe; border-radius:4px;">
+          <div class="stat-label">Realized / Sustained</div>
+          <div class="stat-value" style="font-size:1.5rem; font-weight:bold;"><%%= @total_realized || 0 %> SAR</div>
+        </div>
       </div>
     </div>
+
+    <%% if @benefits && @benefits.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>All Benefits (<%%= @benefits.count %>)</h3></div>
+        <table class="generic-table">
+          <thead>
+            <tr><th>ID</th><th>Type</th><th>Description</th><th>Initiative</th><th>Target</th><th>Current</th><th>Status</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            <%% @benefits.each do |b| %>
+              <tr>
+                <td><%%= b.id %></td>
+                <td><%%= b.benefit_type&.humanize %></td>
+                <td><%%= truncate(b.description, length: 60) %></td>
+                <td><%%= b.initiative&.title || '—' %></td>
+                <td><%%= b.target || '—' %></td>
+                <td><%%= b.current_value || '—' %></td>
+                <td><%%= content_tag :span, b.status&.humanize, class: "badge badge--#{b.status}" %></td>
+                <td><%%= b.realization_date&.strftime('%Y-%m-%d') || '—' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>No benefits registered.</p></div>
+    <%% end %>
+
   </div>
 </div>

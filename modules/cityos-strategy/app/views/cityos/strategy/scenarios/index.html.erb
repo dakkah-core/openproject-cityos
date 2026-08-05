@@ -1,13 +1,56 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Scenarios</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Scenarios — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Planning Scenarios</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          <%%= link_to t(:label_scenario_new), new_scenario_path, class: 'button -primary' %>
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <%% if @scenarios && @scenarios.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Scenarios (<%%= @scenarios.count %>)</h3></div>
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Scenario</th>
+              <th>Type</th>
+              <th>Period</th>
+              <th>Status</th>
+              <th>Total Allocation</th>
+              <th>Initiatives</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%% @scenarios.each do |s| %>
+              <tr>
+                <td><%%= s.scenario_id %></td>
+                <td><%%= link_to s.name, scenario_path(s) %></td>
+                <td><%%= s.scenario_type&.humanize || '—' %></td>
+                <td><%%= s.period_start %>—<%%= s.period_end %></td>
+                <td><%%= content_tag :span, s.status&.humanize, class: "badge badge--#{s.status}" %></td>
+                <td><%%= s.allocations&.sum(:amount) || 0 %> SAR</td>
+                <td><%%= s.initiatives_count || s.allocations&.count || 0 %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>No planning scenarios defined.</p></div>
+    <%% end %>
+
   </div>
 </div>

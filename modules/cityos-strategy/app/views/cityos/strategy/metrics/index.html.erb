@@ -1,13 +1,58 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Metrics</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Metrics — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>KPI Definitions</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <%% if @metric_definitions && @metric_definitions.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Metric Definitions (<%%= @metric_definitions.count %>)</h3></div>
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Direction</th>
+              <th>Frequency</th>
+              <th>Source</th>
+              <th>Framework</th>
+              <th>Latest Value</th>
+              <th>Freshness</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%% @metric_definitions.each do |m| %>
+              <tr>
+                <td><%%= m.metric_id %></td>
+                <td><%%= link_to m.name, metric_path(m) %></td>
+                <td><%%= m.direction&.humanize || '—' %></td>
+                <td><%%= m.frequency&.humanize || '—' %></td>
+                <td><%%= m.source_system || '—' %></td>
+                <td><%%= m.framework_profile || '—' %></td>
+                <td><%%= m.latest_observation&.value || '—' %> <%%= m.unit %></td>
+                <td><%%= content_tag :span, m.freshness_status, class: "badge badge--#{m.freshness_status}" %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>No metric definitions configured.</p></div>
+    <%% end %>
+
   </div>
 </div>

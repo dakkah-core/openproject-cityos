@@ -1,13 +1,39 @@
 <div class="op-container">
-  <div class="toolbar">
-    <h2>PORTFOLIO > Portfolio</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>PORTFOLIO > Portfolio — Metrics</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
-      </div>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container"><h2>Portfolio Metrics</h2></div>
     </div>
+  </div>
+
+  <div class="wiki-content">
+    <%% if @spi_by_system && @spi_by_system.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Schedule Performance Index (SPI) by System</h3></div>
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>System</th>
+              <th>SPI</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%% @spi_by_system.each do |system, spi| %>
+              <tr>
+                <td><strong><%%= system %></strong></td>
+                <td><%%= spi&.round(2) || '—' %></td>
+                <td>
+                  <%%= content_tag :span, 
+                    spi.nil? ? 'No Data' : spi >= 1.0 ? 'On Track' : spi >= 0.8 ? 'At Risk' : 'Behind',
+                    class: "badge badge--#{spi.nil? ? 'nodata' : spi >= 1.0 ? 'ontrack' : spi >= 0.8 ? 'atrisk' : 'critical'}" %>
+                </td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>No SPI metrics computed. Ensure project timelines are populated.</p></div>
+    <%% end %>
   </div>
 </div>

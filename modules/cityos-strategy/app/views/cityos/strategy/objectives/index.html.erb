@@ -1,13 +1,64 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Objectives</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Objectives — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Strategic Objectives</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          <%%= link_to t(:label_objective_new), new_objective_path, class: 'button -primary' %>
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <%% if @objectives && @objectives.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header">
+          <h3>Active Objectives (<%%= @objectives.count(&:active?) || 0 %>)</h3>
+        </div>
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Objective</th>
+              <th>Theme</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Key Results</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%% @objectives.each do |obj| %>
+              <tr>
+                <td><%%= obj.objective_id %></td>
+                <td><%%= link_to obj.title, objective_path(obj) %></td>
+                <td><%%= obj.theme&.name || '—' %></td>
+                <td><%%= content_tag :span, obj.status&.humanize, class: "badge badge--#{obj.status}" %></td>
+                <td>
+                  <%%= render partial: 'shared/progress_bar', locals: { 
+                    percent: obj.progress_pct || 0, 
+                    label: "#{obj.progress_pct || 0}%" 
+                  } rescue "#{obj.progress_pct || 0}%" %>
+                </td>
+                <td><%%= obj.key_results&.count || 0 %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata">
+        <p><%%= t(:label_no_data) %></p>
+        <p>Create objectives from the Strategy Dashboard to populate this view.</p>
+      </div>
+    <%% end %>
+
   </div>
 </div>

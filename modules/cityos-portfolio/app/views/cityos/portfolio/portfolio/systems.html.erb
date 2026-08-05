@@ -1,13 +1,49 @@
 <div class="op-container">
-  <div class="toolbar">
-    <h2>PORTFOLIO > Portfolio</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>PORTFOLIO > Portfolio — Systems</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
-      </div>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container"><h2>Systems View</h2></div>
     </div>
+  </div>
+
+  <div class="wiki-content">
+    <%% if @by_system && @by_system.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Systems Breakdown</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>System</th><th>Objectives</th><th>Initiatives</th><th>Proof Status</th><th>Maturity</th></tr></thead>
+          <tbody>
+            <%% @by_system.each do |system, data| %>
+              <tr>
+                <td><strong><%%= system %></strong></td>
+                <td><%%= data[:objectives] || 0 %></td>
+                <td><%%= data[:initiatives] || 0 %></td>
+                <td><%%= content_tag :span, data[:proof_status], class: "badge" %></td>
+                <td><%%= data[:maturity] %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>Run the rollup service by system to populate this view.</p></div>
+    <%% end %>
+
+    <%% if @unresolved && @unresolved.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Unresolved Dependencies (<%%= @unresolved.count %>)</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>From</th><th>To</th><th>Type</th></tr></thead>
+          <tbody>
+            <%% @unresolved.each do |dep| %>
+              <tr>
+                <td><%%= dep[:from] %></td>
+                <td><%%= dep[:to] %></td>
+                <td><%%= dep[:type] %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
   </div>
 </div>

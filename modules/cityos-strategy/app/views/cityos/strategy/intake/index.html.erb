@@ -1,13 +1,85 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Intake</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Intake — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Initiative Intake Funnel</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <%% if @stages && @counts %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header">
+          <h3>Funnel Overview</h3>
+          <span class="quick-stats">Total: <%%= @total || 0 %> | Scored: <%%= @scored_total || 0 %> | Mandatory: <%%= @mandatory_total || 0 %></span>
+        </div>
+        <table class="generic-table">
+          <thead><tr><th>Stage</th><th>Count</th><th>% of Total</th></tr></thead>
+          <tbody>
+            <%% @stages.each do |stage| %>
+              <tr>
+                <td><strong><%%= stage.to_s.humanize %></strong></td>
+                <td><%%= @counts[stage] || 0 %></td>
+                <td><%%= @total.to_f > 0 ? ((@counts[stage].to_f / @total) * 100).round(1) : 0 %>%</td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>No intake stages defined.</p></div>
+    <%% end %>
+
+    <%% if @active_pipeline && @active_pipeline.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Active Pipeline (<%%= @active_pipeline.count %>)</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>ID</th><th>Title</th><th>Stage</th><th>Score</th><th>Portfolio</th><th>Owner</th></tr></thead>
+          <tbody>
+            <%% @active_pipeline.each do |i| %>
+              <tr>
+                <td><%%= i.initiative_id %></td>
+                <td><%%= link_to i.title, initiative_path(i) %></td>
+                <td><%%= content_tag :span, i.stage&.to_s&.humanize, class: "badge" %></td>
+                <td><%%= i.weighted_score&.round(1) || '—' %></td>
+                <td><%%= i.portfolio&.name || '—' %></td>
+                <td><%%= i.owner&.name || '—' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
+
+    <%% if @recently_activated && @recently_activated.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Recently Activated</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>ID</th><th>Title</th><th>Score</th><th>Updated</th></tr></thead>
+          <tbody>
+            <%% @recently_activated.each do |i| %>
+              <tr>
+                <td><%%= i.initiative_id %></td>
+                <td><%%= link_to i.title, initiative_path(i) %></td>
+                <td><%%= i.weighted_score&.round(1) || '—' %></td>
+                <td><%%= time_ago_in_words(i.updated_at) %> ago</td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
+
   </div>
 </div>

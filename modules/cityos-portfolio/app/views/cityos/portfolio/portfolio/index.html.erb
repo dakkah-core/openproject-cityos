@@ -1,13 +1,52 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>PORTFOLIO > Portfolio</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>PORTFOLIO > Portfolio — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
-      </div>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container"><h2>CityOS Program Portfolio</h2></div>
     </div>
+  </div>
+
+  <div class="wiki-content">
+    <%% if @rollup %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Full Rollup</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>System</th><th>Proof Status</th><th>Maturity</th><th>Blocked</th></tr></thead>
+          <tbody>
+            <%% (@rollup || []).each do |r| %>
+              <tr>
+                <td><strong><%%= r[:system] || r['system'] %></strong></td>
+                <td><%%= content_tag :span, r[:proof_status] || r['proof_status'], class: "badge" %></td>
+                <td><%%= r[:maturity] || r['maturity'] %></td>
+                <td><%%= r[:blocked] ? 'Blocked' : 'Clear' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% else %>
+      <div class="nodata"><p>Run the rollup service to populate the program portfolio.</p></div>
+    <%% end %>
+
+    <%% if @release_gates && @release_gates.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Release Gate Dashboard</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>Gate</th><th>Status</th><th>Systems</th></tr></thead>
+          <tbody>
+            <%% @release_gates.each do |gate, status| %>
+              <tr>
+                <td><strong><%%= gate.to_s.humanize %></strong></td>
+                <td><%%= content_tag :span, status, class: "badge" %></td>
+                <td><%%= (@blocked || {})[gate]&.join(', ') || '—' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
   </div>
 </div>

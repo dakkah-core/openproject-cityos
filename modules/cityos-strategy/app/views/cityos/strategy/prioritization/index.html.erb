@@ -1,13 +1,76 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Prioritization</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Prioritization — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Initiative Prioritization Matrix</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <div class="op-widget-box">
+      <div class="op-widget-box--header">
+        <h3>Ranked Initiatives (<%%= @ranked&.count || 0 %> scored<%%= @mandatory ? " + #{@mandatory.count} mandatory" : '' %>)</h3>
+      </div>
+
+      <%% if @ranked && @ranked.any? %>
+        <table class="generic-table">
+          <thead>
+            <tr><th>Rank</th><th>ID</th><th>Title</th><th>Weighted Score</th>
+                <th>Align</th><th>Value</th><th>Urgency</th><th>Risk</th><th>Readiness</th><th>Effort</th><th>Confidence</th>
+                <th>Est. Cost</th><th>Stage</th></tr>
+          </thead>
+          <tbody>
+            <%% @ranked.each_with_index do |r, idx| %>
+              <tr>
+                <td><strong>#<%%= idx + 1 %></strong></td>
+                <td><%%= r[:initiative_id] %></td>
+                <td><%%= r[:title] %></td>
+                <td><strong><%%= r[:weighted_score]&.round(1) %></strong></td>
+                <td><%%= r[:scores][:alignment] %></td>
+                <td><%%= r[:scores][:value] %></td>
+                <td><%%= r[:scores][:urgency] %></td>
+                <td><%%= r[:scores][:risk] %></td>
+                <td><%%= r[:scores][:readiness] %></td>
+                <td><%%= r[:scores][:effort] %></td>
+                <td><%%= r[:scores][:confidence] %></td>
+                <td><%%= r[:estimated_cost] ? "#{r[:estimated_cost]} SAR" : '—' %></td>
+                <td><%%= content_tag :span, r[:stage]&.to_s&.humanize, class: "badge" %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      <%% else %>
+        <div class="nodata"><p>No scored initiatives. Score initiatives through the intake funnel to populate this view.</p></div>
+      <%% end %>
+
+      <%% if @mandatory && @mandatory.any? %>
+        <h3>Mandatory Initiatives (Bypass Scoring)</h3>
+        <table class="generic-table">
+          <thead><tr><th>ID</th><th>Title</th><th>Stage</th><th>Owner</th></tr></thead>
+          <tbody>
+            <%% @mandatory.each do |i| %>
+              <tr>
+                <td><%%= i.initiative_id %></td>
+                <td><%%= link_to i.title, initiative_path(i) %></td>
+                <td><%%= content_tag :span, i.stage&.to_s&.humanize, class: "badge" %></td>
+                <td><%%= i.owner&.name || '—' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      <%% end %>
+    </div>
+
   </div>
 </div>

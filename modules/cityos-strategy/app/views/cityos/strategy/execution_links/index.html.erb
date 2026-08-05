@@ -1,13 +1,50 @@
+<%% content_for :header_tags do %>
+  <meta name="turbo-visit-control" content="reload">
+<%% end %>
+
 <div class="op-container">
-  <div class="toolbar">
-    <h2>STRATEGY > Execution Links</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>STRATEGY > Execution Links — Index</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container">
+        <h2>Execution Links</h2>
       </div>
+      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+        <ul class="toolbar-items">
+          
+        </ul>
+      <%% end %>
     </div>
+  </div>
+
+  <div class="wiki-content">
+
+    <%% if @initiative %>
+      <h3>Initiative: <%%= @initiative.title %></h3>
+
+      <%% if @links && @links.any? %>
+        <table class="generic-table">
+          <thead>
+            <tr><th>Work Package</th><th>Link Type</th><th>Weight</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <%% @links.each do |link| %>
+              <tr>
+                <td>
+                  <%%= link_to "WP ##{link.work_package_id}", work_package_path(link.work_package_id) rescue "WP ##{link.work_package_id}" %>
+                </td>
+                <td><%%= link.link_type&.humanize %></td>
+                <td><%%= link.contribution_weight %></td>
+                <td><%%= link.work_package&.status&.name || '—' %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      <%% else %>
+        <div class="nodata"><p>No work packages linked to this initiative.</p></div>
+      <%% end %>
+    <%% else %>
+      <div class="nodata"><p>Select an initiative to view execution links.</p></div>
+    <%% end %>
+
   </div>
 </div>

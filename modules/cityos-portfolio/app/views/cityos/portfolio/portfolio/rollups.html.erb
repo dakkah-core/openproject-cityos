@@ -1,13 +1,52 @@
 <div class="op-container">
-  <div class="toolbar">
-    <h2>PORTFOLIO > Portfolio</h2>
-  </div>
-  <div class="wiki-content">
-    <div class="generic-table--container">
-      <div class="nodata">
-        <p><strong>PORTFOLIO > Portfolio — Rollups</strong></p>
-        <p>This view is active and under construction. Controllers, database models, and routes are operational.</p>
-      </div>
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container"><h2>Portfolio Rollups</h2></div>
     </div>
+  </div>
+
+  <div class="wiki-content">
+    <%% if @by_proof && @by_proof.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>By Proof Status</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>Proof Status</th><th>Count</th><th>Systems</th></tr></thead>
+          <tbody>
+            <%% @by_proof.each do |status, systems| %>
+              <tr>
+                <td><%%= content_tag :span, status.to_s.humanize, class: "badge badge--#{status}" %></td>
+                <td><strong><%%= systems.count %></strong></td>
+                <td><%%= systems.join(', ') %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
+
+    <%% if @by_maturity && @by_maturity.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>By Maturity</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>Maturity</th><th>Count</th><th>Systems</th></tr></thead>
+          <tbody>
+            <%% @by_maturity.each do |maturity, systems| %>
+              <tr>
+                <td><strong><%%= maturity %></strong></td>
+                <td><%%= systems.count %></td>
+                <td><%%= systems.join(', ') %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
+
+    <%% if @stale_count %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Stale Detector</h3></div>
+        <p>Stale items: <strong><%%= @stale_count %></strong></p>
+      </div>
+    <%% end %>
   </div>
 </div>
