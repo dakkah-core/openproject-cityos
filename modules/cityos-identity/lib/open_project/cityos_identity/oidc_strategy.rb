@@ -2,10 +2,11 @@ require 'uri'
 
 module OpenProject
   module CityosIdentity
-    # ZITADEL OIDC OmniAuth Strategy
+    # CityOS OIDC OmniAuth Strategy
     #
-    # Provides SSO login for human operators through ZITADEL.
-    # Falls back to Keycloak OIDC if ZITADEL is not configured.
+    # Provides SSO login through the CityOS identity plane.
+    # The underlying engine (ZITADEL / Keycloak) is never exposed
+    # to the user — all UI, copy, and routes are CityOS-branded.
     #
     # Env vars:
     #   CITYOS_OIDC_ISSUER        — ZITADEL or Keycloak issuer URL
@@ -36,15 +37,22 @@ module OpenProject
       def self.register!(app)
         return unless configured?
 
+        opts = client_options
         app.config.middleware.use OmniAuth::Builder do
           provider :openid_connect, {
             name: :cityos_oidc,
             issuer: ENV.fetch('CITYOS_OIDC_ISSUER'),
             scope: OIDC_SCOPES,
-            client_options: client_options,
+            client_options: opts,
             response_type: :code,
             discovery: false,
             send_scope_to_token_endpoint: true,
+            send_nonce: true,
+            pkce: true,
+            pkce_options: {
+              code_challenge_method: 'S256',
+              code_challenge_length: 43
+            },
             client_auth_method: :basic
           }
         end

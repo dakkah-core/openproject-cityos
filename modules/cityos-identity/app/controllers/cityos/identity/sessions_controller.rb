@@ -12,6 +12,11 @@ module Cityos
       skip_before_action :verify_authenticity_token, only: [:create]
       no_authorization_required! :create, :failure, :destroy
 
+      # Default engine landing — redirects to OpenProject home
+      def index
+        redirect_to '/'
+      end
+
       # OIDC callback — user authenticated by ZITADEL/Keycloak
       def create
         auth_hash = request.env['omniauth.auth']
@@ -37,7 +42,7 @@ module Cityos
           self.logged_user = user
           flash[:notice] = "Welcome, #{user.firstname}"
 
-          redirect_to home_url
+          redirect_to '/'
         else
           Rails.logger.error('[Cityos Identity] OIDC callback failed — user not created or locked')
           redirect_to signin_path, alert: 'Authentication failed — user account issue'

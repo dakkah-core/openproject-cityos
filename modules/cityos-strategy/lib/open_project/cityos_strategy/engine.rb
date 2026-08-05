@@ -151,51 +151,145 @@ module OpenProject
              :cityos_strategy,
              { controller: "/cityos/strategy/dashboard", action: "show" },
              caption: :"cityos.strategy.label_strategy",
-             icon: "icon-target",
              after: :overview
 
         menu :project_menu,
              :cityos_strategy_objectives,
              { controller: "/cityos/strategy/objectives", action: "index" },
              caption: :"cityos.strategy.label_objectives",
-             parent: :cityos_strategy,
-             icon: "icon-flag"
+             parent: :cityos_strategy
 
         menu :project_menu,
              :cityos_strategy_initiatives,
              { controller: "/cityos/strategy/initiatives", action: "index" },
              caption: :"cityos.strategy.label_initiatives",
-             parent: :cityos_strategy,
-             icon: "icon-rocket"
+             parent: :cityos_strategy
 
         menu :project_menu,
              :cityos_strategy_scenarios,
              { controller: "/cityos/strategy/scenarios", action: "index" },
              caption: :"cityos.strategy.label_scenarios",
-             parent: :cityos_strategy,
-             icon: "icon-branch"
+             parent: :cityos_strategy
 
         menu :project_menu,
              :cityos_strategy_metrics,
              { controller: "/cityos/strategy/metrics", action: "index" },
              caption: :"cityos.strategy.label_kpis",
-             parent: :cityos_strategy,
-             icon: "icon-meter"
+             parent: :cityos_strategy
 
         menu :project_menu,
              :cityos_strategy_reviews,
              { controller: "/cityos/strategy/reviews", action: "index" },
              caption: :"cityos.strategy.label_reviews",
-             parent: :cityos_strategy,
-             icon: "icon-checkmark"
+             parent: :cityos_strategy
 
         # ── Admin integration ────────────────────────────────────────
         menu :admin_menu,
              :cityos_strategy_admin,
              { controller: "/cityos/strategy/admin", action: "index" },
              caption: :"cityos.strategy.label_administration",
-             icon: "icon-settings3",
              after: :cityos_foundation
+      end
+
+      # ── Routes ────────────────────────────────────────────────────
+      initializer "cityos_strategy.routes" do |app|
+        app.routes.append do
+          # Dashboard
+          get "/projects/:project_id/cityos/strategy/dashboard(/:action)",
+              to: "cityos/strategy/dashboard#show",
+              as: :cityos_strategy_dashboard
+
+          # Strategic Plans
+          resources :cityos_strategy_plans,
+                    controller: "cityos/strategy/plans",
+                    path: "cityos/strategy/plans",
+                    only: %i[index show new create edit update destroy] do
+            member { post :baseline }
+          end
+
+          # Objectives
+          resources :cityos_strategy_objectives,
+                    controller: "cityos/strategy/objectives",
+                    path: "cityos/strategy/objectives",
+                    only: %i[index show new create edit update destroy] do
+            member { post :score }
+          end
+
+          # Initiatives
+          resources :cityos_strategy_initiatives,
+                    controller: "cityos/strategy/initiatives",
+                    path: "cityos/strategy/initiatives",
+                    only: %i[index show new create edit update destroy] do
+            member { post :score; post :advance_stage }
+          end
+
+          # Scenarios
+          resources :cityos_strategy_scenarios,
+                    controller: "cityos/strategy/scenarios",
+                    path: "cityos/strategy/scenarios",
+                    only: %i[index show new create edit update destroy] do
+            member { post :freeze; post :unfreeze }
+          end
+
+          # Metrics
+          resources :cityos_strategy_metrics,
+                    controller: "cityos/strategy/metrics",
+                    path: "cityos/strategy/metrics",
+                    only: %i[index show new create edit update destroy] do
+            member { post :record_observation }
+          end
+
+          # Reviews
+          resources :cityos_strategy_reviews,
+                    controller: "cityos/strategy/reviews",
+                    path: "cityos/strategy/reviews",
+                    only: %i[index show new create edit update destroy] do
+            member { post :snapshot }
+          end
+
+          # Benefits
+          resources :cityos_strategy_benefits,
+                    controller: "cityos/strategy/benefits",
+                    path: "cityos/strategy/benefits",
+                    only: %i[index show new create edit update destroy]
+
+          # Allocations
+          resources :cityos_strategy_allocations,
+                    controller: "cityos/strategy/allocations",
+                    path: "cityos/strategy/allocations",
+                    only: %i[index show new create edit update destroy]
+
+          # Dependencies
+          resources :cityos_strategy_dependencies,
+                    controller: "cityos/strategy/dependencies",
+                    path: "cityos/strategy/dependencies",
+                    only: %i[index show new create edit update destroy]
+
+          # Risks
+          resources :cityos_strategy_risks,
+                    controller: "cityos/strategy/risks",
+                    path: "cityos/strategy/risks",
+                    only: %i[index show new create edit update destroy]
+
+          # Decisions
+          resources :cityos_strategy_decisions,
+                    controller: "cityos/strategy/decisions",
+                    path: "cityos/strategy/decisions",
+                    only: %i[index show new create edit update destroy]
+
+          # API
+          namespace :cityos do
+            namespace :strategy do
+              namespace :api do
+                namespace :v1 do
+                  resources :objectives, only: %i[index show]
+                  resources :initiatives, only: %i[index show]
+                  resources :metrics, only: %i[index show]
+                end
+              end
+            end
+          end
+        end
       end
 
       # ── Locales ────────────────────────────────────────────────────

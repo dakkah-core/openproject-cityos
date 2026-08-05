@@ -21,12 +21,6 @@ module OpenProject
                      permissible_on: [:project],
                      require: :loggedin
         end
-
-        menu :account_menu,
-             :cityos_identity,
-             { controller: "/cityos/identity", action: :index },
-             caption: "CityOS Identity",
-             after: :settings
       end
 
       # ── Load all identity services ──────────────────────
@@ -52,6 +46,7 @@ module OpenProject
       # ── OIDC callback routes (PREPEND to beat generic omni_auth_callback) ──
       initializer "cityos_identity.routes" do |app|
         app.routes.prepend do
+          get "/cityos/identity", to: "cityos/identity/sessions#index", as: :cityos_identity
           get "/auth/cityos_oidc/callback",
               to: "cityos/identity/sessions#create",
               as: :cityos_oidc_callback

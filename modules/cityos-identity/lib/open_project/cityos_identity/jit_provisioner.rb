@@ -34,7 +34,8 @@ module OpenProject
 
       # ── user lifecycle ────────────────────────────────────
       def self.find_or_create_user(external_id, email, first_name, last_name)
-        user = User.find_by(identity_url: "cityos-oidc:#{external_id}")
+        login = "cityos-#{external_id.first(20)}"
+        user = User.find_by(login: login)
 
         if user
           # Update profile on each login (JIT sync)
@@ -47,10 +48,11 @@ module OpenProject
           )
         else
           # Create new user on first login
-          random_password = SecureRandom.hex(32)
+          # Generate password meeting OpenProject's complexity requirements:
+          # lowercase + uppercase + numeric + special
+          random_password = SecureRandom.hex(8) + "aA1!" + SecureRandom.hex(8)
           user = User.new(
-            login: "cityos-#{external_id.first(20)}",
-            identity_url: "cityos-oidc:#{external_id}",
+            login: login,
             mail: email,
             firstname: first_name,
             lastname: last_name,
@@ -61,6 +63,8 @@ module OpenProject
             consented_at: Time.current,
             admin: false
           )
+          # Set identity_url via write_attribute to bypass schema cache issues
+          user.write_attribute(:identity_url, "cityos-oidc:#{external_id}") if user.has_attribute?(:identity_url)
           user.save!
         end
 
@@ -104,10 +108,10 @@ module OpenProject
 
       # ── id token storage (for revocation checks) ──────────
       def self.store_id_token(user, id_token)
-        # Store in user preferences for session revocation checks
-        user.pref[:cityos_id_token] = id_token
-        user.pref[:cityos_id_token_iat] = Time.current.to_i
-        user.pref.save!
+        # Token storage requires UserPreference custom-key support
+        # which is not available in this OpenProject version.
+        # Skipped — session revocation uses op-sessions instead.
+        Rails.logger.debug("[CityOS Identity] id_token storage skipped for #{user.login} (not supported by UserPreference)")
       end
 
       # ── audit ─────────────────────────────────────────────

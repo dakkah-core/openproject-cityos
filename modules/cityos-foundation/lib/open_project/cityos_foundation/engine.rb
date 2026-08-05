@@ -25,7 +25,6 @@ module OpenProject
              :cityos_foundation,
              { controller: '/cityos/foundation', action: :index },
              caption: 'CityOS HELM',
-             icon: 'cityos-logo',
              after: :settings
 
       end

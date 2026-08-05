@@ -1,0 +1,9 @@
+<%% content_for :header_tags do %>
+  <%%= stylesheet_link_tag "cityos_governance", media: :all %>
+<%% end %>
+
+<%% html_title "#{@project.name} — Governance — CityOS" %>
+
+<div class="cityos-governance-container">
+  <%%= render partial: "cityos/governance/panel" %>
+</div>

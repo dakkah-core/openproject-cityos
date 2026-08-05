@@ -30,7 +30,6 @@ module OpenProject
              :cityos_governance,
              { controller: '/cityos/governance', action: :show },
              caption: 'Governance',
-             icon: 'cityos-governance',
              after: :work_packages
       end
 
@@ -48,9 +47,12 @@ module OpenProject
         require_dependency "open_project/cityos_governance/sync_receipt"
       end
 
-      # Register API routes for governance
+      # Register routes for governance
       initializer "cityos_governance.routes" do |app|
         app.routes.append do
+          get "/projects/:project_id/cityos/governance",
+              to: "cityos/governance/governance#show",
+              as: :project_cityos_governance
           get "/api/v3/work_packages/:work_package_id/cityos_governance",
               to: "cityos/governance/governance#show",
               as: :cityos_governance_show

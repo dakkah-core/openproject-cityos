@@ -1,0 +1,337 @@
+<%#
+  CityOS Login Branding — full-page override for the HELM login surface.
+  Injects the CityOS design system above and around the login form.
+  Rendered via view_account_login_top hook (at top of the login form area).
+%>
+
+<!-- ═══ CityOS Branding Header (above the card) ═══ -->
+<div class="cityos-login-header">
+  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" class="cityos-login-mark">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <path d="M7 12h10M12 7v10M8 8l8 8M16 8l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </svg>
+  <span class="cityos-login-wordmark">CityOS</span>
+</div>
+
+<!-- ═══ CityOS Login Design System CSS ═══ -->
+<style>
+  /*
+     CityOS Login Design System — HELM Override
+     Overrides OpenProject's default login styles with CityOS tokens.
+     Targets: body.action-login (the sign-in page).
+  */
+
+  /* ── CSS Custom Properties ── */
+  :root {
+    --cityos-brand: #3182ce;
+    --cityos-brand-hover: #2b6cb0;
+    --cityos-brand-soft: rgba(49, 130, 206, 0.08);
+    --cityos-card-bg: #ffffff;
+    --cityos-card-radius: 12px;
+    --cityos-card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.05);
+    --cityos-text: #1a202c;
+    --cityos-text-muted: #718096;
+    --cityos-input-border: #e2e8f0;
+    --cityos-input-focus: 0 0 0 3px rgba(49, 130, 206, 0.2);
+    --cityos-input-radius: 8px;
+    --cityos-divider: #e2e8f0;
+    --cityos-btn-height: 46px;
+  }
+
+  /* ── Page Background ── */
+  body.action-login {
+    background: linear-gradient(160deg, #f7fafc 0%, #edf2f7 40%, #e2e8f0 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* ── Strip OpenProject chrome on login ── */
+  body.action-login > skip-link,
+  body.action-login .op-app-header,
+  body.action-login .op-header,
+  body.action-login #top-menu,
+  body.action-login #header,
+  body.action-login header,
+  body.action-login [data-qa-selector="op-header"],
+  body.action-login ._header_,
+  body.action-login nav[aria-label="Top Menu"],
+  body.action-login .global-search,
+  body.action-login .op-app-search { display: none !important; }
+
+  body.action-login #content-wrapper,
+  body.action-login #main,
+  body.action-login #content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  body.action-login #main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+
+  /* ── CityOS Header (above the card) ── */
+  .cityos-login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cityos-login-mark {
+    color: var(--cityos-brand);
+    opacity: 0.9;
+  }
+
+  .cityos-login-wordmark {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cityos-text);
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Login Card (wraps form + SSO section) ── */
+  body.action-login #login-form,
+  body.action-login .login-auth-providers {
+    background: var(--cityos-card-bg);
+    border: 1px solid var(--cityos-input-border);
+    border-radius: var(--cityos-card-radius);
+    box-shadow: var(--cityos-card-shadow);
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+  }
+
+  /* Merge form and SSO section into one seamless card */
+  body.action-login #login-form {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: none !important;
+    padding-bottom: 20px !important;
+  }
+
+  body.action-login .login-auth-providers {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top: 1px dashed var(--cityos-divider) !important;
+    padding-top: 20px !important;
+    margin-top: 0 !important;
+  }
+
+  /* ── Headings ── */
+  body.action-login .login-auth-providers-title {
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    color: var(--cityos-text-muted) !important;
+    text-align: center;
+    text-transform: none !important;
+    margin: 28px 0 16px !important;
+    border: none !important;
+    background: none !important;
+    position: relative;
+  }
+
+  /* "or" divider lines */
+  .login-auth-providers-title::before,
+  .login-auth-providers-title::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: 1px;
+    background: var(--cityos-divider);
+    width: calc(50% - 24px);
+  }
+  .login-auth-providers-title::before { left: 0; }
+  .login-auth-providers-title::after  { right: 0; }
+  [dir="rtl"] .login-auth-providers-title::before { left: auto; right: 0; }
+  [dir="rtl"] .login-auth-providers-title::after  { right: auto; left: 0; }
+
+  /* ── Form Fields ── */
+  body.action-login #login-form .form--field,
+  body.action-login #login-form .attributes-group {
+    margin-bottom: 18px;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  body.action-login #login-form label,
+  body.action-login #login-form .form--label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--cityos-text);
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  body.action-login #login-form input[type="text"],
+  body.action-login #login-form input[type="password"],
+  body.action-login #username,
+  body.action-login #password {
+    width: 100% !important;
+    height: 46px !important;
+    padding: 10px 14px !important;
+    font-size: 0.9375rem !important;
+    border: 1px solid var(--cityos-input-border) !important;
+    border-radius: var(--cityos-input-radius) !important;
+    background: #fff !important;
+    color: var(--cityos-text) !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  body.action-login #login-form input:focus {
+    border-color: var(--cityos-brand) !important;
+    box-shadow: var(--cityos-input-focus) !important;
+    outline: none !important;
+  }
+
+  /* ── Primary "Sign in" Button (password form) ── */
+  body.action-login #login-form input[type="submit"],
+  body.action-login #login-form button[type="submit"],
+  body.action-login #login-form input[name="login"],
+  body.action-login #login-form .button[type="submit"] {
+    width: 100% !important;
+    height: var(--cityos-btn-height) !important;
+    background: var(--cityos-brand) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--cityos-input-radius) !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background 0.15s !important;
+    margin-top: 2px !important;
+    padding: 0 !important;
+    line-height: var(--cityos-btn-height) !important;
+  }
+
+  body.action-login #login-form input[type="submit"]:hover,
+  body.action-login #login-form button[type="submit"]:hover {
+    background: var(--cityos-brand-hover) !important;
+  }
+
+  /* ── Action links (register / lost password) ── */
+  body.action-login #login-form a[href*="register"],
+  body.action-login #login-form a[href*="lost_password"] {
+    color: var(--cityos-brand);
+    font-size: 0.8125rem;
+    text-decoration: none;
+  }
+  body.action-login #login-form a[href*="register"]:hover,
+  body.action-login #login-form a[href*="lost_password"]:hover {
+    text-decoration: underline;
+  }
+
+  /* ── SSO Provider List ── */
+  body.action-login .login-auth-provider-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ── "Sign in with CityOS" SSO Button ── */
+  .auth-provider-cityos,
+  body.action-login .login-auth-provider-list a,
+  body.action-login .login-auth-provider-list .button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: var(--cityos-btn-height) !important;
+    background: #fff !important;
+    color: var(--cityos-text) !important;
+    border: 1px solid var(--cityos-input-border) !important;
+    border-radius: var(--cityos-input-radius) !important;
+    font-size: 0.9375rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    padding: 0 20px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .auth-provider-cityos:hover,
+  body.action-login .login-auth-provider-list a:hover {
+    background: var(--cityos-brand-soft) !important;
+    border-color: var(--cityos-brand) !important;
+    text-decoration: none !important;
+    box-shadow: 0 0 0 1px var(--cityos-brand) !important;
+  }
+
+  .auth-provider-button--logo {
+    display: flex;
+    align-items: center;
+    color: var(--cityos-brand);
+    flex-shrink: 0;
+  }
+
+  .auth-provider-button--text,
+  .button--text {
+    white-space: nowrap;
+  }
+
+  /* ── Flash / Alert Messages ── */
+  body.action-login .flash.error,
+  body.action-login .errorExplanation {
+    border-radius: var(--cityos-input-radius);
+    border-left: 4px solid #e53e3e;
+    background: #fff5f5;
+    color: #c53030;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.8125rem;
+  }
+
+  body.action-login .flash.notice {
+    border-radius: var(--cityos-input-radius);
+    border-left: 4px solid var(--cityos-brand);
+    background: #ebf8ff;
+    color: var(--cityos-brand-hover);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Footer ── */
+  body.action-login .cityos-login-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 0.75rem;
+    color: var(--cityos-text-muted);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    body.action-login #login-form,
+    body.action-login .login-auth-providers {
+      max-width: 100%;
+      padding: 28px 24px;
+      box-shadow: none;
+      border-radius: 12px;
+    }
+
+    body.action-login {
+      background: var(--cityos-card-bg);
+    }
+
+    .cityos-login-header {
+      margin-bottom: 24px;
+    }
+  }
+</style>

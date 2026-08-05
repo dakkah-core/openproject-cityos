@@ -4,18 +4,27 @@ module Cityos
     # Write endpoints restricted to the sync identity by WriteGuard.
     class GovernanceController < ::ApplicationController
       before_action :require_login
-      before_action :find_work_package
+      before_action :find_work_package, except: [:show]
       before_action :reject_non_sync_writes, only: [:sync_bindings, :sync_projections]
 
-      # GET /api/v3/work_packages/:id/cityos_governance
+      # GET /projects/:project_id/cityos/governance (HTML) or
+      # GET /api/v3/work_packages/:id/cityos_governance (JSON)
       def show
-        render json: {
-          scope_binding: serialized_binding,
-          governance_projection: serialized_projection,
-          evidence_links: serialized_evidence,
-          sync_receipts: serialized_receipts,
-          available_commands: available_commands
-        }
+        respond_to do |format|
+          format.html do
+            @project = Project.find(params[:project_id])
+            render layout: "angular/angular"
+          end
+          format.json do
+            render json: {
+              scope_binding: serialized_binding,
+              governance_projection: serialized_projection,
+              evidence_links: serialized_evidence,
+              sync_receipts: serialized_receipts,
+              available_commands: available_commands
+            }
+          end
+        end
       end
 
       # POST /api/v3/work_packages/:id/cityos_governance/sync_bindings
