@@ -31,6 +31,10 @@ COPY config/cityos-helm-manifest.yml /app/config/cityos-helm-manifest.yml
 COPY patches/001-branding/ /app/
 # CITYOS-PATCH-002: Frontend Angular plugin registration
 # Applied at npm install time by OpenProject's frontend build
+# CITYOS-PATCH-004: CSP guard for dynamic connect-src source injection
+COPY patches/004-csp-guard/ /app/
+# CITYOS-PATCH-005: sanitize malformed connect-src entries in CSP initializer
+COPY patches/005-csp-connect-src-guard/ /app/
 
 # ── Gemfile.plugins — loaded alongside Gemfile.modules ───────
 COPY Gemfile.plugins /app/Gemfile.plugins
