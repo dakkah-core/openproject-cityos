@@ -8,10 +8,10 @@ module Cityos
     #   DELETE /auth/cityos_oidc/logout — Session logout with revocation
     class SessionsController < ::AccountController
       # OIDC callback and failure are unauthenticated endpoints
-      skip_before_action :authorization_check_required, raise: false
-      skip_before_action :check_if_login_required, raise: false
-      skip_before_action :require_login, raise: false
-      skip_before_action :verify_authenticity_token, only: [:create], raise: false
+      skip_before_action :authorization_check_required
+      skip_before_action :check_if_login_required
+      skip_before_action :verify_authenticity_token, only: [:create]
+      no_authorization_required! :create, :failure, :destroy
 
       # OIDC callback — user authenticated by ZITADEL/Keycloak
       def create
