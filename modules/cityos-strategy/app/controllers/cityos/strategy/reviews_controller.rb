@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class ReviewsController < ApplicationController
+  before_action :find_optional_project
+
       before_action :find_review, only: %i[show edit update destroy snapshot]
 
       def index

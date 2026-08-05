@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class VarianceController < ApplicationController
+  before_action :find_optional_project
+
       # Planned vs actual vs forecast views
       def show
         @plan = StrategicPlan.find_by(status: :active)

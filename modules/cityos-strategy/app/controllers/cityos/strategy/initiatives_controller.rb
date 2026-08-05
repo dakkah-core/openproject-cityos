@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class InitiativesController < ApplicationController
+  before_action :find_optional_project
+
       before_action :find_initiative, only: %i[show edit update destroy score advance_stage]
 
       def index

@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class ObjectivesController < ApplicationController
+  before_action :find_optional_project
+
       before_action :find_objective, only: %i[show edit update destroy score]
 
       def index

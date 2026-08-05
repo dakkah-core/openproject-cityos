@@ -199,85 +199,87 @@ module OpenProject
               to: "cityos/strategy/dashboard#show",
               as: :cityos_strategy_dashboard
 
-          # Strategic Plans
-          resources :cityos_strategy_plans,
-                    controller: "cityos/strategy/plans",
-                    path: "cityos/strategy/plans",
-                    only: %i[index show new create edit update destroy] do
-            member { post :baseline }
+          scope "/projects/:project_id" do
+            # Strategic Plans
+            resources :cityos_strategy_plans,
+                      controller: "cityos/strategy/plans",
+                      path: "cityos/strategy/plans",
+                      only: %i[index show new create edit update destroy] do
+              member { post :baseline }
+            end
+
+            # Objectives
+            resources :cityos_strategy_objectives,
+                      controller: "cityos/strategy/objectives",
+                      path: "cityos/strategy/objectives",
+                      only: %i[index show new create edit update destroy] do
+              member { post :score }
+            end
+
+            # Initiatives
+            resources :cityos_strategy_initiatives,
+                      controller: "cityos/strategy/initiatives",
+                      path: "cityos/strategy/initiatives",
+                      only: %i[index show new create edit update destroy] do
+              member { post :score; post :advance_stage }
+            end
+
+            # Scenarios
+            resources :cityos_strategy_scenarios,
+                      controller: "cityos/strategy/scenarios",
+                      path: "cityos/strategy/scenarios",
+                      only: %i[index show new create edit update destroy] do
+              member { post :freeze; post :unfreeze }
+            end
+
+            # Metrics
+            resources :cityos_strategy_metrics,
+                      controller: "cityos/strategy/metrics",
+                      path: "cityos/strategy/metrics",
+                      only: %i[index show new create edit update destroy] do
+              member { post :record_observation }
+            end
+
+            # Reviews
+            resources :cityos_strategy_reviews,
+                      controller: "cityos/strategy/reviews",
+                      path: "cityos/strategy/reviews",
+                      only: %i[index show new create edit update destroy] do
+              member { post :snapshot }
+            end
+
+            # Benefits
+            resources :cityos_strategy_benefits,
+                      controller: "cityos/strategy/benefits",
+                      path: "cityos/strategy/benefits",
+                      only: %i[index show new create edit update destroy]
+
+            # Allocations
+            resources :cityos_strategy_allocations,
+                      controller: "cityos/strategy/allocations",
+                      path: "cityos/strategy/allocations",
+                      only: %i[index show new create edit update destroy]
+
+            # Dependencies
+            resources :cityos_strategy_dependencies,
+                      controller: "cityos/strategy/dependencies",
+                      path: "cityos/strategy/dependencies",
+                      only: %i[index show new create edit update destroy]
+
+            # Risks
+            resources :cityos_strategy_risks,
+                      controller: "cityos/strategy/risks",
+                      path: "cityos/strategy/risks",
+                      only: %i[index show new create edit update destroy]
+
+            # Decisions
+            resources :cityos_strategy_decisions,
+                      controller: "cityos/strategy/decisions",
+                      path: "cityos/strategy/decisions",
+                      only: %i[index show new create edit update destroy]
           end
 
-          # Objectives
-          resources :cityos_strategy_objectives,
-                    controller: "cityos/strategy/objectives",
-                    path: "cityos/strategy/objectives",
-                    only: %i[index show new create edit update destroy] do
-            member { post :score }
-          end
-
-          # Initiatives
-          resources :cityos_strategy_initiatives,
-                    controller: "cityos/strategy/initiatives",
-                    path: "cityos/strategy/initiatives",
-                    only: %i[index show new create edit update destroy] do
-            member { post :score; post :advance_stage }
-          end
-
-          # Scenarios
-          resources :cityos_strategy_scenarios,
-                    controller: "cityos/strategy/scenarios",
-                    path: "cityos/strategy/scenarios",
-                    only: %i[index show new create edit update destroy] do
-            member { post :freeze; post :unfreeze }
-          end
-
-          # Metrics
-          resources :cityos_strategy_metrics,
-                    controller: "cityos/strategy/metrics",
-                    path: "cityos/strategy/metrics",
-                    only: %i[index show new create edit update destroy] do
-            member { post :record_observation }
-          end
-
-          # Reviews
-          resources :cityos_strategy_reviews,
-                    controller: "cityos/strategy/reviews",
-                    path: "cityos/strategy/reviews",
-                    only: %i[index show new create edit update destroy] do
-            member { post :snapshot }
-          end
-
-          # Benefits
-          resources :cityos_strategy_benefits,
-                    controller: "cityos/strategy/benefits",
-                    path: "cityos/strategy/benefits",
-                    only: %i[index show new create edit update destroy]
-
-          # Allocations
-          resources :cityos_strategy_allocations,
-                    controller: "cityos/strategy/allocations",
-                    path: "cityos/strategy/allocations",
-                    only: %i[index show new create edit update destroy]
-
-          # Dependencies
-          resources :cityos_strategy_dependencies,
-                    controller: "cityos/strategy/dependencies",
-                    path: "cityos/strategy/dependencies",
-                    only: %i[index show new create edit update destroy]
-
-          # Risks
-          resources :cityos_strategy_risks,
-                    controller: "cityos/strategy/risks",
-                    path: "cityos/strategy/risks",
-                    only: %i[index show new create edit update destroy]
-
-          # Decisions
-          resources :cityos_strategy_decisions,
-                    controller: "cityos/strategy/decisions",
-                    path: "cityos/strategy/decisions",
-                    only: %i[index show new create edit update destroy]
-
-          # API
+          # API (global, not project-scoped)
           namespace :cityos do
             namespace :strategy do
               namespace :api do

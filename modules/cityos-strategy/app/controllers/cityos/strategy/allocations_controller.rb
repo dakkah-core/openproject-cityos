@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class AllocationsController < ApplicationController
+  before_action :find_optional_project
+
       before_action :find_scenario, only: %i[index create]
 
       # Allocation dashboard for a scenario

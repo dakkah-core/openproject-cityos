@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class RiskMapController < ApplicationController
+  before_action :find_optional_project
+
       # Strategic risk and assumption map — uncertainty visualization data
       def show
         @risks = StrategicRisk.includes(:initiative, :objective)

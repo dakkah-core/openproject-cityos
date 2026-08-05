@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class ScorecardController < ApplicationController
+  before_action :find_optional_project
+
       # KPI scorecard — all metrics with targets, actuals, trends, freshness
       def show
         @metrics = MetricDefinition.includes(:targets).order(:name)

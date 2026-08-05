@@ -63,7 +63,7 @@ module OpenProject
       enum :status, { draft: 0, frozen: 1, accepted: 2, rejected: 3 }, prefix: true
       enum :recommendation_status, {
         recommended: 0, not_recommended: 1, needs_revision: 2, rejected: 3
-      }
+      }, prefix: true
 
       has_many :initiatives, class_name: "StrategicInitiative", foreign_key: :scenario_id
       has_many :allocations, class_name: "StrategicAllocation"

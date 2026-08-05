@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class ExecutionLinksController < ApplicationController
+  before_action :find_optional_project
+
       before_action :find_initiative, only: %i[index create destroy]
 
       # List all WP links for an initiative

@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class DashboardController < ApplicationController
+  before_action :find_optional_project
+
       before_action :require_login
       no_authorization_required! :show
 

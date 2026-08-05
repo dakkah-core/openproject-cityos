@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class IntakeController < ApplicationController
+  before_action :find_optional_project
+
       # Initiative intake funnel — displays all stages with initiative counts
       def show
         @stages = StrategicInitiative::FUNNEL_STAGES.keys

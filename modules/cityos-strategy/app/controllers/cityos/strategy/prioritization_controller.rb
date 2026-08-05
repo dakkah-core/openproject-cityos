@@ -3,6 +3,8 @@
 module Cityos
   module Strategy
     class PrioritizationController < ApplicationController
+  before_action :find_optional_project
+
       # Prioritization matrix — scatter plot data for initiative comparison
       def show
         @initiatives = StrategicInitiative.scorable
