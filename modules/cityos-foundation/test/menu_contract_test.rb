@@ -31,7 +31,7 @@ class HelmMenuContractTest < Minitest::Test
     assert_match(/map :project_menu/, source)
     assert_match(/menu\.delete :team_planners/, source)
     assert_match(/controller: '\/cityos\/portfolio',\s*action: :index/, source)
-    assert_match(/controller: '\/cityos\/portfolio\/portfolio',\s*action: :team_planner/, source)
+    assert_match(/controller: '\/cityos\/portfolio',\s*action: :team_planner/, source)
   end
 
   def test_strategy_admin_is_defined_and_localized
