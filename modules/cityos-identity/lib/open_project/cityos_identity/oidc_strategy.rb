@@ -29,13 +29,13 @@ module OpenProject
               scheme: 'http',
               host: 'localhost',
               port: 8180,
-              authorization_endpoint: '/oauth/v2/authorize',
-              token_endpoint: '/oauth/v2/token',
-              userinfo_endpoint: '/oidc/v1/userinfo',
-              jwks_uri: '/oauth/v2/keys'
+              authorization_endpoint: 'http://localhost:8180/oauth/v2/authorize',
+              token_endpoint: 'http://localhost:8180/oauth/v2/token',
+              userinfo_endpoint: 'http://localhost:8180/oidc/v1/userinfo',
+              jwks_uri: 'http://localhost:8180/oauth/v2/keys'
             },
             response_type: :code,
-            discovery: true,
+            discovery: false,
             send_scope_to_token_endpoint: true,
             client_auth_method: :basic
           }
