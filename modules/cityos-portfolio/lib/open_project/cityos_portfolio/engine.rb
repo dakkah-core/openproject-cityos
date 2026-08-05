@@ -28,25 +28,31 @@ module OpenProject
         menu :top_menu,
              :cityos_portfolio,
              { controller: '/cityos/portfolio/portfolio', action: :index },
-             caption: 'CityOS Portfolio',
+             caption: :"cityos.portfolio.label_portfolio",
+             after: :projects
+
+        menu :top_menu,
+             :portfolios,
+             { controller: '/cityos/portfolio/portfolio', action: :index },
+             caption: :"cityos.portfolio.label_portfolio",
              after: :projects
 
         menu :global_menu,
              :portfolios,
              { controller: '/cityos/portfolio/portfolio', action: :index },
-             caption: 'CityOS Portfolio',
+             caption: :"cityos.portfolio.label_portfolio",
              after: :projects
 
         menu :top_menu,
              :team_planners,
              { controller: '/cityos/portfolio/portfolio', action: :team_planner },
-             caption: 'CityOS Team Planner',
+             caption: :"cityos.portfolio.label_team_planner",
              after: :projects
 
         menu :project_menu,
              :team_planner_view,
              { controller: '/cityos/portfolio/portfolio', action: :team_planner },
-             caption: 'CityOS Team Planner'
+             caption: :"cityos.portfolio.label_team_planner"
       end
 
       # ── Load all portfolio services ─────────────────────

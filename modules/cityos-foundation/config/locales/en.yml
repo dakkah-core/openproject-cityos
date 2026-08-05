@@ -2,6 +2,8 @@ en:
   cityos:
     foundation:
       label_foundation: "CityOS Foundation"
+      label_revit_add_in: "Revit Add-in"
+      label_style: "CityOS Style"
       label_administration: "Foundation Administration"
       label_dashboard: "Foundation Dashboard"
       label_manifest: "Config Manifest"

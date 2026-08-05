@@ -24,15 +24,22 @@ module OpenProject
         menu :admin_menu,
              :cityos_foundation,
              { controller: '/cityos/foundation', action: :index },
-             caption: 'CityOS HELM',
+             caption: :"cityos.foundation.label_foundation",
              after: :settings
 
         # Replace enterprise dependency placeholders with CityOS alternatives.
         menu :admin_menu,
              :custom_style,
-             { controller: '/cityos/foundation', action: :index },
-             caption: 'CityOS Style',
+             { controller: '/cityos/foundation', action: :style },
+             caption: :"cityos.foundation.label_style",
              after: :cityos_foundation
+
+        # Neutralize enterprise-only stub entry in account menu with a safe CityOS landing page.
+        menu :account_menu,
+             :revit_add_in,
+             { controller: '/cityos/foundation', action: :revit_add_in },
+             caption: :"cityos.foundation.label_revit_add_in",
+             after: :my_profile
       end
 
       # ── Routes ────────────────────────────────────────────────────
@@ -41,6 +48,12 @@ module OpenProject
           get "/cityos/foundation", to: "cityos/foundation#index",
               as: :cityos_foundation_dashboard
           get "/admin/cityos/foundation", to: "cityos/foundation#index"
+          get "/cityos/foundation/revit_add_in",
+              to: "cityos/foundation#revit_add_in",
+              as: :cityos_foundation_revit_add_in
+          get "/cityos/foundation/style",
+              to: "cityos/foundation#style",
+              as: :cityos_foundation_style
         end
       end
 
