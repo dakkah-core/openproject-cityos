@@ -18,7 +18,7 @@ namespace :menu do
         unless controller.nil?
           total_ref[0] += 1
 
-          controller_class = (controller.camelize + "Controller").safe_constantize
+          controller_class = (controller.sub(%r{^/}, "").camelize + "Controller").safe_constantize
           if controller_class.nil?
             errors << "[#{menu_name}] #{node.name}: controller '#{controller}' not found"
           elsif !controller_class.action_methods.include?(action)
