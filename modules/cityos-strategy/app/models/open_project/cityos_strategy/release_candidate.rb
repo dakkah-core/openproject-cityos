@@ -32,5 +32,5 @@ module OpenProject
         self.candidate_id ||= "rel-#{SecureRandom.uuid}"
       end
     end
-
-    
+  end
+end

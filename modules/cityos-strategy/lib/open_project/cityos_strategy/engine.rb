@@ -350,6 +350,19 @@ module OpenProject
         require_dependency "open_project/cityos_strategy/scenario_service"
         require_dependency "open_project/cityos_strategy/scoring_service"
         require_dependency "open_project/cityos_strategy/snapshot_service"
+        require_dependency "open_project/cityos_strategy/engineering_service_bindings"
+        require_dependency "open_project/cityos_strategy/plan_authorization"
+        require_dependency "open_project/cityos_strategy/release_candidate"
+        require_dependency "open_project/cityos_strategy/release_scope_binding"
+        require_dependency "open_project/cityos_strategy/coverage_baseline"
+        require_dependency "open_project/cityos_strategy/coverage_target"
+        require_dependency "open_project/cityos_strategy/globalization_binding"
+        require_dependency "open_project/cityos_strategy/core_contribution_profile"
+        require_dependency "open_project/cityos_strategy/feedback_signal"
+        require_dependency "open_project/cityos_strategy/sync_cursor"
+        require_dependency "open_project/cityos_strategy/obligation_coverage_service"
+        require_dependency "open_project/cityos_strategy/coverage_service"
+        require_dependency "open_project/cityos_strategy/helm_ledger"
 
         app.config.i18n.load_path += Dir[
           File.join(File.dirname(__FILE__), "..", "..", "config", "locales", "*.yml")

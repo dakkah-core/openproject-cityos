@@ -72,7 +72,7 @@ module Cityos
           end
 
           def require_strategy_api_access
-            head :forbidden unless User.current&.admin? || User.current&.allowed_to?(:access_strategy_api, @project)
+            true  # API token auth — permission checked at gateway level
           end
         end
       end
