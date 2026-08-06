@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,59 +8,59 @@
       <div class="title-container">
         <h2>Resource Allocations</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
           
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @scenario %>
-      <h3>Scenario: <%%= @scenario.name %></h3>
+    <% if @scenario %>
+      <h3>Scenario: <%= @scenario.name %></h3>
 
-      <%% if @allocations && @allocations.any? %>
+      <% if @allocations && @allocations.any? %>
         <div class="op-widget-box">
           <div class="op-widget-box--header"><h3>By Dimension</h3></div>
           <table class="generic-table">
             <thead><tr><th>Dimension</th><th>Total Amount</th><th>Initiatives</th></tr></thead>
             <tbody>
-              <%% @allocations.each do |dim, allocs| %>
+              <% @allocations.each do |dim, allocs| %>
                 <tr>
-                  <td><strong><%%= dim.humanize %></strong></td>
-                  <td><%%= @totals[dim.to_s] || 0 %> <%%= (allocs.first&.unit rescue 'SAR') || 'SAR' %></td>
-                  <td><%%= allocs.count %></td>
+                  <td><strong><%= dim.humanize %></strong></td>
+                  <td><%= @totals[dim.to_s] || 0 %> <%= (allocs.first&.unit rescue 'SAR') || 'SAR' %></td>
+                  <td><%= allocs.count %></td>
                 </tr>
-              <%% end %>
+              <% end %>
             </tbody>
           </table>
         </div>
 
-        <%% if @funding_distribution && @funding_distribution.any? %>
+        <% if @funding_distribution && @funding_distribution.any? %>
           <div class="op-widget-box">
             <div class="op-widget-box--header"><h3>Funding Distribution</h3></div>
             <table class="generic-table">
               <thead><tr><th>Initiative</th><th>Amount</th><th>Unit</th></tr></thead>
               <tbody>
-                <%% @funding_distribution.each do |a| %>
+                <% @funding_distribution.each do |a| %>
                   <tr>
-                    <td><%%= a.initiative&.title || '—' %></td>
-                    <td><%%= a.amount %></td>
-                    <td><%%= a.unit %></td>
+                    <td><%= a.initiative&.title || '—' %></td>
+                    <td><%= a.amount %></td>
+                    <td><%= a.unit %></td>
                   </tr>
-                <%% end %>
+                <% end %>
               </tbody>
             </table>
           </div>
-        <%% end %>
-      <%% else %>
+        <% end %>
+      <% else %>
         <div class="nodata"><p>No allocations defined for this scenario.</p></div>
-      <%% end %>
-    <%% else %>
+      <% end %>
+    <% else %>
       <div class="nodata"><p>Select a scenario to view allocations.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,20 +8,20 @@
       <div class="title-container">
         <h2>Strategic Objectives</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
-          <%%= link_to t(:label_objective_new), new_objective_path, class: 'button -primary' %>
+          <%= link_to t(:label_objective_new), new_cityos_strategy_objective_path, class: 'button -primary' %>
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @objectives && @objectives.any? %>
+    <% if @objectives && @objectives.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header">
-          <h3>Active Objectives (<%%= @objectives.count(&:active?) || 0 %>)</h3>
+          <h3>Active Objectives (<%= @objectives.count(&:active?) || 0 %>)</h3>
         </div>
         <table class="generic-table">
           <thead>
@@ -35,30 +35,30 @@
             </tr>
           </thead>
           <tbody>
-            <%% @objectives.each do |obj| %>
+            <% @objectives.each do |obj| %>
               <tr>
-                <td><%%= obj.objective_id %></td>
-                <td><%%= link_to obj.title, objective_path(obj) %></td>
-                <td><%%= obj.theme&.name || '—' %></td>
-                <td><%%= content_tag :span, obj.status&.humanize, class: "badge badge--#{obj.status}" %></td>
+                <td><%= obj.objective_id %></td>
+                <td><%= link_to obj.title, cityos_strategy_cityos_strategy_objective_path(obj) %></td>
+                <td><%= obj.theme&.name || '—' %></td>
+                <td><%= content_tag :span, obj.status&.humanize, class: "badge badge--#{obj.status}" %></td>
                 <td>
-                  <%%= render partial: 'shared/progress_bar', locals: { 
+                  <%= render partial: 'shared/progress_bar', locals: { 
                     percent: obj.progress_pct || 0, 
                     label: "#{obj.progress_pct || 0}%" 
                   } rescue "#{obj.progress_pct || 0}%" %>
                 </td>
-                <td><%%= obj.key_results&.count || 0 %></td>
+                <td><%= obj.key_results&.count || 0 %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% else %>
+    <% else %>
       <div class="nodata">
-        <p><%%= t(:label_no_data) %></p>
+        <p><%= t(:label_no_data) %></p>
         <p>Create objectives from the Strategy Dashboard to populate this view.</p>
       </div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

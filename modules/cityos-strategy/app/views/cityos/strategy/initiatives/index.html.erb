@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,25 +8,25 @@
       <div class="title-container">
         <h2>Strategic Initiatives</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
-          <%%= link_to t(:label_initiative_new), new_initiative_path, class: 'button -primary' %>
+          <%= link_to t(:label_initiative_new), new_cityos_strategy_initiative_path, class: 'button -primary' %>
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @initiatives && @initiatives.any? %>
+    <% if @initiatives && @initiatives.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header">
-          <h3>Initiatives (<%%= @initiatives.count %>)</h3>
-          <%% status_counts = @initiatives.group_by(&:status).transform_values(&:count) %>
+          <h3>Initiatives (<%= @initiatives.count %>)</h3>
+          <% status_counts = @initiatives.group_by(&:status).transform_values(&:count) %>
           <span class="quick-stats">
-            <%% status_counts.each do |status, count| %>
-              <span class="badge badge--<%%= status %>"><%%= status.to_s.humanize %>: <%%= count %></span>
-            <%% end %>
+            <% status_counts.each do |status, count| %>
+              <span class="badge badge--<%= status %>"><%= status.to_s.humanize %>: <%= count %></span>
+            <% end %>
           </span>
         </div>
         <table class="generic-table">
@@ -42,23 +42,23 @@
             </tr>
           </thead>
           <tbody>
-            <%% @initiatives.each do |i| %>
+            <% @initiatives.each do |i| %>
               <tr>
-                <td><%%= i.initiative_id %></td>
-                <td><%%= link_to i.title, initiative_path(i) %></td>
-                <td><%%= i.portfolio&.name || '—' %></td>
-                <td><%%= content_tag :span, i.stage&.to_s&.humanize, class: "badge" %></td>
-                <td><%%= i.weighted_score&.round(1) || '—' %></td>
-                <td><%%= i.estimated_cost ? "#{i.estimated_cost} SAR" : '—' %></td>
-                <td><%%= i.owner&.name || '—' %></td>
+                <td><%= i.initiative_id %></td>
+                <td><%= link_to i.title, cityos_strategy_cityos_strategy_initiative_path(i) %></td>
+                <td><%= i.portfolio&.name || '—' %></td>
+                <td><%= content_tag :span, i.stage&.to_s&.humanize, class: "badge" %></td>
+                <td><%= i.weighted_score&.round(1) || '—' %></td>
+                <td><%= i.estimated_cost ? "#{i.estimated_cost} SAR" : '—' %></td>
+                <td><%= i.owner&.name || '—' %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% else %>
+    <% else %>
       <div class="nodata"><p>No initiatives found. Create initiatives from strategic objectives.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

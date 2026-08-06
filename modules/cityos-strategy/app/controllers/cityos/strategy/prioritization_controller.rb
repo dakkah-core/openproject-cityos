@@ -53,7 +53,7 @@ module Cityos
 
       # Re-rank with current scoring weights
       def rescore
-        scorer = ScoringService.new
+        scorer = OpenProject::CityosStrategy::ScoringService.new
         OpenProject::CityosStrategy::StrategicInitiative.scorable.find_each do |i|
           i.update!(weighted_score: scorer.score(i))
         end

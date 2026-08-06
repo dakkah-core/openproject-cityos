@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,19 +8,19 @@
       <div class="title-container">
         <h2>Planning Scenarios</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
-          <%%= link_to t(:label_scenario_new), new_scenario_path, class: 'button -primary' %>
+          <%= link_to t(:label_scenario_new), new_cityos_strategy_scenario_path, class: 'button -primary' %>
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @scenarios && @scenarios.any? %>
+    <% if @scenarios && @scenarios.any? %>
       <div class="op-widget-box">
-        <div class="op-widget-box--header"><h3>Scenarios (<%%= @scenarios.count %>)</h3></div>
+        <div class="op-widget-box--header"><h3>Scenarios (<%= @scenarios.count %>)</h3></div>
         <table class="generic-table">
           <thead>
             <tr>
@@ -34,23 +34,23 @@
             </tr>
           </thead>
           <tbody>
-            <%% @scenarios.each do |s| %>
+            <% @scenarios.each do |s| %>
               <tr>
-                <td><%%= s.scenario_id %></td>
-                <td><%%= link_to s.name, scenario_path(s) %></td>
-                <td><%%= s.scenario_type&.humanize || '—' %></td>
-                <td><%%= s.period_start %>—<%%= s.period_end %></td>
-                <td><%%= content_tag :span, s.status&.humanize, class: "badge badge--#{s.status}" %></td>
-                <td><%%= s.allocations&.sum(:amount) || 0 %> SAR</td>
-                <td><%%= s.initiatives_count || s.allocations&.count || 0 %></td>
+                <td><%= s.scenario_id %></td>
+                <td><%= link_to s.name, cityos_strategy_cityos_strategy_scenario_path(s) %></td>
+                <td><%= s.scenario_type&.humanize || '—' %></td>
+                <td><%= s.period_start %>—<%= s.period_end %></td>
+                <td><%= content_tag :span, s.status&.humanize, class: "badge badge--#{s.status}" %></td>
+                <td><%= s.allocations&.sum(:amount) || 0 %> SAR</td>
+                <td><%= s.initiatives_count || s.allocations&.count || 0 %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% else %>
+    <% else %>
       <div class="nodata"><p>No planning scenarios defined.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

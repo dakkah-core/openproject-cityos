@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,11 +8,11 @@
       <div class="title-container">
         <h2>KPI Scorecard</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
           
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
@@ -24,25 +24,25 @@
       </div>
       <div class="summary-stats" style="display:flex; gap:1rem; padding:1rem;">
         <div class="stat-card stat--healthy" style="flex:1; padding:1rem; background:#e6f4ea; border-radius:4px;">
-          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%%= @healthy || 0 %></div>
+          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%= @healthy || 0 %></div>
           <div class="stat-label">On Target</div>
         </div>
         <div class="stat-card stat--atrisk" style="flex:1; padding:1rem; background:#fef7e0; border-radius:4px;">
-          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%%= @at_risk || 0 %></div>
+          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%= @at_risk || 0 %></div>
           <div class="stat-label">At Risk</div>
         </div>
         <div class="stat-card stat--critical" style="flex:1; padding:1rem; background:#fce8e6; border-radius:4px;">
-          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%%= @critical || 0 %></div>
+          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%= @critical || 0 %></div>
           <div class="stat-label">Critical</div>
         </div>
         <div class="stat-card stat--nodata" style="flex:1; padding:1rem; background:#f1f3f4; border-radius:4px;">
-          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%%= @no_data || 0 %></div>
+          <div class="stat-value" style="font-size:2rem; font-weight:bold;"><%= @no_data || 0 %></div>
           <div class="stat-label">No Data</div>
         </div>
       </div>
     </div>
 
-    <%% if @scorecard && @scorecard.any? %>
+    <% if @scorecard && @scorecard.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header"><h3>Metric Details</h3></div>
         <table class="generic-table">
@@ -50,23 +50,23 @@
             <tr><th>Metric</th><th>Direction</th><th>Target</th><th>Latest</th><th>Health</th><th>Trend</th><th>Freshness</th></tr>
           </thead>
           <tbody>
-            <%% @scorecard.each do |s| %>
+            <% @scorecard.each do |s| %>
               <tr>
-                <td><%%= s[:name] %></td>
-                <td><%%= s[:direction]&.humanize %></td>
-                <td><%%= s[:target] || '—' %></td>
-                <td><%%= s[:latest_value] || '—' %></td>
-                <td><%%= content_tag :span, s[:health]&.to_s&.humanize, class: "badge badge--#{s[:health]}" %></td>
-                <td><%%= content_tag :span, s[:trend]&.to_s, class: "badge" %></td>
-                <td><%%= content_tag :span, s[:freshness], class: "badge" %></td>
+                <td><%= s[:name] %></td>
+                <td><%= s[:direction]&.humanize %></td>
+                <td><%= s[:target] || '—' %></td>
+                <td><%= s[:latest_value] || '—' %></td>
+                <td><%= content_tag :span, s[:health]&.to_s&.humanize, class: "badge badge--#{s[:health]}" %></td>
+                <td><%= content_tag :span, s[:trend]&.to_s, class: "badge" %></td>
+                <td><%= content_tag :span, s[:freshness], class: "badge" %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% else %>
+    <% else %>
       <div class="nodata"><p>No metrics configured. Add metric definitions to populate the scorecard.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

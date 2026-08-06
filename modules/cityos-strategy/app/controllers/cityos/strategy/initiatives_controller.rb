@@ -46,7 +46,7 @@ module Cityos
       end
 
       def score
-        scorer = ScoringService.new
+        scorer = OpenProject::CityosStrategy::ScoringService.new
         weighted = scorer.score(@initiative)
         @initiative.update!(weighted_score: weighted)
         redirect_to initiative_path(@initiative), notice: "Weighted score: #{weighted}"

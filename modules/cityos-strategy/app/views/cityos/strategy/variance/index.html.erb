@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,43 +8,43 @@
       <div class="title-container">
         <h2>Variance Analysis</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
           
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @plan %>
-      <h3>Plan: <%%= @plan.title %></h3>
+    <% if @plan %>
+      <h3>Plan: <%= @plan.title %></h3>
 
-      <%% if @objective_variance && @objective_variance.any? %>
+      <% if @objective_variance && @objective_variance.any? %>
         <div class="op-widget-box">
           <div class="op-widget-box--header"><h3>Objective Variance</h3></div>
           <table class="generic-table">
             <thead><tr><th>Objective</th><th>Planned Health</th><th>Current Health</th><th>Progress</th><th>KRs</th></tr></thead>
             <tbody>
-              <%% @objective_variance.each do |o| %>
+              <% @objective_variance.each do |o| %>
                 <tr>
-                  <td><%%= o[:title] || o[:objective]&.title %></td>
-                  <td><%%= content_tag :span, o[:planned_health]&.to_s&.humanize, class: "badge" %></td>
-                  <td><%%= content_tag :span, o[:current_health]&.to_s&.humanize, class: "badge badge--#{o[:current_health]}" %></td>
-                  <td><%%= o[:progress_pct] || 0 %>%</td>
-                  <td><%%= o[:key_results]&.count || 0 %></td>
+                  <td><%= o[:title] || o[:objective]&.title %></td>
+                  <td><%= content_tag :span, o[:planned_health]&.to_s&.humanize, class: "badge" %></td>
+                  <td><%= content_tag :span, o[:current_health]&.to_s&.humanize, class: "badge badge--#{o[:current_health]}" %></td>
+                  <td><%= o[:progress_pct] || 0 %>%</td>
+                  <td><%= o[:key_results]&.count || 0 %></td>
                 </tr>
-              <%% end %>
+              <% end %>
             </tbody>
           </table>
         </div>
-      <%% else %>
+      <% else %>
         <div class="nodata"><p>No objectives defined for this plan.</p></div>
-      <%% end %>
-    <%% else %>
+      <% end %>
+    <% else %>
       <div class="nodata"><p>No active strategic plan found.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

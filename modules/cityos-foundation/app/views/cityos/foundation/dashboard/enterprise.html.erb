@@ -6,36 +6,36 @@
   </div>
 
   <div class="wiki-content">
-    <%% if @replacement_surfaces && @replacement_surfaces.any? %>
+    <% if @replacement_surfaces && @replacement_surfaces.any? %>
       <div class="op-widget-box">
-        <div class="op-widget-box--header"><h3>CityOS-Managed Surfaces (<%%= @replacement_surfaces.count %>)</h3></div>
+        <div class="op-widget-box--header"><h3>CityOS-Managed Surfaces (<%= @replacement_surfaces.count %>)</h3></div>
         <table class="generic-table">
           <thead><tr><th>Surface</th><th>Status</th><th>Route</th><th>Notes</th></tr></thead>
           <tbody>
-            <%% @replacement_surfaces.each do |s| %>
+            <% @replacement_surfaces.each do |s| %>
               <tr>
-                <td><strong><%%= s[:name] %></strong></td>
-                <td><%%= content_tag :span, s[:status]&.to_s&.humanize, class: "badge #{s[:status] == 'implemented' ? 'badge--active' : 'badge--planned'}" %></td>
-                <td><%%= s[:route] ? content_tag(:code, s[:route]) : '—' %></td>
-                <td><%%= s[:notes] %></td>
+                <td><strong><%= s[:name] %></strong></td>
+                <td><%= content_tag :span, s[:status]&.to_s&.humanize, class: "badge #{s[:status] == 'implemented' ? 'badge--active' : 'badge--planned'}" %></td>
+                <td><%= s[:route] ? content_tag(:code, s[:route]) : '—' %></td>
+                <td><%= s[:notes] %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% end %>
+    <% end %>
 
-    <%% if @enterprise_gaps && @enterprise_gaps.any? %>
+    <% if @enterprise_gaps && @enterprise_gaps.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header"><h3>Remaining Enterprise Gaps</h3></div>
         <p class="op-widget-box--description">These features still depend on upstream OpenProject enterprise licensing. CityOS does not replace them yet.</p>
         <ul style="padding: 1rem 2rem;">
-          <%% @enterprise_gaps.each do |gap| %>
-            <li style="padding: 0.3rem 0;"><%%= gap %></li>
-          <%% end %>
+          <% @enterprise_gaps.each do |gap| %>
+            <li style="padding: 0.3rem 0;"><%= gap %></li>
+          <% end %>
         </ul>
       </div>
-    <%% end %>
+    <% end %>
 
     <div class="op-widget-box">
       <div class="op-widget-box--header"><h3>Enterprise Token Status</h3></div>

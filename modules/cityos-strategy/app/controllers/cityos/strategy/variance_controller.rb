@@ -9,7 +9,7 @@ module Cityos
       # Planned vs actual vs forecast views
       def show
         @plan = OpenProject::CityosStrategy::StrategicPlan.find_by(status: :active)
-        @health_service = HealthService.new
+        @health_service = OpenProject::CityosStrategy::HealthService.new
 
         # Objective variance: planned health vs current
         @objective_variance = @plan.objectives.includes(:key_results).map do |o|

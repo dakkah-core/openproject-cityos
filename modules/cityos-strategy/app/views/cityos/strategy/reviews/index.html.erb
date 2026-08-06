@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,40 +8,40 @@
       <div class="title-container">
         <h2>Strategy Reviews</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
-          <%%= link_to t(:label_review_new), new_review_path, class: 'button -primary' %>
+          <%= link_to t(:label_review_new), new_cityos_strategy_review_path, class: 'button -primary' %>
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
   <div class="wiki-content">
 
-    <%% if @reviews && @reviews.any? %>
+    <% if @reviews && @reviews.any? %>
       <div class="op-widget-box">
-        <div class="op-widget-box--header"><h3>Review Cycles (<%%= @reviews.count %>)</h3></div>
+        <div class="op-widget-box--header"><h3>Review Cycles (<%= @reviews.count %>)</h3></div>
         <table class="generic-table">
           <thead>
             <tr><th>ID</th><th>Type</th><th>Period</th><th>Status</th><th>Facilitator</th><th>Snapshots</th></tr>
           </thead>
           <tbody>
-            <%% @reviews.each do |r| %>
+            <% @reviews.each do |r| %>
               <tr>
-                <td><%%= r.id %></td>
-                <td><%%= r.review_type&.humanize %></td>
-                <td><%%= r.period_start&.strftime('%Y-%m-%d') %> — <%%= r.period_end&.strftime('%Y-%m-%d') %></td>
-                <td><%%= content_tag :span, r.status&.humanize, class: "badge badge--#{r.status}" %></td>
-                <td><%%= r.facilitator&.name || '—' %></td>
-                <td><%%= r.snapshots&.count || 0 %></td>
+                <td><%= r.id %></td>
+                <td><%= r.review_type&.humanize %></td>
+                <td><%= r.period_start&.strftime('%Y-%m-%d') %> — <%= r.period_end&.strftime('%Y-%m-%d') %></td>
+                <td><%= content_tag :span, r.status&.humanize, class: "badge badge--#{r.status}" %></td>
+                <td><%= r.facilitator&.name || '—' %></td>
+                <td><%= r.snapshots&.count || 0 %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% else %>
+    <% else %>
       <div class="nodata"><p>No review cycles scheduled.</p></div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>

@@ -42,7 +42,7 @@ module Cityos
 
       # Create full portfolio snapshot for this review
       def snapshot
-        snapshotter = SnapshotService.new
+        snapshotter = OpenProject::CityosStrategy::SnapshotService.new
         snapshotter.snapshot_full_portfolio(@review)
         @review.update!(status: :completed)
         redirect_to review_path(@review),

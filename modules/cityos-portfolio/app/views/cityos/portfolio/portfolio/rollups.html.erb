@@ -6,47 +6,47 @@
   </div>
 
   <div class="wiki-content">
-    <%% if @by_proof && @by_proof.any? %>
+    <% if @by_proof && @by_proof.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header"><h3>By Proof Status</h3></div>
         <table class="generic-table">
           <thead><tr><th>Proof Status</th><th>Count</th><th>Systems</th></tr></thead>
           <tbody>
-            <%% @by_proof.each do |status, systems| %>
+            <% @by_proof.each do |status, systems| %>
               <tr>
-                <td><%%= content_tag :span, status.to_s.humanize, class: "badge badge--#{status}" %></td>
-                <td><strong><%%= systems.count %></strong></td>
-                <td><%%= systems.join(', ') %></td>
+                <td><%= content_tag :span, status.to_s.humanize, class: "badge badge--#{status}" %></td>
+                <td><strong><%= systems.count %></strong></td>
+                <td><%= systems.join(', ') %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% end %>
+    <% end %>
 
-    <%% if @by_maturity && @by_maturity.any? %>
+    <% if @by_maturity && @by_maturity.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header"><h3>By Maturity</h3></div>
         <table class="generic-table">
           <thead><tr><th>Maturity</th><th>Count</th><th>Systems</th></tr></thead>
           <tbody>
-            <%% @by_maturity.each do |maturity, systems| %>
+            <% @by_maturity.each do |maturity, systems| %>
               <tr>
-                <td><strong><%%= maturity %></strong></td>
-                <td><%%= systems.count %></td>
-                <td><%%= systems.join(', ') %></td>
+                <td><strong><%= maturity %></strong></td>
+                <td><%= systems.count %></td>
+                <td><%= systems.join(', ') %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% end %>
+    <% end %>
 
-    <%% if @stale_count %>
+    <% if @stale_count %>
       <div class="op-widget-box">
         <div class="op-widget-box--header"><h3>Stale Detector</h3></div>
-        <p>Stale items: <strong><%%= @stale_count %></strong></p>
+        <p>Stale items: <strong><%= @stale_count %></strong></p>
       </div>
-    <%% end %>
+    <% end %>
   </div>
 </div>

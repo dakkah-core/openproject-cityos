@@ -1,6 +1,6 @@
-<%% content_for :header_tags do %>
+<% content_for :header_tags do %>
   <meta name="turbo-visit-control" content="reload">
-<%% end %>
+<% end %>
 
 <div class="op-container">
   <div class="toolbar-container">
@@ -8,11 +8,11 @@
       <div class="title-container">
         <h2>Strategic Risk Map</h2>
       </div>
-      <%% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
+      <% if respond_to?(:action_name) && respond_to?(:new_polymorphic_path) %>
         <ul class="toolbar-items">
           
         </ul>
-      <%% end %>
+      <% end %>
     </div>
   </div>
 
@@ -22,13 +22,13 @@
       <div class="op-widget-box--header">
         <h3>Risk Overview</h3>
         <span class="quick-stats">
-          Critical: <%%= @critical&.count || 0 %> | 
-          High: <%%= @high&.count || 0 %> | 
-          Moderate: <%%= @moderate&.count || 0 %>
+          Critical: <%= @critical&.count || 0 %> | 
+          High: <%= @high&.count || 0 %> | 
+          Moderate: <%= @moderate&.count || 0 %>
         </span>
       </div>
 
-      <%% if @heatmap && @heatmap.any? %>
+      <% if @heatmap && @heatmap.any? %>
         <table class="generic-table">
           <thead>
             <tr>
@@ -43,50 +43,50 @@
             </tr>
           </thead>
           <tbody>
-            <%% @heatmap.each do |r| %>
-              <tr class="risk--<%%= r[:risk_score] >= 12 ? 'critical' : r[:risk_score] >= 6 ? 'high' : 'moderate' %>">
-                <td><%%= r[:id] %></td>
-                <td><%%= r[:description] %></td>
-                <td><%%= r[:initiative] || '—' %></td>
-                <td><%%= r[:likelihood] %>/5</td>
-                <td><%%= r[:impact] %>/5</td>
-                <td><strong><%%= r[:risk_score] %></strong></td>
-                <td><%%= content_tag :span, r[:status]&.humanize, class: "badge badge--#{r[:status]}" %></td>
-                <td><%%= truncate(r[:mitigation] || '—', length: 60) %></td>
+            <% @heatmap.each do |r| %>
+              <tr class="risk--<%= r[:risk_score] >= 12 ? 'critical' : r[:risk_score] >= 6 ? 'high' : 'moderate' %>">
+                <td><%= r[:id] %></td>
+                <td><%= r[:description] %></td>
+                <td><%= r[:initiative] || '—' %></td>
+                <td><%= r[:likelihood] %>/5</td>
+                <td><%= r[:impact] %>/5</td>
+                <td><strong><%= r[:risk_score] %></strong></td>
+                <td><%= content_tag :span, r[:status]&.humanize, class: "badge badge--#{r[:status]}" %></td>
+                <td><%= truncate(r[:mitigation] || '—', length: 60) %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
-      <%% else %>
+      <% else %>
         <div class="nodata"><p>No active risks registered.</p></div>
-      <%% end %>
+      <% end %>
     </div>
 
-    <%% if @assumptions && @assumptions.any? %>
+    <% if @assumptions && @assumptions.any? %>
       <div class="op-widget-box">
         <div class="op-widget-box--header">
-          <h3>Strategic Assumptions (<%%= @assumptions&.count || 0 %>)</h3>
-          <%% if @due_soon && @due_soon.any? %>
-            <span class="warning"><%%= @due_soon.count %> due for revalidation within 90 days</span>
-          <%% end %>
+          <h3>Strategic Assumptions (<%= @assumptions&.count || 0 %>)</h3>
+          <% if @due_soon && @due_soon.any? %>
+            <span class="warning"><%= @due_soon.count %> due for revalidation within 90 days</span>
+          <% end %>
         </div>
         <table class="generic-table">
           <thead>
             <tr><th>Description</th><th>Initiative</th><th>Status</th><th>Valid Until</th></tr>
           </thead>
           <tbody>
-            <%% (@assumptions || []).each do |a| %>
+            <% (@assumptions || []).each do |a| %>
               <tr>
-                <td><%%= a.description %></td>
-                <td><%%= a.initiative&.title || '—' %></td>
-                <td><%%= content_tag :span, a.status&.humanize, class: "badge" %></td>
-                <td><%%= a.valid_until&.strftime('%Y-%m-%d') || '—' %></td>
+                <td><%= a.description %></td>
+                <td><%= a.initiative&.title || '—' %></td>
+                <td><%= content_tag :span, a.status&.humanize, class: "badge" %></td>
+                <td><%= a.valid_until&.strftime('%Y-%m-%d') || '—' %></td>
               </tr>
-            <%% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    <%% end %>
+    <% end %>
 
   </div>
 </div>
