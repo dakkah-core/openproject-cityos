@@ -98,6 +98,11 @@ module OpenProject
           # SoD enforced via GovernanceController and CommandDispatch
         end
       end
+
+      # Register rake tasks for menu health checks
+      rake_tasks do
+        load 'tasks/menu_health.rake'
+      end
     end
   end
 end

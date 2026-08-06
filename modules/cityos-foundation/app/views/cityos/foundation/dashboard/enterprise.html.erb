@@ -1,0 +1,51 @@
+<div class="op-container">
+  <div class="toolbar-container">
+    <div class="toolbar">
+      <div class="title-container"><h2>CityOS Enterprise Replacements</h2></div>
+    </div>
+  </div>
+
+  <div class="wiki-content">
+    <%% if @replacement_surfaces && @replacement_surfaces.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>CityOS-Managed Surfaces (<%%= @replacement_surfaces.count %>)</h3></div>
+        <table class="generic-table">
+          <thead><tr><th>Surface</th><th>Status</th><th>Route</th><th>Notes</th></tr></thead>
+          <tbody>
+            <%% @replacement_surfaces.each do |s| %>
+              <tr>
+                <td><strong><%%= s[:name] %></strong></td>
+                <td><%%= content_tag :span, s[:status]&.to_s&.humanize, class: "badge #{s[:status] == 'implemented' ? 'badge--active' : 'badge--planned'}" %></td>
+                <td><%%= s[:route] ? content_tag(:code, s[:route]) : '—' %></td>
+                <td><%%= s[:notes] %></td>
+              </tr>
+            <%% end %>
+          </tbody>
+        </table>
+      </div>
+    <%% end %>
+
+    <%% if @enterprise_gaps && @enterprise_gaps.any? %>
+      <div class="op-widget-box">
+        <div class="op-widget-box--header"><h3>Remaining Enterprise Gaps</h3></div>
+        <p class="op-widget-box--description">These features still depend on upstream OpenProject enterprise licensing. CityOS does not replace them yet.</p>
+        <ul style="padding: 1rem 2rem;">
+          <%% @enterprise_gaps.each do |gap| %>
+            <li style="padding: 0.3rem 0;"><%%= gap %></li>
+          <%% end %>
+        </ul>
+      </div>
+    <%% end %>
+
+    <div class="op-widget-box">
+      <div class="op-widget-box--header"><h3>Enterprise Token Status</h3></div>
+      <p>No enterprise subscription is active. CityOS custom modules replace the following enterprise-gated features:</p>
+      <ul style="padding: 1rem 2rem;">
+        <li><strong>Portfolio</strong> → CityOS Portfolio (<code>/cityos/portfolio</code>)</li>
+        <li><strong>Team Planner</strong> → CityOS Team Planner (<code>/cityos/portfolio/team_planner</code>)</li>
+        <li><strong>Custom Style</strong> → CityOS Style Workspace (<code>/cityos/foundation/dashboard/style</code>)</li>
+        <li><strong>Enterprise Administration</strong> → This page (Foundation Dashboard)</li>
+      </ul>
+    </div>
+  </div>
+</div>
