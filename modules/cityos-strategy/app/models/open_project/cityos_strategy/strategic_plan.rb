@@ -37,6 +37,14 @@ module OpenProject
 
       validates :title, presence: true
       validates :version, presence: true, numericality: { only_integer: true, greater_than: 0 }
+      validates :stable_id, uniqueness: true, allow_nil: true  # HEXP-0104
+
+      before_create :generate_stable_id  # HEXP-0104
+
+      # HEXP-0104: Auto-generate stable cross-system identity
+      def generate_stable_id
+        self.stable_id ||= "helm-plan-#{SecureRandom.uuid}"
+      end
 
       # ── HEXP-0101: Authority correction ────────────────────────────
       # HELM must NEVER create or infer approval.

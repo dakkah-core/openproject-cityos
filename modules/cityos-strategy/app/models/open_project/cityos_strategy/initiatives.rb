@@ -18,6 +18,7 @@ module OpenProject
       enum :decision_status, { pending: 0, recommended: 1, deferred: 2, rejected: 3, activated: 4 }, prefix: :decision
 
       belongs_to :portfolio, class_name: "StrategicPortfolio", optional: true
+      belongs_to :program, class_name: "StrategicProgram", optional: true  # HEXP-0105: Direct join
       belongs_to :scenario, class_name: "PlanningScenario", optional: true
       belongs_to :owner, class_name: "User", optional: true
       has_many :initiative_objectives, class_name: "InitiativeObjective"
@@ -28,6 +29,9 @@ module OpenProject
 
       validates :initiative_id, presence: true, uniqueness: true
       validates :title, presence: true
+      validates :stable_id, uniqueness: true, allow_nil: true  # HEXP-0104
+
+      before_create :generate_stable_id  # HEXP-0104
 
       scope :bypass_scoring, -> { where(mandatory_class: %i[mandatory regulatory]) }
       scope :scorable, -> { where(mandatory_class: %i[committed scored]) }
@@ -35,6 +39,11 @@ module OpenProject
 
       def bypass_scoring?
         mandatory? || regulatory?
+      end
+
+      # HEXP-0104: Auto-generate stable cross-system identity
+      def generate_stable_id
+        self.stable_id ||= "helm-initiative-#{SecureRandom.uuid}"
       end
 
       def advance_stage!(target_stage)
@@ -67,7 +76,7 @@ module OpenProject
       enum :status, { active: 0, archived: 1 }, prefix: true
       belongs_to :portfolio, class_name: "StrategicPortfolio"
       belongs_to :owner, class_name: "User", optional: true
-      has_many :initiatives, through: :portfolio
+      has_many :initiatives, class_name: "StrategicInitiative", foreign_key: :program_id  # HEXP-0105: Direct join, NOT through: :portfolio
       validates :name, presence: true
     end
 
