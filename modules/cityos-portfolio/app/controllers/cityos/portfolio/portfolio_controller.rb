@@ -62,20 +62,24 @@ module Cityos
 
       # GET /cityos/portfolio/team_planner
       def team_planner
-        @agent_load = OpenProject::CityosPortfolio::TeamPlanner.agent_load
-        @sprint = OpenProject::CityosPortfolio::TeamPlanner.sprint_summary(days: 7)
-      rescue => e
-        Rails.logger.warn("TeamPlanner service unavailable: #{e.message}")
-        @agent_load = []
-        @sprint = []
+        begin
+          @agent_load = OpenProject::CityosPortfolio::TeamPlanner.agent_load
+          @sprint = OpenProject::CityosPortfolio::TeamPlanner.sprint_summary(days: 7)
+        rescue StandardError => e
+          Rails.logger.warn("TeamPlanner unavailable: #{e.message}")
+          @agent_load = []
+          @sprint = []
+        end
       end
 
       # GET /cityos/portfolio/metrics
       def metrics
-        @spi_by_system = OpenProject::CityosPortfolio::CalculatedMetrics.spi_by_system
-      rescue => e
-        Rails.logger.warn("CalculatedMetrics unavailable: #{e.message}")
-        @spi_by_system = {}
+        begin
+          @spi_by_system = OpenProject::CityosPortfolio::CalculatedMetrics.spi_by_system
+        rescue StandardError => e
+          Rails.logger.warn("CalculatedMetrics unavailable: #{e.message}")
+          @spi_by_system = {}
+        end
       end
 
       # GET /cityos/portfolio/pedd_entities?work_package_id=123
