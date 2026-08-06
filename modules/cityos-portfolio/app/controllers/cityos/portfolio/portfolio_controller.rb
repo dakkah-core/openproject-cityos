@@ -13,6 +13,9 @@ module Cityos
         @stale = OpenProject::CityosPortfolio::StaleDetector.find_stale(limit: 20)
         @release_gates = OpenProject::CityosPortfolio::ReleaseGateDashboard.summary
         @blocked = OpenProject::CityosPortfolio::ReleaseGateDashboard.blocked_systems
+      rescue => e
+        Rails.logger.warn("Portfolio index services unavailable: #{e.message}")
+        @rollup = []; @stale = []; @release_gates = {}; @blocked = {}
       end
 
       # GET /cityos/portfolio/systems
@@ -20,6 +23,9 @@ module Cityos
         @by_system = OpenProject::CityosPortfolio::RollupService.by_system
         @dependency_graph = OpenProject::CityosPortfolio::DependencyView.build_graph
         @unresolved = OpenProject::CityosPortfolio::DependencyView.unresolved_dependencies
+      rescue => e
+        Rails.logger.warn("Portfolio systems services unavailable: #{e.message}")
+        @by_system = {}; @dependency_graph = {}; @unresolved = []
       end
 
       # GET /cityos/portfolio/rollups
@@ -28,6 +34,9 @@ module Cityos
         @by_maturity = OpenProject::CityosPortfolio::RollupService.by_maturity
         @blocked = OpenProject::CityosPortfolio::RollupService.blocked_by_owner
         @stale_count = OpenProject::CityosPortfolio::StaleDetector.count_stale
+      rescue => e
+        Rails.logger.warn("Portfolio rollups services unavailable: #{e.message}")
+        @by_proof = {}; @by_maturity = {}; @blocked = {}; @stale_count = 0
       end
 
       # GET /cityos/portfolio/system_graph
@@ -55,11 +64,18 @@ module Cityos
       def team_planner
         @agent_load = OpenProject::CityosPortfolio::TeamPlanner.agent_load
         @sprint = OpenProject::CityosPortfolio::TeamPlanner.sprint_summary(days: 7)
+      rescue => e
+        Rails.logger.warn("TeamPlanner service unavailable: #{e.message}")
+        @agent_load = []
+        @sprint = []
       end
 
       # GET /cityos/portfolio/metrics
       def metrics
         @spi_by_system = OpenProject::CityosPortfolio::CalculatedMetrics.spi_by_system
+      rescue => e
+        Rails.logger.warn("CalculatedMetrics unavailable: #{e.message}")
+        @spi_by_system = {}
       end
 
       # GET /cityos/portfolio/pedd_entities?work_package_id=123
