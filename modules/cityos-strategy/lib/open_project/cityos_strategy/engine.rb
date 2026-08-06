@@ -317,6 +317,21 @@ module OpenProject
             end
           end
 
+          # HEXP-0204: Governance stable-ID sync (replaces broken capability-ID sync)
+          namespace :api do
+            namespace :cityos do
+              namespace :v1 do
+                namespace :governance do
+                  namespace :work_packages, path: "work-packages" do
+                    post "by-external-id/:external_id/sync",
+                         to: "cityos/strategy/governance_sync#sync",
+                         as: :governance_sync_by_external_id
+                  end
+                end
+              end
+            end
+          end
+
         end
       end
 
