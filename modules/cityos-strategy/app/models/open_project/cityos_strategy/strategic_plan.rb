@@ -15,6 +15,7 @@ module OpenProject
       has_many :themes, class_name: "StrategicTheme"
       has_many :outcomes, class_name: "StrategicOutcome"
       has_many :objectives, class_name: "StrategicObjective"
+  has_many :plan_authorizations, class_name: "PlanAuthorization"
 
       # Chain: Plan → Objectives → Initiatives → Execution
       has_many :initiative_objectives, through: :objectives

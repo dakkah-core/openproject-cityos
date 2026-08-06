@@ -26,6 +26,8 @@ module OpenProject
       has_many :benefits, class_name: "StrategicBenefit"
       has_many :risks, class_name: "StrategicRisk"
       has_many :execution_links, class_name: "ExecutionLink"
+      has_many :engineering_service_bindings, class_name: "EngineeringServiceBindings"
+      has_many :globalization_bindings, class_name: "GlobalizationBinding"
 
       validates :initiative_id, presence: true, uniqueness: true
       validates :title, presence: true
