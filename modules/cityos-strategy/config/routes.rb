@@ -97,3 +97,25 @@ OpenProject::CityosStrategy::Engine.routes.draw do
     end
   end
 end
+      # Engineering Service Bindings
+      get  "engineering_service_bindings",            to: "engineering_service_bindings#index"
+      get  "engineering_service_bindings/coverage",   to: "engineering_service_bindings#coverage"
+      post "engineering_service_bindings",            to: "engineering_service_bindings#create"
+      post "engineering_service_bindings/create_defaults", to: "engineering_service_bindings#create_defaults"
+      get  "engineering_service_bindings/:id",        to: "engineering_service_bindings#show"
+      patch "engineering_service_bindings/:id",       to: "engineering_service_bindings#update"
+
+      # Coverage Baselines & Targets
+      get  "coverage/baselines",                      to: "coverage#baselines"
+      post "coverage/baselines",                      to: "coverage#create_baseline"
+      get  "coverage/baselines/:id/compare",          to: "coverage#compare_baselines"
+      get  "coverage/baselines/:id/gaps",             to: "coverage#gaps"
+      get  "coverage/targets",                        to: "coverage#targets"
+      post "coverage/targets",                        to: "coverage#create_target"
+
+      # Plan Authorizations
+      get  "plan_authorizations",                     to: "plan_authorizations#index"
+      post "plan_authorizations",                     to: "plan_authorizations#create"
+      get  "plan_authorizations/:id",                 to: "plan_authorizations#show"
+      patch "plan_authorizations/:id",                to: "plan_authorizations#update"
+
