@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class IntakeController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       # Initiative intake funnel — displays all stages with initiative counts
       def show

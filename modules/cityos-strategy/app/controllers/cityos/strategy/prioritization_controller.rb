@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class PrioritizationController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       # Prioritization matrix — scatter plot data for initiative comparison
       def show

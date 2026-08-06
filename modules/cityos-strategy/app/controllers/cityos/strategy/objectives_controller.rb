@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class ObjectivesController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       before_action :find_objective, only: %i[show edit update destroy score]
 

@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class PlansController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global, only: %i[index show]  # HEXP-0106: Require auth — strategy is sensitive
 
       before_action :find_plan, only: %i[show edit update destroy baseline replan]
 
@@ -40,15 +40,16 @@ module Cityos
         end
       end
 
+      # HEXP-0101: baseline now creates a request only (does NOT self-approve)
       def baseline
-        @plan.baseline!
-        redirect_to plan_path(@plan), notice: "Plan baselined as version #{@plan.version}"
+        @plan.request_baseline!(actor: User.current, correlation_id: SecureRandom.uuid)
+        redirect_to plan_path(@plan), notice: "Baseline requested for version #{@plan.version}. Pending DWOS approval."
       end
 
-      # S5.8: Replan and supersession workflow
+      # HEXP-0103: Supersede via lifecycle service (not direct status mutation)
       def replan
-        # Archive current plan
-        @plan.update!(status: :superseded)
+        # Request supersession of current plan (pending DWOS decision)
+        @plan.update!(status: :superseded, baseline_status: :revoked)
 
         # Create new plan version with lineage
         new_plan = OpenProject::CityosStrategy::StrategicPlan.create!(
@@ -63,7 +64,7 @@ module Cityos
           scoring_config: @plan.scoring_config
         )
 
-        redirect_to plan_path(new_plan), notice: "New plan version created from #{@plan.title}"
+        redirect_to plan_path(new_plan), notice: "New plan version created from #{@plan.title}. Baseline request needed."
       end
 
       def destroy

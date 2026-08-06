@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class VarianceController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       # Planned vs actual vs forecast views
       def show

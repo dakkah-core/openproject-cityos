@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class AdminController < ::ApplicationController
       before_action :require_login
-      no_authorization_required! :index
+      before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       def index
         @active_plans = OpenProject::CityosStrategy::StrategicPlan.where(status: :active).count

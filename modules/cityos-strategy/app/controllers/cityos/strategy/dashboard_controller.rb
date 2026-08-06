@@ -6,7 +6,7 @@ module Cityos
   before_action :find_optional_project
 
       before_action :require_login
-      no_authorization_required! :show
+      before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       def show
         @active_plan = OpenProject::CityosStrategy::StrategicPlan.find_by(status: :active)

@@ -4,7 +4,7 @@ module Cityos
   module Strategy
     class ScenariosController < ApplicationController
   before_action :find_optional_project
-  no_authorization_required! :index, :show
+  before_action :authorize_global  # HEXP-0106: Strategy data is sensitive - require auth
 
       before_action :find_scenario, only: %i[show edit update destroy freeze unfreeze compare]
 
