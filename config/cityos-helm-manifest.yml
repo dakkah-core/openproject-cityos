@@ -98,3 +98,8 @@ workflows:
     - "No agent can modify governance projections"
     - "Only sync identity can write to cityos_scope_bindings"
     - "Only sync identity can write to cityos_governance_projections"
+    # Expansion-pack-01 §3 — DWOS approval boundary (2026-08-06)
+    - "HELM must never self-approve — approval_verified_at is forbidden"
+    - "StrategicPlan#baseline! must publish DWOS command, never write approval_ref"
+    - "All strategy records require immutable stable_id; title-based reconciliation is prohibited"
+    - "Strategy/investment reads require explicit project/portfolio role membership"
