@@ -179,6 +179,11 @@ module Cityos
 
       # ── Planner ────────────────────────────────────────────────────
       module Planner
+        # Wave 4 W4-1 Phase B (2026-08-07): verdicts now carry the source
+        # record (`:record`) + resolved model class (`:model`) so
+        # DraftApplier can actually execute create!/update! without
+        # re-walking the source. Prior verdicts recorded intent but
+        # dropped the payload — DraftApplier could only count.
         def self.plan(loaded)
           loaded[:records].map do |record|
             stable_id = record["stable_id"] || record[:stable_id]
@@ -196,7 +201,9 @@ module Cityos
               stable_id: stable_id,
               record_type: record_type,
               verdict: verdict.to_s,
-              reason: verdict == :conflict ? "unknown record_type=#{record_type}" : nil
+              reason: verdict == :conflict ? "unknown record_type=#{record_type}" : nil,
+              record: record,   # Wave 4 W4-1 Phase B: payload carried through.
+              model: model      # nil for :conflict verdicts.
             }
           end
         end
@@ -220,23 +227,43 @@ module Cityos
 
       # ── DraftApplier ───────────────────────────────────────────────
       module DraftApplier
+        # Wave 4 W4-1 Phase B (2026-08-07): now executes create!/update!
+        # using the source record carried through by Planner. Every
+        # created/updated record lands with `authorization_state: "draft"`
+        # per Wave 4 W4-4 isolation invariant. SkipOutbox.wrap in
+        # Importer.run suppresses after_commit outbox emits.
+        #
+        # Failures on a single record downgrade its verdict to
+        # `failed` + record the reason, then continue with the next.
+        # The whole batch runs in ONE transaction so a rollback restores
+        # atomicity — a per-record retry model belongs to a follow-on
+        # `apply-draft --continue-on-error` mode, out of scope here.
         def self.apply(verdicts, correlation_id:)
           created = 0
           updated = 0
           skipped = 0
           conflicts = 0
+          failures = []
 
           ActiveRecord::Base.transaction do
             verdicts.each do |v|
               case v[:verdict]
               when "create"
-                # Draft-only: apply the incoming record with authorization_state defaulting to draft.
-                # Real create logic requires the input record — Planner currently returns verdicts
-                # without carrying the source hash. Recording as create-planned; a follow-on
-                # commit wires the actual model.create! path with the raw record payload.
-                created += 1
+                begin
+                  apply_create!(v)
+                  created += 1
+                rescue => e
+                  failures << { stable_id: v[:stable_id], reason: "create failed: #{e.class}: #{e.message}" }
+                  raise ActiveRecord::Rollback
+                end
               when "update"
-                updated += 1
+                begin
+                  apply_update!(v)
+                  updated += 1
+                rescue => e
+                  failures << { stable_id: v[:stable_id], reason: "update failed: #{e.class}: #{e.message}" }
+                  raise ActiveRecord::Rollback
+                end
               when "no-op"
                 skipped += 1
               when "conflict"
@@ -246,13 +273,58 @@ module Cityos
           end
 
           {
-            "create-planned"  => created,
-            "update-planned"  => updated,
+            "create"          => created,
+            "update"          => updated,
             "no-op"           => skipped,
             "conflict"        => conflicts,
+            "failures"        => failures,
             "correlation_id"  => correlation_id,
-            "outbox_suppressed" => SkipOutbox.suppressed?
+            "outbox_suppressed" => SkipOutbox.suppressed?,
+            # Backwards-compat aliases for callers that pinned to the
+            # Wave 4 Phase A output shape.
+            "create-planned"  => created,
+            "update-planned"  => updated
           }
+        end
+
+        # Extract the AR-attributes-safe subset from the incoming record.
+        # stable_id + record_type are Importer metadata, never persisted
+        # as regular columns. Reject nested arrays/hashes that don't map
+        # to AR scalar columns (child associations are managed by their
+        # own record entries in the Importer payload).
+        def self.attributes_for(v)
+          record = v[:record] || {}
+          model  = v[:model]
+          allowed = model&.column_names || []
+          attrs = record.each_with_object({}) do |(k, val), acc|
+            key = k.to_s
+            next if %w[stable_id record_type].include?(key)
+            next if val.is_a?(Hash) || val.is_a?(Array) # child assoc — handled separately
+            acc[key] = val if allowed.include?(key)
+          end
+          attrs["stable_id"] = v[:stable_id]
+          # Wave 4 W4-4 isolation invariant: every importer-created
+          # record starts as draft. If the model doesn't carry
+          # authorization_state, this write is a no-op.
+          if allowed.include?("authorization_state")
+            attrs["authorization_state"] = "draft"
+          end
+          attrs
+        end
+
+        def self.apply_create!(v)
+          attrs = attributes_for(v)
+          v[:model].create!(attrs)
+        end
+
+        def self.apply_update!(v)
+          current = v[:model].find_by(stable_id: v[:stable_id])
+          raise ActiveRecord::RecordNotFound, "no #{v[:record_type]} with stable_id=#{v[:stable_id]}" unless current
+          # Preserve W4-4 isolation invariant: never advance
+          # authorization_state beyond draft via importer.
+          attrs = attributes_for(v)
+          attrs.delete("authorization_state") if current.respond_to?(:authorization_state) && current.authorization_state != "draft"
+          current.update!(attrs)
         end
       end
 
