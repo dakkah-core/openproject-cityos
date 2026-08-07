@@ -25,14 +25,24 @@ module Cityos
             render json: { authorization: serialize_authorization(auth) }, status: :created
           end
 
-          # PATCH — advance state. Transition to "approved" requires dwos_approval_ref.
+          # PATCH — advance state.
+          #
+          # Wave 2 W2-6 (2026-08-07): the prior presence-only shortcut
+          # ("dwos_approval_ref nonblank ⇒ approved allowed") is DELETED.
+          # The full validation set on PlanAuthorization now enforces:
+          #   * plan_hash equality with plan.compute_graph_content_hash
+          #   * source_revision equality with plan.updated_at.iso8601
+          #   * authorized_by != plan.owner_id (SoD)
+          #   * dwos_approval_ref format matches gov-*
+          # `update!` will raise ActiveRecord::RecordInvalid if any fail;
+          # we surface those as 422 with the model's error messages so
+          # callers know exactly which check tripped.
           def update
             auth = OpenProject::CityosStrategy::PlanAuthorization.find_by!(authorization_id: params[:id])
-            if params[:authorization_state] == "approved" && auth.dwos_approval_ref.blank?
-              return render json: { error: "Cannot approve without DWOS approval_ref" }, status: :forbidden
-            end
             auth.update!(update_params)
             render json: { authorization: serialize_authorization(auth) }
+          rescue ActiveRecord::RecordInvalid => e
+            render json: { error: "PlanAuthorization update rejected", detail: e.record.errors.messages }, status: :unprocessable_entity
           end
 
           private

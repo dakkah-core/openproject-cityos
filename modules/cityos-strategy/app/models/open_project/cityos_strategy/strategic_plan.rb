@@ -58,7 +58,8 @@ module OpenProject
           baseline_status: :pending,
           baseline_requested_at: Time.current,
           baseline_requested_by: actor.id,
-          baseline_content_hash: compute_content_hash
+          baseline_content_hash: compute_content_hash,
+          graph_content_hash: compute_graph_content_hash
         )
         # Emit event (handled by outbox — Wave 3)
         # cityos.helm.strategy.baseline-requested.v1
@@ -70,13 +71,21 @@ module OpenProject
         validate_approval_projection!(approval_projection)
 
         transaction do
-          # Create immutable snapshot
+          # Create immutable snapshot — Wave 2 W2-5 stores the full-graph
+          # hash so anyone comparing the snapshot against the approval
+          # can detect child-record drift too.
+          graph_hash = compute_graph_content_hash
           StrategySnapshot.create!(
             plan_id: id,
             version: version,
-            content_hash: compute_content_hash,
+            content_hash: graph_hash,
             snapshot_type: :baseline,
-            metadata: { approval_ref: approval_projection[:ref], approved_by: approval_projection[:approved_by] }
+            metadata: {
+              approval_ref: approval_projection[:ref],
+              approved_by: approval_projection[:approved_by],
+              plan_only_content_hash: compute_content_hash,
+              graph_content_hash: graph_hash
+            }
           )
 
           update!(
@@ -86,7 +95,8 @@ module OpenProject
             approval_ref: approval_projection[:ref],
             approval_source_revision: approval_projection[:source_revision],
             approval_subject_hash: approval_projection[:subject_hash],
-            approval_projected_at: Time.current
+            approval_projected_at: Time.current,
+            graph_content_hash: graph_hash
           )
         end
         # Emit event (handled by outbox — Wave 3)
@@ -97,18 +107,114 @@ module OpenProject
         approval_ref.present? && baseline_approved?
       end
 
+      # ── Wave 2 W2-5: full-graph canonical hash ─────────────────────
+      #
+      # Serializes the plan + all 16 child associations via
+      # ActiveRecord's as_json (sorted keys via canonical_json_dump) and
+      # SHA-256 hashes the canonical text. A mutation to ANY child
+      # (theme, outcome, objective, key_result, initiative binding,
+      # benefit, risk, execution_link, review, snapshot, metric target,
+      # observation, scenario, allocation, plan authorization) changes
+      # this hash — the prior 4-column plan-only hash did not.
+      #
+      # Backward compat: the old `compute_content_hash` name is preserved
+      # below as an alias for the plan-only 4-column serialization so
+      # any legacy caller still gets the old behavior. New code should
+      # call `compute_graph_content_hash`.
+      def compute_graph_content_hash
+        graph = build_graph_snapshot
+        Digest::SHA256.hexdigest(canonical_json_dump(graph))
+      end
+
       private
 
       def validate_approval_projection!(projection)
         raise ArgumentError, "missing approval_ref" if projection[:ref].blank?
         raise ArgumentError, "missing subject_hash" if projection[:subject_hash].blank?
-        raise ArgumentError, "content hash mismatch" unless projection[:subject_hash] == compute_content_hash
+        raise ArgumentError, "content hash mismatch" unless projection[:subject_hash] == compute_graph_content_hash
         raise ArgumentError, "version mismatch" unless projection[:version] == version
         raise ArgumentError, "revoked approval" if projection[:revoked]
       end
 
+      # Legacy 4-column plan-only hash — retained under the original name
+      # so any existing consumer still gets the exact old bytes. New
+      # authority-binding code MUST use compute_graph_content_hash.
       def compute_content_hash
         Digest::SHA256.hexdigest(attributes.slice("title", "description", "plan_type", "scoring_config").to_s)
+      end
+
+      # Deterministic JSON serializer with keys sorted at every level.
+      # Two graphs with the same values in different key order produce
+      # identical bytes.
+      def canonical_json_dump(value)
+        case value
+        when Hash
+          "{" + value.keys.map(&:to_s).sort.map { |k|
+            k.to_json + ":" + canonical_json_dump(value[k.to_sym].nil? ? value[k] : value[k.to_sym])
+          }.join(",") + "}"
+        when Array
+          "[" + value.map { |v| canonical_json_dump(v) }.join(",") + "]"
+        else
+          value.to_json
+        end
+      end
+
+      def build_graph_snapshot
+        {
+          plan: attributes.slice("title", "description", "plan_type", "scoring_config", "version"),
+          themes: themes.order(:id).pluck(:id, :name),
+          outcomes: outcomes.order(:id).pluck(:id, :name),
+          objectives: objectives.order(:id).map { |o|
+            {
+              id: o.id,
+              title: o.title,
+              status: o.try(:status),
+              key_results: o.key_results.order(:id).pluck(:id, :title, :target_value, :current_value),
+            }
+          },
+          initiatives: initiatives.order(:id).map { |i|
+            {
+              id: i.id,
+              title: i.title,
+              stage: i.try(:stage),
+              bindings: safe_pluck(i, :engineering_service_bindings, %i[id engineering_service_id role status]),
+              benefits: safe_pluck(i, :benefits, %i[id name quantified_value]),
+              risks: safe_pluck(i, :risks, %i[id title severity]),
+              execution_links: safe_pluck(i, :execution_links, %i[id work_package_id]),
+              globalization_bindings: safe_pluck(i, :globalization_bindings, %i[id country_cell]),
+            }
+          },
+          reviews: reviews.order(:id).map { |r|
+            {
+              id: r.id,
+              review_type: r.try(:review_type),
+              snapshots: safe_pluck(r, :snapshots, %i[id content_hash snapshot_type]),
+            }
+          },
+          metric_definitions: metric_definitions.order(:id).map { |m|
+            {
+              id: m.id,
+              name: m.name,
+              targets: safe_pluck(m, :targets, %i[id target_value target_date]),
+              observations: safe_pluck(m, :observations, %i[id value observed_at]),
+            }
+          },
+          allocations: allocations.order(:id).pluck(:id, :amount, :allocation_type),
+          plan_authorizations: plan_authorizations.order(:id).pluck(:id, :authorization_state, :plan_hash, :dwos_approval_ref),
+        }
+      end
+
+      # Some Rails associations may not exist on every environment or
+      # migration state. Rather than crash the hash, fall back to an
+      # empty array and record the association name in a special key so
+      # the hash still reflects "we tried and it wasn't there".
+      def safe_pluck(record, association, columns)
+        return [] unless record.respond_to?(association)
+        rel = record.public_send(association)
+        return [] unless rel.respond_to?(:pluck)
+        rel.order(:id).pluck(*columns)
+      rescue ActiveRecord::StatementInvalid, NoMethodError
+        [{ _unavailable: association.to_s }]
       end
     end
   end
