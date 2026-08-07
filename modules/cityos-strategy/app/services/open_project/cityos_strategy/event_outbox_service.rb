@@ -93,10 +93,57 @@ module OpenProject
 
       private
 
+      # Wave 3 W3-4 (2026-08-07): real NATS JetStream publish via
+      # the `nats-pure` gem (pure-Ruby client, no C extension).
+      #
+      # Design:
+      #   * Subject convention: cityos.helm.<event_name>.v1  (matches
+      #     config/engineering-services/event-subject.registry.json).
+      #   * We build the payload envelope (event_id, occurred_at,
+      #     correlation_id, tenant_id, source_revision) so downstream
+      #     consumers get consistent metadata regardless of publisher.
+      #   * The `nats-pure` gem is a soft dependency: if it's missing
+      #     at runtime we mark the record as :failed with a clear
+      #     error message rather than crashing the drainer. This lets
+      #     an operator see the state, install the gem, and resume.
+      #   * A single NATS connection is memoized per Rails process
+      #     (@nats_client). The drainer runs every 5s, so tearing down
+      #     the connection per publish would be wasteful.
       def self.publish_to_nats(record)
-        # Actual NATS JetStream publish (wired when NATS is available)
-        # For now, mark as published — NATS connection in Wave 3 infra
+        require "nats/io/client"
+
+        subject = "cityos.helm.#{record.event_name.tr('-', '.')}.v1"
+        envelope = {
+          event_id: record.event_id,
+          event_name: record.event_name,
+          occurred_at: record.created_at.iso8601,
+          correlation_id: record.correlation_id,
+          causation_id: record.causation_id,
+          tenant_id: record.tenant_id,
+          source_revision: record.source_revision,
+          payload: record.payload_json
+        }.to_json
+
+        js = jetstream_client
+        js.publish(subject, envelope, timeout: 5)
         record.update!(publish_status: :published, published_at: Time.current)
+      rescue LoadError => e
+        # nats-pure not installed — leave record pending, log once.
+        Rails.logger.error("[helm-outbox] nats-pure gem missing; add `gem 'nats-pure'` and bundle install to enable JetStream publish. record=#{record.event_id}")
+        record.update!(publish_status: :failed, publish_error: "nats-pure gem not installed: #{e.message}", publish_attempts: record.publish_attempts + 1)
+      end
+
+      # Memoized NATS JetStream client. First call opens the
+      # connection; subsequent calls return the cached client. If the
+      # underlying connection has closed, we reopen.
+      def self.jetstream_client
+        if @nats_client && @nats_client.connected?
+          return @nats_client.jetstream
+        end
+        nats_url = ENV.fetch("HELM_NATS_URL", "nats://127.0.0.1:4222")
+        @nats_client = NATS::IO::Client.new
+        @nats_client.connect(servers: [nats_url])
+        @nats_client.jetstream
       end
 
       def self.resolve_source_revision

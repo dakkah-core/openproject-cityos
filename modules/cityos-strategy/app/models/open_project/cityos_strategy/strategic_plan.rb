@@ -42,6 +42,13 @@ module OpenProject
 
       before_create :generate_stable_id  # HEXP-0104
 
+      # Wave 3 W3-3 (2026-08-07): after_commit outbox wiring.
+      # Fires the BaselineSaga when the plan's authoritative content
+      # actually changes on the DB (baseline_status flips to :pending,
+      # or graph_content_hash moves). We use after_commit not after_save
+      # so the outbox write only happens for rows that actually persisted.
+      after_commit :publish_baseline_saga_event, on: [:create, :update], if: :baseline_content_changed_for_outbox?
+
       # HEXP-0104: Auto-generate stable cross-system identity
       def generate_stable_id
         self.stable_id ||= "helm-plan-#{SecureRandom.uuid}"
@@ -215,6 +222,41 @@ module OpenProject
         rel.order(:id).pluck(*columns)
       rescue ActiveRecord::StatementInvalid, NoMethodError
         [{ _unavailable: association.to_s }]
+      end
+
+      # Wave 3 W3-3: outbox trigger predicate.
+      # True when the plan has just been created OR when a save moved
+      # baseline_status/graph_content_hash — i.e. the plan's "authorized
+      # material" changed. Silences chatty saves (touch, non-graph
+      # attribute updates) so we don't flood the outbox.
+      def baseline_content_changed_for_outbox?
+        saved_change_to_id? ||
+          saved_change_to_baseline_status? ||
+          saved_change_to_graph_content_hash? ||
+          saved_change_to_baseline_content_hash?
+      end
+
+      # Wave 3 W3-3: publish BaselineSaga start via the transactional
+      # outbox. The Sagas::BaselineSaga.start method is the ONLY path
+      # that writes to the outbox from a plan-level change.
+      #
+      # actor resolution: User.current works during a controller action
+      # (OpenProject sets it in ApplicationController). In background/
+      # console contexts it may be nil — the saga handles that by
+      # emitting actor_id=nil, which downstream consumers treat as
+      # "system" (audited but not attributed to a human).
+      def publish_baseline_saga_event
+        actor = User.respond_to?(:current) ? User.current : nil
+        # System actor fallback so the saga signature always resolves.
+        actor ||= OpenStruct.new(id: nil)
+        correlation_id = SecureRandom.uuid
+        Sagas::BaselineSaga.start(plan: self, actor: actor, correlation_id: correlation_id)
+      rescue => e
+        # Never let outbox write failures break the plan save. Log and
+        # continue — the drainer will pick up any successful outbox rows
+        # separately, and monitoring should watch for missing baseline
+        # events for plans whose baseline_status transitioned.
+        Rails.logger.error("[helm-plan-outbox] BaselineSaga.start failed for plan=#{id} stable_id=#{stable_id}: #{e.class}: #{e.message}")
       end
     end
   end

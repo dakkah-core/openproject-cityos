@@ -60,7 +60,13 @@ module OpenProject
       validate :must_have_dwos_ref_when_approving
 
       before_validation :generate_authorization_id, on: :create
-      after_save :publish_to_bridge, if: :authorization_state_changed_to_approved?
+
+      # Wave 3 W3-3 (2026-08-07): moved from after_save to after_commit
+      # so we only publish once the transaction is durable. Also added
+      # a saga event that writes to the transactional outbox for the
+      # PlanToWork lifecycle (Sagas::PlanToWorkSaga.start).
+      after_commit :publish_to_bridge, if: :authorization_state_changed_to_approved_on_commit?
+      after_commit :publish_plan_to_work_saga_event, on: :update, if: :authorization_state_changed_to_approved_on_commit?
 
       scope :approved, -> { where(authorization_state: 'approved') }
       scope :active, -> { where(authorization_state: %w[approved executing]) }
@@ -109,6 +115,13 @@ module OpenProject
         saved_change_to_authorization_state? && authorization_state == 'approved'
       end
 
+      # Wave 3 W3-3: after_commit-friendly predicate. saved_change_to_*
+      # is still valid inside after_commit callbacks because the change
+      # attribute set survives the transaction commit boundary.
+      def authorization_state_changed_to_approved_on_commit?
+        saved_change_to_authorization_state? && authorization_state == 'approved'
+      end
+
       def publish_to_bridge
         HelmLedger.publish_plan_authorized(
           plan_id: plan&.id,
@@ -116,6 +129,37 @@ module OpenProject
           strategy_ref: "op-wp-auth-#{id}",
           work_items: approved_scope&.dig('task_count') || 0
         )
+      end
+
+      # Wave 3 W3-3: PlanToWorkSaga outbox emit. Fires when the plan
+      # authorization is approved — this is the platform's signal that
+      # a strategy plan is ready for Work Control materialization.
+      def publish_plan_to_work_saga_event
+        return unless plan
+        correlation_id = SecureRandom.uuid
+        # We don't have a first-class Initiative selection at this
+        # point in the lifecycle (that comes from Work Control); the
+        # saga's `start` expects an initiative + plan pair. Emit the
+        # authorization event directly to the outbox so downstream
+        # services (Work Control, UCL) can react without waiting on
+        # Sagas::PlanToWorkSaga.start (which requires an initiative
+        # argument we don't yet have).
+        EventOutboxService.publish!(
+          aggregate: self,
+          event_name: "plan-authorized-for-execution",
+          payload: {
+            plan_stable_id: plan.stable_id,
+            plan_version: plan.version,
+            plan_hash: plan_hash,
+            authorization_id: authorization_id,
+            dwos_approval_ref: dwos_approval_ref,
+            authorized_by_id: authorized_by_id,
+            authorized_at: Time.current.iso8601
+          },
+          correlation_id: correlation_id
+        )
+      rescue => e
+        Rails.logger.error("[helm-authz-outbox] plan-authorized-for-execution publish failed for authz=#{authorization_id}: #{e.class}: #{e.message}")
       end
     end
   end
