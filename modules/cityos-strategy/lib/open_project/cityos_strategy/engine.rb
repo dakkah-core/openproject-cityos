@@ -39,6 +39,15 @@ module OpenProject
                      permissible_on: [:project],
                      require: :loggedin
 
+          # Wave 4 W4-3: import_strategy permission for the governed
+          # strategy pack importer. Distinct from manage_strategic_plans
+          # because bulk import can create many records at once and
+          # should be scoped tighter than the day-to-day plan editor.
+          permission :import_strategy,
+                     { "cityos/strategy/api/v1/imports": %i[create index show] },
+                     permissible_on: [:project],
+                     require: :loggedin
+
           # Objectives & Key Results
           permission :view_objectives,
                      { "cityos/strategy/objectives": %i[index show] },

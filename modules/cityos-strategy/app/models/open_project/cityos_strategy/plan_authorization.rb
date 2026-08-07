@@ -136,6 +136,10 @@ module OpenProject
       # a strategy plan is ready for Work Control materialization.
       def publish_plan_to_work_saga_event
         return unless plan
+        # Wave 4 W4-4: importer runs suppress outbox emits.
+        if defined?(Cityos::Strategy::Importer::SkipOutbox) && Cityos::Strategy::Importer::SkipOutbox.suppressed?
+          return
+        end
         correlation_id = SecureRandom.uuid
         # We don't have a first-class Initiative selection at this
         # point in the lifecycle (that comes from Work Control); the

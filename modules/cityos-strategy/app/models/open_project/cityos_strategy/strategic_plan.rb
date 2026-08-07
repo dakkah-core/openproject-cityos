@@ -246,6 +246,15 @@ module OpenProject
       # emitting actor_id=nil, which downstream consumers treat as
       # "system" (audited but not attributed to a human).
       def publish_baseline_saga_event
+        # Wave 4 W4-4: importer runs suppress outbox emits so bulk imports
+        # don't flood downstream services with baseline-requested events
+        # for every draft record. When Cityos::Strategy::Importer::SkipOutbox
+        # is active, we short-circuit here and rely on the receipt row
+        # for audit trail instead.
+        if defined?(Cityos::Strategy::Importer::SkipOutbox) && Cityos::Strategy::Importer::SkipOutbox.suppressed?
+          return
+        end
+
         actor = User.respond_to?(:current) ? User.current : nil
         # System actor fallback so the saga signature always resolves.
         actor ||= OpenStruct.new(id: nil)

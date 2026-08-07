@@ -121,6 +121,11 @@ OpenProject::CityosStrategy::Engine.routes.draw do
       post  "plan_authorizations",                     to: "plan_authorizations#create"
       get   "plan_authorizations/:id",                 to: "plan_authorizations#show"
       patch "plan_authorizations/:id",                 to: "plan_authorizations#update"
+
+      # Wave 4 W4-3: governed strategy pack imports.
+      post  "strategy/imports",                        to: "imports#create"
+      get   "strategy/imports",                        to: "imports#index"
+      get   "strategy/imports/:id",                    to: "imports#show"
     end
   end
 end
