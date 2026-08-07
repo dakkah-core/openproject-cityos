@@ -6,7 +6,8 @@ module Cityos
       module V1
         class InitiativesController < ApplicationController
           skip_before_action :verify_authenticity_token
-          before_action :require_strategy_api_access
+          include Cityos::Strategy::ApiAuthorization
+          requires_api_scope "strategy.read"
 
           def index
             render json: OpenProject::CityosStrategy::StrategicInitiative.includes(:portfolio).map { |i|

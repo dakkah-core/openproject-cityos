@@ -6,7 +6,8 @@ module Cityos
       module V1
         class PlanAuthorizationsController < ApplicationController
           skip_before_action :verify_authenticity_token
-          before_action :require_strategy_api_access
+          include Cityos::Strategy::ApiAuthorization
+          requires_api_scope "strategy.authorize"
 
           def index
             auths = OpenProject::CityosStrategy::PlanAuthorization.all.order(created_at: :desc)
@@ -59,9 +60,6 @@ module Cityos
             }
           end
 
-          def require_strategy_api_access
-            true  # API token auth — permission checked at gateway level
-          end
         end
       end
     end

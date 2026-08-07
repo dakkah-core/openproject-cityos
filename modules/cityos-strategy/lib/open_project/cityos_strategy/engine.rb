@@ -27,13 +27,13 @@ module OpenProject
           permission :view_strategy_dashboard,
                      { "cityos/strategy/dashboard": [:show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
 
           # Strategic Plans
           permission :view_strategic_plans,
                      { "cityos/strategy/plans": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_strategic_plans,
                      { "cityos/strategy/plans": %i[new create edit update destroy baseline] },
                      permissible_on: [:project],
@@ -43,7 +43,7 @@ module OpenProject
           permission :view_objectives,
                      { "cityos/strategy/objectives": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_objectives,
                      { "cityos/strategy/objectives": %i[new create edit update destroy score] },
                      permissible_on: [:project],
@@ -53,7 +53,7 @@ module OpenProject
           permission :view_initiatives,
                      { "cityos/strategy/initiatives": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_initiatives,
                      { "cityos/strategy/initiatives": %i[new create edit update destroy score advance_stage] },
                      permissible_on: [:project],
@@ -63,7 +63,7 @@ module OpenProject
           permission :view_scenarios,
                      { "cityos/strategy/scenarios": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_scenarios,
                      { "cityos/strategy/scenarios": %i[new create edit update destroy freeze unfreeze] },
                      permissible_on: [:project],
@@ -73,7 +73,7 @@ module OpenProject
           permission :view_metrics,
                      { "cityos/strategy/metrics": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_metrics,
                      { "cityos/strategy/metrics": %i[new create edit update destroy record_observation] },
                      permissible_on: [:project],
@@ -83,7 +83,7 @@ module OpenProject
           permission :view_reviews,
                      { "cityos/strategy/reviews": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_reviews,
                      { "cityos/strategy/reviews": %i[new create edit update destroy snapshot] },
                      permissible_on: [:project],
@@ -93,7 +93,7 @@ module OpenProject
           permission :view_benefits,
                      { "cityos/strategy/benefits": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_benefits,
                      { "cityos/strategy/benefits": %i[new create edit update destroy] },
                      permissible_on: [:project],
@@ -103,7 +103,7 @@ module OpenProject
           permission :view_risks,
                      { "cityos/strategy/risks": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_risks,
                      { "cityos/strategy/risks": %i[new create edit update destroy] },
                      permissible_on: [:project],
@@ -113,7 +113,7 @@ module OpenProject
           permission :view_dependencies,
                      { "cityos/strategy/dependencies": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_dependencies,
                      { "cityos/strategy/dependencies": %i[new create edit update destroy] },
                      permissible_on: [:project],
@@ -123,7 +123,7 @@ module OpenProject
           permission :view_allocations,
                      { "cityos/strategy/allocations": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_allocations,
                      { "cityos/strategy/allocations": %i[new create edit update destroy] },
                      permissible_on: [:project],
@@ -133,7 +133,7 @@ module OpenProject
           permission :view_decisions,
                      { "cityos/strategy/decisions": %i[index show] },
                      permissible_on: [:project],
-                     public: true
+                     require: :loggedin # Wave 1 W1-5: was public: true; strategy views are confidential internal
           permission :manage_decisions,
                      { "cityos/strategy/decisions": %i[new create edit update destroy] },
                      permissible_on: [:project],

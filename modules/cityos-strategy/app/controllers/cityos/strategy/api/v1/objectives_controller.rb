@@ -6,7 +6,8 @@ module Cityos
       module V1
         class ObjectivesController < ApplicationController
           skip_before_action :verify_authenticity_token
-          before_action :require_strategy_api_access
+          include Cityos::Strategy::ApiAuthorization
+          requires_api_scope "strategy.read"
 
           def index
             render json: OpenProject::CityosStrategy::StrategicObjective.includes(:key_results).map { |o|
@@ -32,12 +33,6 @@ module Cityos
             }
           end
 
-          private
-
-          def require_strategy_api_access
-            # Verified via MCP token or sync service token
-            head :forbidden unless User.current&.allowed_to?(:access_strategy_api, @project)
-          end
         end
       end
     end

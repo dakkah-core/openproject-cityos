@@ -6,7 +6,8 @@ module Cityos
       module V1
         class CoverageController < ApplicationController
           skip_before_action :verify_authenticity_token
-          before_action :require_strategy_api_access
+          include Cityos::Strategy::ApiAuthorization
+          requires_api_scope "strategy.coverage"
 
           # GET /api/cityos/v1/coverage/baselines
           def baselines
@@ -71,9 +72,6 @@ module Cityos
               achieved: t.achieved?, gap: t.gap, measurement_policy: t.measurement_policy }
           end
 
-          def require_strategy_api_access
-            true  # API token auth — permission checked at gateway level
-          end
         end
       end
     end
